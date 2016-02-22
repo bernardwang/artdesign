@@ -65,7 +65,9 @@ gulp.task('sass', function() {
 		.pipe(cssnano({
     	autoprefixer: {browsers: ['last 2 versions'], add: true}
 		}))
-    .pipe(gulp.dest(DIST_CSS));
+    .pipe(gulp.dest(DIST_CSS))
+		.pipe(sync.reload({ stream: true }));
+	//.pipe(sync.stream());
 });
 
 /**
@@ -103,8 +105,7 @@ gulp.task('img', function(){
 gulp.task('watch', ['sass','build-persistent'], function() {
   sync({
     server: {
-      baseDir: './dist/',
-			reloadDelay: 1000
+      baseDir: './dist/'
     }
   });
 
@@ -113,7 +114,7 @@ gulp.task('watch', ['sass','build-persistent'], function() {
     gulp.start('build-persistent')
   });
 	// css watch
-	gulp.watch(ALL_SASS, ['sass']).on('change', sync.reload);
+	gulp.watch(ALL_SASS, ['sass']);
 	// html watch
 	gulp.watch(ALL_HTML).on('change', sync.reload);
 });
