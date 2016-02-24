@@ -15,15 +15,16 @@ var sync = require('browser-sync');
 var _ = require('lodash');
 
 /************ OPTIONS ************/
+
 var syncOptions = {
   stream: true,
 };
 var eslintOptions = {
-	extends : 'eslint:recommended',
-	//extends : 'airbnb',
+	//extends : 'eslint:recommended',
+	extends : 'airbnb',
 	parser : 'babel-eslint',
   rules : {
-    'strict' : 0
+		'indent': [2, 'tab']
 	}
 }
 var cssnanoOptions = {
@@ -66,10 +67,10 @@ function getBundler() {
 
 gulp.task('build-persistent', function() {
   return getBundler()
-    .transform(babelify)
-    .bundle()
+    .transform(babelify, {presets: ["es2015", "react"]})
+		.bundle()
     .on('error', function(err) { console.log('Error: ' + err.message); })
-    .pipe(source(ENTRY_JS))	// JS entry point
+    .pipe(source('app.js'))	// JS entry point
     .pipe(gulp.dest(DIST_JS))
     .pipe(sync.reload(syncOptions));
 });

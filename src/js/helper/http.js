@@ -7,10 +7,10 @@
  *
  */
 
-const $http = function (url) {
+const $http = function httpRequest(url) {
 	// AJAX request, returns promise
-	const ajax = function (method, url, args) {
-		let promise = new Promise(function (resolve, reject) { // Creates a promise
+	const ajax = function ajaxCall(method, url, args) {
+		let promise = new Promise((resolve, reject) => { // Creates a promise
 			let request = new XMLHttpRequest();
 			let uri = url;
 
@@ -31,14 +31,14 @@ const $http = function (url) {
 
 			request.open(method, uri);
 			request.send();
-			request.onload = function () {
+			request.onload = function requestLoad() {
 				if (this.status >= 200 && this.status < 300) { // status successful
 					resolve(this.response);
 				} else { // rejects other status
 					reject(this.statusText);
 				}
 			};
-			request.onerror = function () { // reject on error
+			request.onerror = function requestError() { // reject on error
 				reject(this.statusText);
 			};
 		});
@@ -49,21 +49,21 @@ const $http = function (url) {
 
 	// Adapter pattern
 	return {
-		'get': function (args) {
+		get(args) {
 			return ajax('GET', url, args);
 		},
-		'post': function (args) {
+		post(args) {
 			return ajax('POST', url, args);
 		},
-		'put': function (args) {
+		put(args) {
 			return ajax('PUT', url, args);
 		},
-		'delete': function (args) {
+		delete(args) {
 			return ajax('DELETE', url, args);
-		}
+		},
 	};
 };
 
 export {
-	$http
+	$http,
 };
