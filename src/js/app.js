@@ -15,7 +15,6 @@ global.app = function () {
 	//let christoph = new Person('Christoph', 'Burgdorf');
 	//console.log(christoph.fullName);
 
-	alert("yesdfas");
 	let url = 'https://www.flickr.com/services/rest/';
 	let args = {
 		method: 'flickr.people.getPublicPhotos',

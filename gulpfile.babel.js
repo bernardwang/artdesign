@@ -1,32 +1,33 @@
 /************ DEPENDENCIES ************/
 
-var gulp = require('gulp');
-var source = require('vinyl-source-stream');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var babelify = require('babelify');
-var eslint = require('gulp-eslint');
-var uglify = require('gulp-uglify');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var cssnano = require('gulp-cssnano');
-var autoprefixer = require('gulp-autoprefixer');
-var imagemin = require('gulp-imagemin');
-var sync = require('browser-sync');
-var _ = require('lodash');
+import gulp from 'gulp';
+import source from 'vinyl-source-stream';
+import browserify from 'browserify';
+import watchify from 'watchify';
+import babelify from 'babelify';
+import eslint from 'gulp-eslint';
+import uglify from 'gulp-uglify';
+import sass from 'gulp-sass';
+import sourcemaps from 'gulp-sourcemaps';
+import cssnano from 'gulp-cssnano';
+import autoprefixer from 'gulp-autoprefixer';
+import imagemin from 'gulp-imagemin';
+import sync from 'browser-sync';
+import _ from 'lodash';
 
 /************ OPTIONS ************/
 
-var browserifyOptions = {
+const browserifyOptions = {
 	debug: true
 };
-var watchifyOptions = _.extend(
+const watchifyOptions = _.extend(
 	browserifyOptions, watchify.args
 );
-var babelifyOptions = {
-	presets: ["es2015", "react"]
+const babelifyOptions = {
+	presets: ["es2015"]
+	//presets: ["es2015", "react"]
 };
-var eslintOptions = {
+const eslintOptions = {
 	//extends : 'eslint:recommended',
 	extends : 'airbnb',
 	parser : 'babel-eslint',
@@ -34,46 +35,45 @@ var eslintOptions = {
 		'indent': [2, 'tab']
 	}
 }
-var autoprefixerOptions = {
+const autoprefixerOptions = {
 	browsers: ['last 2 versions'],
 	add: true
 }
-var cssnanoOptions = {
+const cssnanoOptions = {
   autoprefixer: autoprefixerOptions
 }
-var imageminOptions = {
+const imageminOptions = {
 	progressive: true,
 	multipass: true,
 	interlaced: true,
 	optimizationLevel : 3
 };
-var syncOptions = {
+const syncOptions = {
   stream: true,
 };
 
 /************ HELPER VARIABLES AND FUNCTIONS ************/
 
 // Location constants
-var SRC_HTML = './dist/**/*.html';
-var SRC_SASS = './src/sass/**/*.scss';
-var SRC_JS = './src/js/**/*.js';
-var ENTRY_JS = './src/js/app.js';
-var SRC_IMG	= './src/img/*';
-var SRC_FONTS	= './src/fonts/**/*.{eot,ttf,woff,eof,svg}';
+const SRC_HTML = './dist/**/*.html';
+const SRC_SASS = './src/sass/**/*.scss';
+const SRC_JS = './src/js/**/*.js';
+const SRC_IMG	= './src/img/*';
 
-var DEST_JS	= './dist/assets/js/';
-var DEST_CSS = './dist/assets/css/';
-var DEST_IMG = './dist/assets/img/';
-var DEST_FONTS = './dist/assets/fonts/';
+const DEST_JS	= './dist/assets/js/';
+const DEST_CSS = './dist/assets/css/';
+const DEST_IMG = './dist/assets/img/';
 
-var DIST_CSS = './dist/assets/css/*.css';
-var DIST_JS = './dist/assets/js/*.js';
+const DIST_CSS = './dist/assets/css/*.css';
+const DIST_JS = './dist/assets/js/*.js';
+
+const ENTRY_JS = './src/js/app.js';
 
 // Browserify function
-var bundler;
+let bundler;
 function getBundler(watch) {
-  if (!bundler) {
-		if (watch) { // Conditional bundler
+  if (!bundler) { // Initialize bundle with conditional 'watch'
+		if (watch) {
     	bundler = watchify(browserify(ENTRY_JS, watchifyOptions));
 		} else {
     	bundler = browserify(ENTRY_JS, browserifyOptions);
@@ -87,7 +87,7 @@ function getBundler(watch) {
 /**
  *	Compile SASS to CSS
  */
-gulp.task('sass', function() {
+gulp.task('styles', () => {
 	return gulp.src(SRC_SASS)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
@@ -100,20 +100,19 @@ gulp.task('sass', function() {
 /**
  *	Minify CSS
  */
-gulp.task('css', ['sass'], function() {
+gulp.task('min-styles', ['styles'], () => {
 	return gulp.src(DIST_CSS)
 		.pipe(cssnano(cssnanoOptions))
     .pipe(gulp.dest(DEST_CSS));
 });
 
 /**
- *	Builds JS when needed
+ *	Builds JS persistently when needed
  */
-gulp.task('build-persistent', function() {
+gulp.task('scripts-watch', () => {
   return getBundler( true ) // Watchify
     .transform(babelify, babelifyOptions)
-		.bundle()
-    .on('error', function(err) { console.log('Error: ' + err.message); })
+		.bundle().on('error', (err) => console.log('Error: ' + err.message))
     .pipe(source('app.js'))	// output name
     .pipe(gulp.dest(DEST_JS))
     .pipe(sync.reload(syncOptions));
@@ -122,11 +121,10 @@ gulp.task('build-persistent', function() {
 /**
  *	Builds JS once
  */
-gulp.task('build', function() {
+gulp.task('scripts', () => {
   return getBundler( false ) // Not watchifying
     .transform(babelify, babelifyOptions)
-		.bundle()
-    .on('error', function(err) { console.log('Error: ' + err.message); })
+		.bundle().on('error', (err) => console.log('Error: ' + err.message))
     .pipe(source('app.js'))	// output name
     .pipe(gulp.dest(DEST_JS));
 });
@@ -134,7 +132,7 @@ gulp.task('build', function() {
 /**
  *	Minify JS
  */
-gulp.task('js', ['build'], function() {
+gulp.task('min-scripts', ['scripts'], () => {
 	return gulp.src(DIST_JS)
 		.pipe(uglify())
     .pipe(gulp.dest(DEST_JS));
@@ -143,25 +141,17 @@ gulp.task('js', ['build'], function() {
 /**
  *	Lint JS
  */
-gulp.task('lint', function() {
-  return gulp.src(SRC_JS)
+gulp.task('lint-scripts', () => {
+  gulp.src(SRC_JS)
     .pipe(eslint(eslintOptions))
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });
 
 /**
- *	Move Fonts
- */
-gulp.task('fonts', function(){
-	gulp.src(SRC_FONTS)
-  	.pipe(gulp.dest(DEST_FONTS));
-});
-
-/**
  *	Compress and move images
  */
-gulp.task('img', function(){
+gulp.task('min-img', () => {
 	gulp.src(SRC_IMG)
 		.pipe(imagemin(imageminOptions))
 		.pipe(gulp.dest(DEST_IMG));
@@ -170,7 +160,7 @@ gulp.task('img', function(){
 /**
  *	Auto build and reload
  */
-gulp.task('watch', ['sass','build-persistent'], function() {
+gulp.task('watch', ['styles','scripts-watch'], () => {
   sync({
     server: {
       baseDir: './dist/'
@@ -178,17 +168,15 @@ gulp.task('watch', ['sass','build-persistent'], function() {
   });
 
 	// Reloads on HTML, CSS, and JS changes
-	gulp.watch(SRC_SASS, ['sass']);
+	gulp.watch(SRC_SASS, ['styles']);
 	gulp.watch(SRC_HTML).on('change', sync.reload);
-  getBundler().on('update', function() {
-    gulp.start('build-persistent');
-  });
+  getBundler().on('update', () => gulp.start('scripts-watch'));
 });
 
 /**
  *	Production build
  */
-gulp.task('prod', ['css','js'], function() {
+gulp.task('prod', ['min-img','lint-scripts','min-styles','min-scripts'], function() {
   sync({
     server: {
       baseDir: './dist/'
