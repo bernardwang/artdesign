@@ -2,6 +2,7 @@
   "name": "madeby",
   "version": "0.0.0",
   "description": "",
+  "author": "Bernard Wang",
   "repository": {
     "type": "git",
     "url": "git://github.com/bw-vbnm/madeby"
@@ -9,6 +10,8 @@
   "bugs": {
     "url": "https://github.com/bw-vbnm/madeby/issues"
   },
+  "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-eslint": "^5.0.0",
@@ -33,7 +36,7 @@
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^3.7.0"
   },
-  "author": "Bernard Wang",
-  "license": "MIT",
-  "dependencies": {}
+	"babel": {
+  	"presets": ["es2015"]
+  }
 }

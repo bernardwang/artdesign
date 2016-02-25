@@ -15,19 +15,15 @@ import imagemin from 'gulp-imagemin';
 import sync from 'browser-sync';
 import _ from 'lodash';
 
-/************ OPTIONS ************/
+/************ Options ************/
 
-const browserifyOptions = {
+const browserifyOpts = {
 	debug: true
 };
-const watchifyOptions = _.extend(
-	browserifyOptions, watchify.args
+const watchifyOpts = _.extend(
+	browserifyOpts, watchify.args
 );
-const babelifyOptions = {
-	presets: ["es2015"]
-	//presets: ["es2015", "react"]
-};
-const eslintOptions = {
+const eslintOpts = {
 	//extends : 'eslint:recommended',
 	extends : 'airbnb',
 	parser : 'babel-eslint',
@@ -35,20 +31,20 @@ const eslintOptions = {
 		'indent': [2, 'tab']
 	}
 }
-const autoprefixerOptions = {
+const autoprefixerOpts = {
 	browsers: ['last 2 versions'],
 	add: true
 }
-const cssnanoOptions = {
-  autoprefixer: autoprefixerOptions
+const cssnanoOpts = {
+  autoprefixer: autoprefixerOpts
 }
-const imageminOptions = {
+const imageminOpts = {
 	progressive: true,
 	multipass: true,
 	interlaced: true,
 	optimizationLevel : 3
 };
-const syncOptions = {
+const syncOpts = {
   stream: true,
 };
 
@@ -74,9 +70,9 @@ let bundler;
 function getBundler(watch) {
   if (!bundler) { // Initialize bundle with conditional 'watch'
 		if (watch) {
-    	bundler = watchify(browserify(ENTRY_JS, watchifyOptions));
+    	bundler = watchify(browserify(ENTRY_JS, watchifyOpts));
 		} else {
-    	bundler = browserify(ENTRY_JS, browserifyOptions);
+    	bundler = browserify(ENTRY_JS, browserifyOpts);
 		}
   }
   return bundler;
@@ -91,10 +87,10 @@ gulp.task('styles', () => {
 	return gulp.src(SRC_SASS)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(autoprefixer(autoprefixerOptions))
+		.pipe(autoprefixer(autoprefixerOpts))
 		.pipe(sourcemaps.write())
     .pipe(gulp.dest(DEST_CSS))
-		.pipe(sync.reload(syncOptions));
+		.pipe(sync.reload(syncOpts));
 });
 
 /**
@@ -102,7 +98,7 @@ gulp.task('styles', () => {
  */
 gulp.task('min-styles', ['styles'], () => {
 	return gulp.src(DIST_CSS)
-		.pipe(cssnano(cssnanoOptions))
+		.pipe(cssnano(cssnanoOpts))
     .pipe(gulp.dest(DEST_CSS));
 });
 
@@ -111,11 +107,11 @@ gulp.task('min-styles', ['styles'], () => {
  */
 gulp.task('scripts-watch', () => {
   return getBundler( true ) // Watchify
-    .transform(babelify, babelifyOptions)
+    .transform(babelify) // Babelify options in package.json
 		.bundle().on('error', (err) => console.log('Error: ' + err.message))
-    .pipe(source('app.js'))	// output name
+    .pipe(source('app.js'))	// Output name
     .pipe(gulp.dest(DEST_JS))
-    .pipe(sync.reload(syncOptions));
+    .pipe(sync.reload(syncOpts));
 });
 
 /**
@@ -123,9 +119,9 @@ gulp.task('scripts-watch', () => {
  */
 gulp.task('scripts', () => {
   return getBundler( false ) // Not watchifying
-    .transform(babelify, babelifyOptions)
+    .transform(babelify) // Babelify options in package.json
 		.bundle().on('error', (err) => console.log('Error: ' + err.message))
-    .pipe(source('app.js'))	// output name
+    .pipe(source('app.js'))	// Output name
     .pipe(gulp.dest(DEST_JS));
 });
 
@@ -143,9 +139,8 @@ gulp.task('min-scripts', ['scripts'], () => {
  */
 gulp.task('lint-scripts', () => {
   gulp.src(SRC_JS)
-    .pipe(eslint(eslintOptions))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+    .pipe(eslint(eslintOpts))
+    .pipe(eslint.format());
 });
 
 /**
@@ -153,7 +148,7 @@ gulp.task('lint-scripts', () => {
  */
 gulp.task('min-img', () => {
 	gulp.src(SRC_IMG)
-		.pipe(imagemin(imageminOptions))
+		.pipe(imagemin(imageminOpts))
 		.pipe(gulp.dest(DEST_IMG));
 });
 
@@ -176,18 +171,7 @@ gulp.task('watch', ['styles','scripts-watch'], () => {
 /**
  *	Production build
  */
-gulp.task('prod', ['min-img','lint-scripts','min-styles','min-scripts'], function() {
-  sync({
-    server: {
-      baseDir: './dist/'
-    }
-  });
-});
-
-/**
- *	Web server
- */
-gulp.task('serve', function () {
+gulp.task('prod', ['min-img','min-styles','lint-scripts','min-scripts'], () => {
   sync({
     server: {
       baseDir: './dist/'
