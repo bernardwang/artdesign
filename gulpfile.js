@@ -10,14 +10,21 @@ var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var cssnano = require('gulp-cssnano');
+var autoprefixer = require('gulp-autoprefixer');
 var imagemin = require('gulp-imagemin');
 var sync = require('browser-sync');
 var _ = require('lodash');
 
 /************ OPTIONS ************/
 
-var syncOptions = {
-  stream: true,
+var browserifyOptions = {
+	debug: true
+};
+var watchifyOptions = _.extend(
+	browserifyOptions, watchify.args
+);
+var babelifyOptions = {
+	presets: ["es2015", "react"]
 };
 var eslintOptions = {
 	//extends : 'eslint:recommended',
@@ -27,11 +34,12 @@ var eslintOptions = {
 		'indent': [2, 'tab']
 	}
 }
+var autoprefixerOptions = {
+	browsers: ['last 2 versions'],
+	add: true
+}
 var cssnanoOptions = {
-  autoprefixer: {
-		browsers: ['last 2 versions'],
-		add: true
-	}
+  autoprefixer: autoprefixerOptions
 }
 var imageminOptions = {
 	progressive: true,
@@ -39,41 +47,40 @@ var imageminOptions = {
 	interlaced: true,
 	optimizationLevel : 3
 };
-var browserifyOptions = _.extend({ debug: true }, watchify.args);
+var syncOptions = {
+  stream: true,
+};
 
 /************ HELPER VARIABLES AND FUNCTIONS ************/
 
 // Location constants
-var ALL_HTML = './dist/**/*.html';
-var ALL_SASS = './src/sass/**/*.scss';
-var ALL_JS = './src/js/**/*.js';		// JS ENTRY POINT
+var SRC_HTML = './dist/**/*.html';
+var SRC_SASS = './src/sass/**/*.scss';
+var SRC_JS = './src/js/**/*.js';
 var ENTRY_JS = './src/js/app.js';
-var ALL_IMG	= './src/img/*';
-var ALL_FONTS	= './src/fonts/**/*.{eot,ttf,woff,eof,svg}';
+var SRC_IMG	= './src/img/*';
+var SRC_FONTS	= './src/fonts/**/*.{eot,ttf,woff,eof,svg}';
 
-var DIST_JS	= './dist/assets/js/';
-var DIST_CSS = './dist/assets/css/';
-var DIST_IMG = './dist/assets/img/';
-var DIST_FONTS = './dist/assets/fonts/';
+var DEST_JS	= './dist/assets/js/';
+var DEST_CSS = './dist/assets/css/';
+var DEST_IMG = './dist/assets/img/';
+var DEST_FONTS = './dist/assets/fonts/';
 
-// Browserify and babel functions
+var DIST_CSS = './dist/assets/css/*.css';
+var DIST_JS = './dist/assets/js/*.js';
+
+// Browserify function
 var bundler;
-function getBundler() {
+function getBundler(watch) {
   if (!bundler) {
-    bundler = watchify(browserify(ENTRY_JS, browserifyOptions));
+		if (watch) { // Conditional bundler
+    	bundler = watchify(browserify(ENTRY_JS, watchifyOptions));
+		} else {
+    	bundler = browserify(ENTRY_JS, browserifyOptions);
+		}
   }
   return bundler;
 };
-
-gulp.task('build-persistent', function() {
-  return getBundler()
-    .transform(babelify, {presets: ["es2015", "react"]})
-		.bundle()
-    .on('error', function(err) { console.log('Error: ' + err.message); })
-    .pipe(source('app.js'))	// JS entry point
-    .pipe(gulp.dest(DIST_JS))
-    .pipe(sync.reload(syncOptions));
-});
 
 /************ TASKS ************/
 
@@ -81,27 +88,63 @@ gulp.task('build-persistent', function() {
  *	Compile SASS to CSS
  */
 gulp.task('sass', function() {
-	return gulp.src(ALL_SASS)
+	return gulp.src(SRC_SASS)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(cssnano(cssnanoOptions))
+		.pipe(autoprefixer(autoprefixerOptions))
 		.pipe(sourcemaps.write())
-    .pipe(gulp.dest(DIST_CSS))
+    .pipe(gulp.dest(DEST_CSS))
 		.pipe(sync.reload(syncOptions));
 });
 
 /**
- *	Build JS once
+ *	Minify CSS
  */
-gulp.task('js', ['build-persistent'], function() {
-  process.exit(0);
+gulp.task('css', ['sass'], function() {
+	return gulp.src(DIST_CSS)
+		.pipe(cssnano(cssnanoOptions))
+    .pipe(gulp.dest(DEST_CSS));
+});
+
+/**
+ *	Builds JS when needed
+ */
+gulp.task('build-persistent', function() {
+  return getBundler( true ) // Watchify
+    .transform(babelify, babelifyOptions)
+		.bundle()
+    .on('error', function(err) { console.log('Error: ' + err.message); })
+    .pipe(source('app.js'))	// output name
+    .pipe(gulp.dest(DEST_JS))
+    .pipe(sync.reload(syncOptions));
+});
+
+/**
+ *	Builds JS once
+ */
+gulp.task('build', function() {
+  return getBundler( false ) // Not watchifying
+    .transform(babelify, babelifyOptions)
+		.bundle()
+    .on('error', function(err) { console.log('Error: ' + err.message); })
+    .pipe(source('app.js'))	// output name
+    .pipe(gulp.dest(DEST_JS));
+});
+
+/**
+ *	Minify JS
+ */
+gulp.task('js', ['build'], function() {
+	return gulp.src(DIST_JS)
+		.pipe(uglify())
+    .pipe(gulp.dest(DEST_JS));
 });
 
 /**
  *	Lint JS
  */
 gulp.task('lint', function() {
-  return gulp.src(ALL_JS)
+  return gulp.src(SRC_JS)
     .pipe(eslint(eslintOptions))
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
@@ -111,17 +154,17 @@ gulp.task('lint', function() {
  *	Move Fonts
  */
 gulp.task('fonts', function(){
-	gulp.src(ALL_FONTS)
-  	.pipe(gulp.dest(DIST_FONTS));
+	gulp.src(SRC_FONTS)
+  	.pipe(gulp.dest(DEST_FONTS));
 });
 
 /**
  *	Compress and move images
  */
 gulp.task('img', function(){
-	gulp.src(ALL_IMG)
+	gulp.src(SRC_IMG)
 		.pipe(imagemin(imageminOptions))
-		.pipe(gulp.dest(DIST_IMG));
+		.pipe(gulp.dest(DEST_IMG));
 });
 
 /**
@@ -135,10 +178,21 @@ gulp.task('watch', ['sass','build-persistent'], function() {
   });
 
 	// Reloads on HTML, CSS, and JS changes
-	gulp.watch(ALL_SASS, ['sass']);
-	gulp.watch(ALL_HTML).on('change', sync.reload);
+	gulp.watch(SRC_SASS, ['sass']);
+	gulp.watch(SRC_HTML).on('change', sync.reload);
   getBundler().on('update', function() {
     gulp.start('build-persistent');
+  });
+});
+
+/**
+ *	Production build
+ */
+gulp.task('prod', ['css','js'], function() {
+  sync({
+    server: {
+      baseDir: './dist/'
+    }
   });
 });
 
