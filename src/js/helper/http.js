@@ -32,14 +32,14 @@ const $http = function httpRequest(url) {
 			request.open(method, uri);
 			request.send();
 			request.onload = function requestLoad() {
-				if (this.status >= 200 && this.status < 300) { // status successful
+				if (this.status >= 200 && this.status < 300) { // Status successful
 					resolve(this.response);
 				} else { // rejects other status
-					reject(this.statusText);
+					reject(new Error('HTTPRequestError'));
 				}
 			};
-			request.onerror = function requestError() { // reject on error
-				reject(this.statusText);
+			request.onerror = function requestError() { // Reject on error
+				reject(new Error('HTTPRequestError'));
 			};
 		});
 

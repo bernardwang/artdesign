@@ -1,34 +1,11 @@
 import 'babel-polyfill';
-import { $http } from './helper/http';
-import { Person } from './model/Person';
-
-let callback = {
-	success(data) {
-		console.log(1, 'success', JSON.parse(data));
-	},
-	error(data) {
-		console.log(2, 'error', JSON.parse(data));
-	},
-};
+import { initGallery } from './helper/initGallery';
 
 global.app = function () {
-	//let christoph = new Person('Christoph', 'Burgdorf');
-	//console.log(christoph.fullName);
 
-	let url = 'https://www.flickr.com/services/rest/';
-	let args = {
-		method: 'flickr.people.getPublicPhotos',
-		api_key: '7b408cc78c673ca31f5f105d9a28c601',
-		user_id: '110189904@N02',
-		format: 'json',
-		nojsoncallback: '1',
-	};
-
-	// Executes the method call
-	$http(url)
-		.get(args)
-		.then(callback.success)
-		.catch(callback.error);
+	initGallery()
+		.then(() => { console.log('Gallery Done'); })
+		.catch((e) => { console.log(e); });
 };
 
 /**
