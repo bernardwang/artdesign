@@ -5,8 +5,8 @@
  *	Flickr API helper functions
  *
  *	Response format:
- *	-Collections: gallery categories
- *		-Photosets: category items
+ *	-Collections: gallery categories/pages
+ *		-Photosets: page items
  *			-Photos: item photos
  *
  */
@@ -35,7 +35,7 @@ const checkResponse = function checkAPIResponse(response) {
 /**
  *	Flickr API, get collections of photosets
  */
-const getCollections = function getCollectionsAPI() {
+const collectionAPI = function collectionAPICall() {
 	// Flickr API
 	const url = 'https://www.flickr.com/services/rest/';
 	const args = {
@@ -55,7 +55,7 @@ const getCollections = function getCollectionsAPI() {
 /**
  *	Flickr API, get photos in photosets
  */
-const getPhotoset = function getPhotosetAPI(set_id) {
+const photosetAPI = function photosetAPICall(set_id) {
 	// Flickr API
 	const url = 'https://www.flickr.com/services/rest/';
 	const args = {
@@ -73,5 +73,5 @@ const getPhotoset = function getPhotosetAPI(set_id) {
 };
 
 export {
-	getCollections, getPhotoset
+	collectionAPI, photosetAPI
 };
