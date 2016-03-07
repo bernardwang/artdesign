@@ -12,10 +12,10 @@ import Handlebars from 'handlebars';
 /**
  *	Helper function for inserting handlebar templates
  */
-const appendTemplate = function appendHandlebarTemplate(rootNode, template, context) {
+const appendTemplate = function appendHandlebarTemplate(root, template, context) {
 	// TODO: USE HTMLBARS
-	rootNode.innerHTML += template(context);
-	return rootNode.children;
+	root.innerHTML += template(context);
+	return root.children;
 }
 
 /**
@@ -31,7 +31,7 @@ const getCollections = function getCollectionsCall() {
 /**
  *	Get item photos from Flickr API, and insert item into given page node
  */
-const buildItem = function buildPageItem(rootNode, template, item) {
+const buildItem = function buildPageItem(root, template, item) {
 	return photosetAPI(item.id)
 		.then((photoset) => {	// Transform result
 			return photoset.photoset.photo
@@ -46,16 +46,16 @@ const buildItem = function buildPageItem(rootNode, template, item) {
 			};
 
 			// Append item
-			appendTemplate(rootNode, template, context);
+			appendTemplate(root, template, context);
 		});
 }
 
 /**
  *	Async builds and adds all page items
  */
-const buildPage = function buildGalleryPage(rootNode, template, items) {
-	var itemPromise = items.map((item) => {
-		return buildItem(rootNode, template, item);
+const buildPage = function buildGalleryPage(root, template, items) {
+	var itemPromises = items.map((item) => {
+		return buildItem(root, template, item);
 	});
 	return Promise.all(itemPromises);
 };
@@ -63,22 +63,26 @@ const buildPage = function buildGalleryPage(rootNode, template, items) {
 /**
  *	Initializes and builds gallery
  */
-const buildGallery = function buildGalleryHTML(pages) {
+const buildGallery = function buildGalleryHTML(collections) {
 	// TODO: precompile and organize templates
 	var pagesSource = document.getElementById('page-template').innerHTML;
 	var pagesTemplate = Handlebars.compile(pagesSource);
 	var itemSource = document.getElementById('item-template').innerHTML;
 	var itemTemplate = Handlebars.compile(itemSource);
 
-	// Insert empty gallery pages
-	var galleryNode = document.getElementById('gallery');
-	var pageNode = appendTemplate(galleryNode, pagesTemplate, pages);
+	// Insert empty pages
+	var gallery = document.getElementById('gallery');
+	var pages = appendTemplate(gallery, pagesTemplate, collections);
 
-	// Populate pages with items
-	//for(var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
-	for(var pageIndex = 1; pageIndex < 2; pageIndex++) {
-		buildPage(pageNode[pageIndex], itemTemplate, pages[pageIndex].set)
-	}
+	// Builds inital page first
+	buildPage(pages[0], itemTemplate, collections[0].set)
+	// Build the rest of the pages async
+	.then(() => {
+		var pagePromises = (collections.slice(1)).map((collection, pageIndex) => {
+			return buildPage(pages[pageIndex+1], itemTemplate, collection.set);
+		});
+		return Promise.all(pagePromises);
+	});
 }
 
 const initGallery = function initGalleryPage() {
