@@ -11,22 +11,39 @@
     <link href="./assets/css/main.css" rel="stylesheet">
   </head>
   <body>
-		<main>
-			<section class="splash">
-			</section>
-			<section id="gallery">
-				<!--
-				<figure>
-					<img>
-					<figcaption></figcaption>
-				</figure>
-				-->
-			</section>
+		<header>
+		</header>
+		<main id="gallery">
 		</main>
-
     <script src="./assets/js/app.js"> </script>
     <script>
       app();
     </script>
+		<script id="page-template" type="text/x-handlebars-template">
+			{{#each this}}
+ 			<section class="page">
+				<h2 class="page-title">
+					{{title}}
+				</h2>
+				<div class="page-items">
+				</div>
+			</section>
+			{{/each}}
+		</script>
+		<script id="item-template" type="text/x-handlebars-template">
+			<article class="item">
+				<h3 class="item-title">{{title}}</h3>
+				<p class="item-description">{{description}}</p>
+				<div class="item-photos">
+					{{#each photos}}
+					<figure class="photo">
+						<img class="photo-img" src="{{this}}"/>
+						<figcaption class="photo-title">
+						</figcaption>
+					</figure>
+					{{/each}}
+				</div>
+			</article>
+		</script>
   </body>
 </html>

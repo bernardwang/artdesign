@@ -4,7 +4,7 @@ import { initGallery } from './helper/initGallery';
 global.app = function () {
 
 	initGallery()
-		.then(() => { console.log('Gallery Done'); })
+		.then((data) => { console.log('Gallery Done',data); })
 		.catch((e) => { console.log(e); });
 };
 

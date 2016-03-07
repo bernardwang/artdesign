@@ -11,7 +11,9 @@
     "url": "https://github.com/bw-vbnm/madeby/issues"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "handlebars": "^4.0.5"
+  },
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-eslint": "^5.0.0",
@@ -36,7 +38,9 @@
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^3.7.0"
   },
-	"babel": {
-  	"presets": ["es2015"]
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }

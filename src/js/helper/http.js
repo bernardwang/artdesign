@@ -1,5 +1,7 @@
 /**
  *
+ *	http.js
+ *
  *	XMLHttpRequest helper function
  *
  * 	Modified from MDN Example

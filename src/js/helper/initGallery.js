@@ -1,47 +1,99 @@
 /**
  *
- *	XMLHttpRequest helper function
+ *	initGallery.js
  *
- * 	Modified from MDN Example
- * 	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+ *	Retrieves photos from Flickr & builds gallery
+ *
+ *	Collections -> gallery categories
+ *	Photosets -> category items
+ *	Photos -> item photos
  *
  */
 
-import { $http } from './http';
+import { getCollections, getPhotoset} from './flickrAPI';
+import Handlebars from 'handlebars';
 
 /**
- *	HTTPRequest to Flickr API
+ *	Call Flickr API for collection root and transform result
  */
-const callAPI = function callFlickrAPI() {
-	// Flickr API
-	const url = 'https://www.flickr.com/services/rest/';
-	const args = {
-		method: 'flickr.collections.getTree',
-		api_key:'7b408cc78c673ca31f5f105d9a28c601',
-		collection_id: '72157665082008986',
-		user_id: '139316082@N06',
-		format: 'json',
-		nojsoncallback: '1',
-	};
+const getPages = function getFlickrPhotos() {
+	return getCollections()
+		.then((collections) => {
+			var pages = collections.collections.collection[0].collection;
 
-	return $http(url).get(args); // Returns HTTPRequest Promise
-};
+			//console.log(pages);
+
+			return pages // lol flickr api response
+		})
+}
 
 /**
- *	Validates Flickr API Response
+ *	Get item photos from Flickr API, and insert item into given page node
+ *
+ *	Return: HTML nodes of inserted item
  */
-const checkResponse = function checkAPIResponse(data) {
-	data = JSON.parse(data);
-	if( data.stat === 'fail' ) { // Flickr api stat
-		throw new Error('APIResponseError');
+const insertItem = function insertPageItem(insertNode, template, item) {
+	return getPhotoset(item.id)
+		.then((photoset) => {	// Transform result
+			return photoset.photoset.photo
+		})
+		.then((photos) => {
+			var context = {	// Create context with image source
+				title: item.title,
+				description: item.description,
+				photos: (photos).map((photo) => {
+					return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`;
+				}),
+			};
+
+			// Append templated html to page node
+			var itemHTML = template(context);
+			insertNode.innerHTML += itemHTML;
+			return insertNode.children;
+		});
+}
+
+/**
+ *	Inserts empty pages into gallery
+ *
+ *	Return: HTML nodes of inserted pages
+ */
+const insertPages = function insertGalleryPages(insertNode, template, pages) {
+	var pagesHTML = template(pages);
+	insertNode.innerHTML = pagesHTML;
+	return insertNode.children;
+}
+
+/**
+ *	Initializes and builds gallery
+ */
+const buildGallery = function buildGalleryHTML(pages) {
+	// TODO: precompile and organize templates
+	var pagesSource = document.getElementById('page-template').innerHTML;
+	var pagesTemplate = Handlebars.compile(pagesSource);
+	var itemSource = document.getElementById('item-template').innerHTML;
+	var itemTemplate = Handlebars.compile(itemSource);
+
+	// Insert empty gallery pages
+	var galleryNode = document.getElementById('gallery');
+	var pageNode = insertPages(galleryNode, pagesTemplate, pages);
+
+
+	// Populate pages with items
+	//for(var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
+	for(var pageIndex = 1; pageIndex < 2; pageIndex++) {
+		var items = pages[pageIndex].set;
+		var insertPromises = items.map((item) => {
+			return insertItem(pageNode[pageIndex], itemTemplate, item);
+		});
+		return Promise.all(insertPromises);
 	}
-	return data;
-};
+}
 
-const initGallery = function initializeGallery() {
-	return callAPI()
-		.then((data) => checkResponse(data));
-		.then((data) => { console.log(data); return data; });
+const initGallery = function initGalleryPage() {
+	return getPages()
+	//	.then((collections) => getPages(collections))
+		.then((pages) => buildGallery(pages));
 };
 
 export {
