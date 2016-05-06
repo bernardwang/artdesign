@@ -1,4 +1,5 @@
 <!doctype html>
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,28 +13,43 @@
   </head>
   <body>
 		<header>
+			<h1>bernard wang</h1>
+			<h2>somethings i made</h2>
 		</header>
+
 		<main id="gallery">
+			<nav id="gallery-nav">
+			</nav>
+			<div id="gallery-pages">
+			</div>
 		</main>
-    <script src="./assets/js/app.js"> </script>
+
+		<footer>
+		</footer>
+
+    <script src="./assets/js/app.js"></script>
     <script>
       app();
     </script>
 		<script id="page-template" type="text/x-handlebars-template">
 			{{#each this}}
  			<section class="page">
-				<h2 class="page-title">
-					{{title}}
-				</h2>
-				<div class="page-items">
+				<div>
+					<header>
+						<h2 class="page-description">{{description}}</h2>
+					</header>
+					<section class="page-items">
+					</section>
 				</div>
 			</section>
 			{{/each}}
 		</script>
 		<script id="item-template" type="text/x-handlebars-template">
 			<article class="item">
-				<h3 class="item-title">{{title}}</h3>
-				<p class="item-description">{{description}}</p>
+				<header>
+					<h3>{{title}}</h3>
+					<p class="item-description">{{description}}</p>
+				</header>
 				<div class="item-photos">
 					{{#each photos}}
 					<figure class="photo">

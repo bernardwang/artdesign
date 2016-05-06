@@ -6,11 +6,16 @@
 	box-sizing: border-box;
 }
 
-html,body{
+html{
   margin: 0;
   padding: 0;
-	color: $black;
-	font-size: 62.5%;
+	background-color: #eee;
+}
+
+body{
+	margin: spacing(3);
+  padding: spacing(3);
+	background-color: white;
 }
 
 h1, h2, h3, h4, h5, h6{

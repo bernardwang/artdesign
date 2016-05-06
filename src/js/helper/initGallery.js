@@ -37,7 +37,7 @@ const buildItem = function buildPageItem(root, template, item) {
 			return photoset.photoset.photo
 		})
 		.then((photos) => {
-			var context = {	// Create context with image source
+			let context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
 				photos: (photos).map((photo) => {
@@ -53,9 +53,10 @@ const buildItem = function buildPageItem(root, template, item) {
 /**
  *	Async builds and adds all page items
  */
-const buildPage = function buildGalleryPage(root, template, items) {
-	var itemPromises = items.map((item) => {
-		return buildItem(root, template, item);
+const buildPage = function buildGalleryPage(pageRoot, template, items) {
+	let itemRoot = pageRoot.getElementsByClassName('page-items')[0]; // Page item location
+	let itemPromises = items.map((item) => {
+		return buildItem(itemRoot, template, item);
 	});
 	return Promise.all(itemPromises);
 };
@@ -65,20 +66,20 @@ const buildPage = function buildGalleryPage(root, template, items) {
  */
 const buildGallery = function buildGalleryHTML(collections) {
 	// TODO: precompile and organize templates
-	var pagesSource = document.getElementById('page-template').innerHTML;
-	var pagesTemplate = Handlebars.compile(pagesSource);
-	var itemSource = document.getElementById('item-template').innerHTML;
-	var itemTemplate = Handlebars.compile(itemSource);
+	let pagesSource = document.getElementById('page-template').innerHTML;
+	let pagesTemplate = Handlebars.compile(pagesSource);
+	let itemSource = document.getElementById('item-template').innerHTML;
+	let itemTemplate = Handlebars.compile(itemSource);
 
 	// Insert empty pages
-	var gallery = document.getElementById('gallery');
-	var pages = appendTemplate(gallery, pagesTemplate, collections);
+	let gallery = document.getElementById('gallery-pages');
+	let pages = appendTemplate(gallery, pagesTemplate, collections);
 
 	// Builds inital page first
 	buildPage(pages[0], itemTemplate, collections[0].set)
 	// Build the rest of the pages async
 	.then(() => {
-		var pagePromises = (collections.slice(1)).map((collection, pageIndex) => {
+		let pagePromises = (collections.slice(1)).map((collection, pageIndex) => {
 			return buildPage(pages[pageIndex+1], itemTemplate, collection.set);
 		});
 		return Promise.all(pagePromises);
