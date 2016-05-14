@@ -13,6 +13,7 @@ import cssnano from 'gulp-cssnano';
 import autoprefixer from 'gulp-autoprefixer';
 import imagemin from 'gulp-imagemin';
 import sync from 'browser-sync';
+import deploy from 'gulp-gh-pages';
 import _ from 'lodash';
 
 /************ Options ************/
@@ -46,6 +47,9 @@ const imageminOpts = {
 };
 const syncOpts = {
   stream: true,
+};
+const deployOpts = {
+	//branch: 'master', // user page website
 };
 
 /************ HELPER VARIABLES AND FUNCTIONS ************/
@@ -155,7 +159,7 @@ gulp.task('min-img', () => {
 /**
  *	Auto build and reload
  */
-gulp.task('watch', ['styles','scripts-watch'], () => {
+gulp.task('dev', ['styles','scripts-watch'], () => {
   sync({
     server: {
       baseDir: './dist/'
@@ -169,12 +173,20 @@ gulp.task('watch', ['styles','scripts-watch'], () => {
 });
 
 /**
- *	Production build
+ *	Dist build
  */
-gulp.task('prod', ['min-img','min-styles','lint-scripts','min-scripts'], () => {
+gulp.task('dist', ['min-img','min-styles','lint-scripts','min-scripts'], () => {
   sync({
     server: {
       baseDir: './dist/'
     }
   });
+});
+
+/**
+ *	Deploy to github pages
+ */
+gulp.task('deploy', ['min-img','min-styles','lint-scripts','min-scripts'], () => {
+	return gulp.src('./dist/**/*')
+		.pipe(deploy(deployOpts));
 });
