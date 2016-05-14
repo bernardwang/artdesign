@@ -1,2 +1,0 @@
-# madeby
-madeby.bernard.wang
