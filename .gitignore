@@ -39,3 +39,4 @@ Thumbs.db
 # Node dependancy directory
 node_modules
 .sass-cache
+/.publish/

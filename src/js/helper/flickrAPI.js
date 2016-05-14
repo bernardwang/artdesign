@@ -19,14 +19,14 @@ const defaultArgs = {
 	user_id: '139316082@N06',
 	format: 'json',
 	nojsoncallback: '1',
-}
+};
 
 /**
  *	Validates Flickr API Response and transforms to JSON
  */
 const checkResponse = function checkAPIResponse(response) {
 	let data = JSON.parse(response);
-	if( 'stat' in data && data.stat === 'fail' ) { // Flickr api stat
+	if ('stat' in data && data.stat === 'fail') { // Flickr api stat
 		throw new Error('APIResponseError');
 	}
 	return data;

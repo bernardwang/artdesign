@@ -16,7 +16,7 @@ const appendTemplate = function appendHandlebarTemplate(root, template, context)
 	// TODO: USE HTMLBARS
 	root.innerHTML += template(context);
 	return root.children;
-}
+};
 
 /**
  *	Call Flickr API for collection root and transform result
@@ -25,7 +25,7 @@ const getCollections = function getCollectionsCall() {
 	return collectionAPI()
 		.then((collections) => {
 			return collections.collections.collection[0].collection; // lol flickr api response
-		})
+		});
 }
 
 /**
@@ -34,7 +34,7 @@ const getCollections = function getCollectionsCall() {
 const buildItem = function buildPageItem(root, template, item) {
 	return photosetAPI(item.id)
 		.then((photoset) => {	// Transform result
-			return photoset.photoset.photo
+			return photoset.photoset.photo;
 		})
 		.then((photos) => {
 			let context = {	// Create context with image source
@@ -48,7 +48,7 @@ const buildItem = function buildPageItem(root, template, item) {
 			// Append item
 			appendTemplate(root, template, context);
 		});
-}
+};
 
 /**
  *	Async builds and adds all page items
@@ -84,7 +84,7 @@ const buildGallery = function buildGalleryHTML(collections) {
 		});
 		return Promise.all(pagePromises);
 	});
-}
+};
 
 const initGallery = function initGalleryPage() {
 	return getCollections()
