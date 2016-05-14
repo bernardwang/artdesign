@@ -5,10 +5,10 @@
   "author": "Bernard Wang",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bw-vbnm/madeby"
+    "url": "git://github.com/bernardwang/madeby"
   },
   "bugs": {
-    "url": "https://github.com/bw-vbnm/madeby/issues"
+    "url": "https://github.com/bernard/madeby/issues"
   },
   "license": "MIT",
   "dependencies": {
