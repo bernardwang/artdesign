@@ -26,7 +26,7 @@ const getCollections = function getCollectionsCall() {
 		.then((collections) => {
 			return collections.collections.collection[0].collection; // lol flickr api response
 		});
-}
+};
 
 /**
  *	Get item photos from Flickr API, and insert item into given page node

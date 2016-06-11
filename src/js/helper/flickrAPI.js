@@ -55,13 +55,13 @@ const collectionAPI = function collectionAPICall() {
 /**
  *	Flickr API, get photos in photosets
  */
-const photosetAPI = function photosetAPICall(set_id) {
+const photosetAPI = function photosetAPICall(setID) {
 	// Flickr API
 	const url = 'https://www.flickr.com/services/rest/';
 	const args = {
 		method: 'flickr.photosets.getPhotos',
 		api_key: defaultArgs.api_key,
-		photoset_id: set_id,
+		photoset_id: setID,
 		user_id: defaultArgs.user_id,
 		format: defaultArgs.format,
 		nojsoncallback: defaultArgs.nojsoncallback,
@@ -73,5 +73,6 @@ const photosetAPI = function photosetAPICall(set_id) {
 };
 
 export {
-	collectionAPI, photosetAPI
+	collectionAPI, 
+	photosetAPI,
 };
