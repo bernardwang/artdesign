@@ -49,7 +49,7 @@ const collectionAPI = function collectionAPICall() {
 
 	return $http(url)
 		.get(args)
-		.then((response) => { checkResponse(response); });
+		.then((response) => { return checkResponse(response); });
 };
 
 /**
@@ -69,7 +69,7 @@ const photosetAPI = function photosetAPICall(setID) {
 
 	return $http(url)
 		.get(args)
-		.then((response) => { checkResponse(response); });
+		.then((response) => { return checkResponse(response); });
 };
 
 export {
