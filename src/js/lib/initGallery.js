@@ -6,16 +6,17 @@
  *
  */
 
-import { collectionAPI, photosetAPI } from './flickrAPI';
 import Handlebars from 'handlebars';
+import { collectionAPI, photosetAPI } from './flickrAPI';
 
 /**
  *	Helper function for inserting handlebar templates
  */
 const appendTemplate = function appendHandlebarTemplate(root, template, context) {
 	// TODO: USE HTMLBARS
-	root.innerHTML += template(context);
-	return root.children;
+	const element = root;
+	element.innerHTML += template(context);
+	return element.children;
 };
 
 /**
@@ -37,12 +38,13 @@ const buildItem = function buildPageItem(root, template, item) {
 			return photoset.photoset.photo;
 		})
 		.then((photos) => {
-			let context = {	// Create context with image source
+			const photo_urls = (photos).map((photo) => {
+				return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`;
+			});
+			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
-				photos: (photos).map((photo) => {
-					return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`;
-				}),
+				photos: photo_urls,
 			};
 
 			// Append item
@@ -54,8 +56,8 @@ const buildItem = function buildPageItem(root, template, item) {
  *	Async builds and adds all page items
  */
 const buildPage = function buildGalleryPage(pageRoot, template, items) {
-	let itemRoot = pageRoot.getElementsByClassName('page-items')[0]; // Page item location
-	let itemPromises = items.map((item) => {
+	const itemRoot = pageRoot.getElementsByClassName('page-items')[0]; // Page item location
+	const itemPromises = items.map((item) => {
 		return buildItem(itemRoot, template, item);
 	});
 	return Promise.all(itemPromises);
@@ -66,21 +68,21 @@ const buildPage = function buildGalleryPage(pageRoot, template, items) {
  */
 const buildGallery = function buildGalleryHTML(collections) {
 	// TODO: precompile and organize templates
-	let pagesSource = document.getElementById('page-template').innerHTML;
-	let pagesTemplate = Handlebars.compile(pagesSource);
-	let itemSource = document.getElementById('item-template').innerHTML;
-	let itemTemplate = Handlebars.compile(itemSource);
+	const pagesSource = document.getElementById('page-template').innerHTML;
+	const pagesTemplate = Handlebars.compile(pagesSource);
+	const itemSource = document.getElementById('item-template').innerHTML;
+	const itemTemplate = Handlebars.compile(itemSource);
 
 	// Insert empty pages
-	let gallery = document.getElementById('gallery-pages');
-	let pages = appendTemplate(gallery, pagesTemplate, collections);
+	const gallery = document.getElementById('gallery-pages');
+	const pages = appendTemplate(gallery, pagesTemplate, collections);
 
 	// Builds inital page first
 	buildPage(pages[0], itemTemplate, collections[0].set)
 	// Build the rest of the pages async
 	.then(() => {
-		let pagePromises = (collections.slice(1)).map((collection, pageIndex) => {
-			return buildPage(pages[pageIndex+1], itemTemplate, collection.set);
+		const pagePromises = (collections.slice(1)).map((collection, pageIndex) => {
+			return buildPage(pages[pageIndex + 1], itemTemplate, collection.set);
 		});
 		return Promise.all(pagePromises);
 	});
@@ -88,9 +90,10 @@ const buildGallery = function buildGalleryHTML(collections) {
 
 const initGallery = function initGalleryPage() {
 	return getCollections()
-		.then((collection) => buildGallery(collection));
+		.then((collection) => { buildGallery(collection); });
 };
 
 export {
 	initGallery,
+	getCollections,
 };

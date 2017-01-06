@@ -11,7 +11,7 @@
  *
  */
 
-import { $http } from './http';
+import { $http } from '../vendor/http';
 
 const defaultArgs = {
 	api_key: '7b408cc78c673ca31f5f105d9a28c601',
@@ -25,7 +25,7 @@ const defaultArgs = {
  *	Validates Flickr API Response and transforms to JSON
  */
 const checkResponse = function checkAPIResponse(response) {
-	let data = JSON.parse(response);
+	const data = JSON.parse(response);
 	if ('stat' in data && data.stat === 'fail') { // Flickr api stat
 		throw new Error('APIResponseError');
 	}
@@ -49,7 +49,7 @@ const collectionAPI = function collectionAPICall() {
 
 	return $http(url)
 		.get(args)
-		.then((response) => checkResponse(response));
+		.then((response) => { checkResponse(response); });
 };
 
 /**
@@ -69,10 +69,10 @@ const photosetAPI = function photosetAPICall(setID) {
 
 	return $http(url)
 		.get(args)
-		.then((response) => checkResponse(response));
+		.then((response) => { checkResponse(response); });
 };
 
 export {
-	collectionAPI, 
+	collectionAPI,
 	photosetAPI,
 };

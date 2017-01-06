@@ -39,13 +39,14 @@ const eslintOpts = {
 		"$",
 	],
 	"rules": {
-		"max-len": ["warn", { "code": 100 }],
+		"max-len": ["warn", { "code": 150 }],
 		"no-unused-vars": ["warn", { "vars": "all", "args": "after-used" }],
 		"prefer-template": "off",
 		"camelcase": "off",
 		"no-tabs": "off",
 		"no-plusplus": "off",
 		"indent": ["error", "tab"],
+		"arrow-body-style": ["warn"],
 	}
 }
 const sassOpts = {
