@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import { initGallery } from './helper/initGallery';
+import { initGallery } from './lib/initGallery';
 
 global.app = function () {
 	initGallery()

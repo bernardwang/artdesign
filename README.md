@@ -1,3 +1,3 @@
-# by.bernard.wang
+# art & design
 
-work in progress portfolio thing
+informal showcase of various work from my art and design minor at uiuc.
