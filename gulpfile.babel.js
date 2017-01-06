@@ -47,6 +47,7 @@ const eslintOpts = {
 		"no-plusplus": "off",
 		"indent": ["error", "tab"],
 		"arrow-body-style": ["warn"],
+		"import/prefer-default-export": "off",
 	}
 }
 const sassOpts = {

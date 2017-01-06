@@ -9,7 +9,7 @@ import { photosetAPI } from './flickrAPI';
 import { appendTemplate } from './helper';
 
 /**
- *	Get photosets from Flickr, and insert into page
+ *	Adds a single item into a page
  */
 const buildItem = function buildPageItem(root, template, item) {
 	return photosetAPI(item.id)
@@ -32,16 +32,26 @@ const buildItem = function buildPageItem(root, template, item) {
 };
 
 /**
- *	Async builds and adds all page items
+ *	Adds all items into a page
  */
-const buildPage = function buildGalleryPage(pageRoot, template, items) {
-	const itemRoot = pageRoot.getElementsByClassName('page-items')[0]; // Page item location
+const buildItems = function buildPageItems(page, items) {
+	// TODO: precompile and organize templates
+	const itemSource = document.getElementById('item-template').innerHTML;
+	const itemTemplate = Handlebars.compile(itemSource);
+	const itemRoot = page.getElementsByClassName('page-items')[0]; // Page item location
 	const itemPromises = items.map((item) => {
-		return buildItem(itemRoot, template, item);
+		return buildItem(itemRoot, itemTemplate, item);
 	});
 	return Promise.all(itemPromises);
 };
 
+/**
+ *	init page
+ */
+const initPage = function initGalleryPage(page, items) {
+	return buildItems(page, items);
+};
+
 export {
-	buildPage,
+	initPage,
 };
