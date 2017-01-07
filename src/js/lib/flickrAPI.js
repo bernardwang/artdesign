@@ -11,7 +11,7 @@
  *
  */
 
-import { $http } from '../vendor/http';
+import { $http } from './http';
 
 const defaultArgs = {
 	api_key: '7b408cc78c673ca31f5f105d9a28c601',

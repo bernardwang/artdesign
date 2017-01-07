@@ -76,7 +76,7 @@ const deployOpts = {
 /************ HELPER VARIABLES AND FUNCTIONS ************/
 
 // Location constants
-const SRC_HTML = './src/**/*.html';
+const SRC_HTML = './dist/**/*.html'; // to make more clear
 const SRC_ASSETS = './src/assets/**/*.*';
 const SRC_IMG = './src/assets/img/*.*';
 const SRC_SASS = './src/sass/**/*.scss';

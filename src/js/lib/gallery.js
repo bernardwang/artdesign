@@ -8,17 +8,23 @@ import Handlebars from 'handlebars';
 import { appendTemplate } from './helper';
 import { initPage } from './page';
 
+let pages = [];
+let pagesSize = 0;
+let currIndex = 0;
+let nextIndex = 0;
+let prevIndex = 0;
+
 /**
  *	Loads single page
  */
-const buildPage = function buildGalleryPage(pages, collections, index) {
+const buildPage = function buildGalleryPage(collections, index) {
 	return initPage(pages[index], collections[index].set);
 };
 
 /**
  *	Loads all pages async
  */
-const buildPages = function buildGalleryPages(pages, collections) {
+const buildPages = function buildGalleryPages(collections) {
 	// Loads all pages
 	const pagePromises = (collections.map((collection, index) => {
 		return initPage(pages[index], collection.set);
@@ -34,22 +40,42 @@ const buildGallery = function buildGalleryHTML(collections) {
 	const pagesSource = document.getElementById('page-template').innerHTML;
 	const pagesTemplate = Handlebars.compile(pagesSource);
 	const pagesRoot = document.getElementById('gallery-pages');
-	const pages = appendTemplate(pagesRoot, pagesTemplate, collections);
+
+	pages = appendTemplate(pagesRoot, pagesTemplate, collections);
+	pagesSize = pages.length;
 
 	// Loads all pages
-	buildPages(pages, collections);
-	// buildPage(pages, collections, 0);
+	return buildPages(collections);
+};
 
-	pagesRoot.children[1].className += " selected";
+/**
+ *	Jumps to given page
+ */
+const goToPage = function showGalleryPage(index) {
+	if (index === currIndex) return;
+	if (index > pagesSize || index < 0) {
+		throw new Error('Invalid page');
+	}
 
-	return pagesRoot;
+	pages[currIndex].classList.remove('curr');
+	pages[prevIndex].classList.remove('prev');
+	pages[nextIndex].classList.remove('next');
+
+	prevIndex = (index + pagesSize - 1) % pagesSize;
+	nextIndex = (index + 1) % pagesSize;
+	currIndex = index;
+
+	pages[currIndex].classList.add('curr');
+	pages[prevIndex].classList.add('prev');
+	pages[nextIndex].classList.add('next');
 };
 
 /**
  *	init gallery
  */
 const initGallery = function initGalleryPage(collections) {
-	return buildGallery(collections);
+	return buildGallery(collections)
+	.then(() => { return goToPage(pagesSize - 1); }) // start with last page
 };
 
 export {

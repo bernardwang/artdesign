@@ -16,5 +16,7 @@ global.app = function () {
 	getCollections()
 		.then((collections) => { return initGallery(collections); })
 		.then((data) => { console.log('Gallery Done', data); })
+		.then(() => {
+		})
 		.catch((e) => { console.log(e); });
 };
