@@ -1,32 +1,19 @@
-#gallery {
-	width: 100%;
-	height: 100%;
-}
-
-#gallery-nav {
-	width: 100%;
-	height: 100px;
-}
-
-#gallery-pages {
-	width: 400%;			// CHANGE LATER
-	height: 100%;
-
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: flex-start;
-
-	overflow: hidden;
-}
-
 .page {
-	width: 100%;
+	width: 70vw;
+	height: 100%;
+
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 10vw;
+	padding-right: 10vw;
+
 	position: absolute;
+	display: none;
 
 	&.selected{
 		position: relative;
+		display: block;
 	}
 }
 

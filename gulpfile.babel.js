@@ -176,7 +176,7 @@ gulp.task('watch-scripts', ['scripts-vendor'], () => {
  *	Lint JS
  */
 gulp.task('lint-scripts', () => {
-	gulp.src([SRC_JS, '!'+SRC_VENDORJS])
+	gulp.src([SRC_JS, '!'+SRC_VENDORJS, '!'+'./src/js/lib/http.js'])
 		.pipe(eslint(eslintOpts))
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());

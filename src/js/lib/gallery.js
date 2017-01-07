@@ -37,8 +37,11 @@ const buildGallery = function buildGalleryHTML(collections) {
 	const pages = appendTemplate(pagesRoot, pagesTemplate, collections);
 
 	// Loads all pages
-	// buildPages(pages, collections);
-	buildPage(pages, collections, 0);
+	buildPages(pages, collections);
+	// buildPage(pages, collections, 0);
+
+	pagesRoot.children[1].className += " selected";
+
 	return pagesRoot;
 };
 
