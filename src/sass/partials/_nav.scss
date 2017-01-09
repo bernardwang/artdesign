@@ -1,0 +1,11 @@
+#gallery-nav {
+	height: 100px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	.nav-elem {
+		padding: 1rem;
+	}
+}

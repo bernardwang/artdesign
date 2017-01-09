@@ -6,53 +6,20 @@
 
 import Handlebars from 'handlebars';
 import { appendTemplate } from './helper';
-import { initPage } from './page';
+import { buildItems } from './page';
 
 let pages = [];
 let pagesSize = 0;
 let currIndex = 0;
 let nextIndex = 0;
 let prevIndex = 0;
-
-/**
- *	Loads single page
- */
-const buildPage = function buildGalleryPage(collections, index) {
-	return initPage(pages[index], collections[index].set);
-};
-
-/**
- *	Loads all pages async
- */
-const buildPages = function buildGalleryPages(collections) {
-	// Loads all pages
-	const pagePromises = (collections.map((collection, index) => {
-		return initPage(pages[index], collection.set);
-	}));
-	return Promise.all(pagePromises);
-};
-
-/**
- *	Adds and loads all pages into gallery
- */
-const buildGallery = function buildGalleryHTML(collections) {
-	// Insert empty pages
-	const pagesSource = document.getElementById('page-template').innerHTML;
-	const pagesTemplate = Handlebars.compile(pagesSource);
-	const pagesRoot = document.getElementById('gallery-pages');
-
-	pages = appendTemplate(pagesRoot, pagesTemplate, collections);
-	pagesSize = pages.length;
-
-	// Loads all pages
-	return buildPages(collections);
-};
+let nav = [];
 
 /**
  *	Jumps to given page
  */
 const goToPage = function showGalleryPage(index) {
-	if (index === currIndex) return;
+	if (index === currIndex) return; // fix later
 	if (index > pagesSize || index < 0) {
 		throw new Error('Invalid page');
 	}
@@ -68,6 +35,59 @@ const goToPage = function showGalleryPage(index) {
 	pages[currIndex].classList.add('curr');
 	pages[prevIndex].classList.add('prev');
 	pages[nextIndex].classList.add('next');
+};
+
+/**
+ *	Loads items on single page
+ */
+const loadPage = function loadGalleryPage(collections, index) {
+	return buildItems(pages[index], collections[index].set);
+};
+
+/**
+ *	Loads items on all pages, async
+ */
+const loadPages = function loadGalleryPages(collections) {
+	const pagePromises = (collections.map((collection, index) => {
+		return buildItems(pages[index], collection.set);
+	}));
+	return Promise.all(pagePromises);
+};
+
+/**
+ *	Attaches event listeners to nav
+ */
+const initNav = function initGalleryNav() {
+	for (let i = 0; i < pagesSize; i++) {
+		nav[i].addEventListener('click', () => {
+			goToPage(i);
+		});
+	}
+}
+
+/**
+ *	Builds gallery pages and nav
+ */
+const buildGallery = function buildGalleryHTML(collections) {
+	// Template for pages
+	const pagesSource = document.getElementById('page-template').innerHTML;
+	const pagesTemplate = Handlebars.compile(pagesSource);
+	const pagesRoot = document.getElementById('gallery-pages');
+
+	// Add empty pages
+	pages = appendTemplate(pagesRoot, pagesTemplate, collections);
+	pagesSize = pages.length;
+
+	// Template for nav
+	const navSource = document.getElementById('nav-template').innerHTML;
+	const navTemplate = Handlebars.compile(navSource);
+	const navRoot = document.getElementById('gallery-nav');
+
+	nav = appendTemplate(navRoot, navTemplate, collections);
+	initNav();
+
+	// return promise that resolves when
+	return loadPages(collections);
 };
 
 /**

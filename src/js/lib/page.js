@@ -45,13 +45,13 @@ const buildItems = function buildPageItems(page, items) {
 	return Promise.all(itemPromises);
 };
 
-/**
- *	init page
- */
-const initPage = function initGalleryPage(page, items) {
-	return buildItems(page, items);
-};
+// /**
+//  *	init page
+//  */
+// const initPage = function initGalleryPage(page, items) {
+// 	return buildItems(page, items);
+// };
 
 export {
-	initPage,
+	buildItems,
 };
