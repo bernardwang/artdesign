@@ -2,11 +2,11 @@
  *	Globals
  */
 
-*{
+* {
 	box-sizing: border-box;
 }
 
-html, body{
+html, body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -14,31 +14,33 @@ html, body{
 	overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6{
-	margin: 0;
-	font-weight: 400;
+body {
+	background-color: $bg;
 }
 
-ul{
+h1, h2, h3, h4, h5, h6 {
+}
+
+ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-li{
+li {
 	list-style: none;
 }
 
-hr{
+hr {
 	border: none;
 }
 
-a{
+a {
 	text-decoration: none;
 	color: black;
 	cursor: pointer;
 }
 
-p{
+p {
 	margin: 0;
 }

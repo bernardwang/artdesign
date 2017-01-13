@@ -1,7 +1,14 @@
 #about {
 	padding: 2rem;
+	text-align: center;
 	
-	h1 {
-		text-align: center;
+	.about-title {
+		
+	}
+
+	.about-desc {
+		width: 20rem;
+		margin-left: auto;
+		margin-right: auto;
 	}
 }

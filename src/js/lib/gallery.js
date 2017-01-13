@@ -22,12 +22,12 @@ let nav = [];
 const jumpTransition = function getJumpTransition(index) {
 	// calculating shortest jump
 	const linear = index - currIndex;
-	const wrap = (index < currIndex) ? index + pagesSize - currIndex : index - pagesSize - currIndex;
+	const wrap = (index < currIndex) ? linear + pagesSize : linear - pagesSize;
 	const shortest = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
 
 	// constructing transition class
 	const distance = (Math.abs(shortest) <= 2) ? Math.abs(shortest) : 'max';	// jump distance string
-	const direction = (shortest < 0) ? 'left-' : 'right-';					// jump direction string
+	const direction = (shortest < 0) ? 'left-' : 'right-';						// jump direction string
 	const transition = direction + distance;									// jump transition string
 
 	return transition;
