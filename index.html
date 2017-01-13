@@ -7,13 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 
-    <title>made by bernard</title>
+    <title>art & design</title>
 
     <link href="./assets/css/main.css" rel="stylesheet">
   </head>
   <body>
 		<header id="about">
-			<h1>art & design</h1>
+			<h1 class="about-title">art & design</h1>
+			<p class="about-desc">Over the years, I've taken a variety of studio classes through my Art & Design minor. This is an informal showcase of some of my work from university.</p>
 		</header>
 
 		<main id="gallery">
@@ -41,8 +42,7 @@
 			{{#each this}}
  			<section class="page">
 				<header class="page-header">
-					<h1 class="page-title">{{title}}</h1>
-					<h2 class="page-description">{{{description}}}</h2>
+					<h2 class="page-desc">{{{description}}}</h2>
 				</header>
 				<section class="page-items">
 				</section>
@@ -62,7 +62,7 @@
 				</div>
 				<div class="item-caption">
 					<h3 class="item-title">{{title}}</h3>
-					<p class="item-description">{{description}}</p>
+					<p class="item-desc">{{{description}}}</p>
 				</div>
 			</article>
 		</script>
