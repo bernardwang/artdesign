@@ -12,9 +12,8 @@
     <link href="./assets/css/main.css" rel="stylesheet">
   </head>
   <body>
-		<header>
-			<h1>bernard wang</h1>
-			<h2>somethings i made</h2>
+		<header id="about">
+			<h1>art & design</h1>
 		</header>
 
 		<main id="gallery">
@@ -31,25 +30,27 @@
     <script>
       app();
     </script>
+    	<script id="nav-template" type="text/x-handlebars-template">
+			{{#each this}}
+ 			<a class="nav-elem">
+				<h3 class="page-title">{{title}}</h3>
+			</a>
+			{{/each}}
+		</script>
 		<script id="page-template" type="text/x-handlebars-template">
 			{{#each this}}
  			<section class="page">
-				<div>
-					<header>
-						<h2 class="page-description">{{description}}</h2>
-					</header>
-					<section class="page-items">
-					</section>
-				</div>
+				<header class="page-header">
+					<h1 class="page-title">{{title}}</h1>
+					<h2 class="page-description">{{{description}}}</h2>
+				</header>
+				<section class="page-items">
+				</section>
 			</section>
 			{{/each}}
 		</script>
 		<script id="item-template" type="text/x-handlebars-template">
 			<article class="item">
-				<header>
-					<h3>{{title}}</h3>
-					<p class="item-description">{{description}}</p>
-				</header>
 				<div class="item-photos">
 					{{#each photos}}
 					<figure class="photo">
@@ -58,6 +59,10 @@
 						</figcaption>
 					</figure>
 					{{/each}}
+				</div>
+				<div class="item-caption">
+					<h3 class="item-title">{{title}}</h3>
+					<p class="item-description">{{description}}</p>
 				</div>
 			</article>
 		</script>
