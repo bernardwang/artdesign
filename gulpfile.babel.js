@@ -48,6 +48,7 @@ const eslintOpts = {
 		"indent": ["error", "tab"],
 		"arrow-body-style": ["warn"],
 		"import/prefer-default-export": "off",
+		"no-mixed-operators": "off",
 	}
 }
 const sassOpts = {

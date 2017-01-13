@@ -1,6 +1,22 @@
+
 #gallery-pages {
 	position: relative;
 	background-color: #eee;
+
+	.show {
+		opacity: 1;
+		z-index: auto;
+		cursor: auto;
+		pointer-events: auto;
+		transition: opacity 2s;
+	}
+
+	.hide {
+		opacity: 0;
+		z-index: -1;
+		cursor: default;
+		pointer-events: none;
+	}
 
 	.page {
 		width: 75vw;
@@ -10,24 +26,57 @@
 		margin-left: auto;
 		margin-right: auto;
 		padding: 3rem;
-	
+
 		position: absolute;
 		top: 0;
-		display: none;
-	
-		&.curr{
-			position: relative;
-			display: block;
+
+		@extend .hide;
+
+		&.curr {
+			@extend .show;
+			margin: auto;
+			left: 0;
+			right: 0;
 		}
 		
-		&.next{
-			display: block;
+		&.next {
+			@extend .show;
 			right: -65vw;
 		}
 	
-		&.prev{
-			display: block;
+		&.prev {
+			@extend .show;
 			left: -65vw;
+		}
+
+		&.left-1 {
+			transition: transform 1s;
+			transform: translateX(77.5vw);
+		}
+
+		&.right-1 {
+			transition: transform 1s;
+			transform: translateX(-77.5vw);
+		}
+
+		&.left-2 {	
+			transition: transform 1s;		
+			transform: translateX(155vw);
+		}
+
+		&.right-2 {
+			transition: transform 1s;
+			transform: translateX(-155vw);
+		}
+
+		&.left-max {	
+			transition: transform 1s;		
+			transform: translateX(200vw);
+		}
+
+		&.right-max {
+			transition: transform 1s;
+			transform: translateX(-200vw);
 		}
 	}
 	

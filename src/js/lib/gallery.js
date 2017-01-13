@@ -16,25 +16,53 @@ let prevIndex = 0;
 let nav = [];
 
 /**
+ *	Calculates the shortest direction and distance for page jump
+ *  Returns css class for transition
+ */
+const jumpTransition = function getJumpTransition(index) {
+	// calculating shortest jump
+	const linear = index - currIndex;
+	const wrap = (index < currIndex) ? index + pagesSize - currIndex : index - pagesSize - currIndex;
+	const shortest = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
+
+	// constructing transition class
+	const distance = (Math.abs(shortest) <= 2) ? Math.abs(shortest) : 'max';	// jump distance string
+	const direction = (shortest < 0) ? 'left-' : 'right-';					// jump direction string
+	const transition = direction + distance;									// jump transition string
+
+	return transition;
+};
+
+/**
  *	Jumps to given page
  */
-const goToPage = function showGalleryPage(index) {
-	if (index === currIndex) return; // fix later
-	if (index > pagesSize || index < 0) {
-		throw new Error('Invalid page');
-	}
+const jumpToPage = function showGalleryPage(index) {
+	if (index > pagesSize || index < 0) throw new Error('Invalid page');
+	if (index === currIndex) return;
 
-	pages[currIndex].classList.remove('curr');
-	pages[prevIndex].classList.remove('prev');
-	pages[nextIndex].classList.remove('next');
+	const transition = jumpTransition(index);
+	pages[currIndex].classList.add(transition);
+	pages[prevIndex].classList.add(transition);
+	pages[nextIndex].classList.add(transition);
 
-	prevIndex = (index + pagesSize - 1) % pagesSize;
-	nextIndex = (index + 1) % pagesSize;
-	currIndex = index;
+	const newPrevIndex = (index + pagesSize - 1) % pagesSize;
+	const newNextIndex = (index + 1) % pagesSize;
+	const newCurrIndex = index;
 
-	pages[currIndex].classList.add('curr');
-	pages[prevIndex].classList.add('prev');
-	pages[nextIndex].classList.add('next');
+	// TODO: FIX THIS JANK DELAY
+	setTimeout(() => {
+		pages[currIndex].className = 'page';
+		pages[prevIndex].className = 'page';
+		pages[nextIndex].className = 'page';
+
+		pages[newCurrIndex].classList.add('curr');
+		pages[newPrevIndex].classList.add('prev');
+		pages[newNextIndex].classList.add('next');
+
+		currIndex = newCurrIndex;
+		prevIndex = newPrevIndex;
+		nextIndex = newNextIndex;
+	}, 1000);
 };
 
 /**
@@ -60,13 +88,26 @@ const loadPages = function loadGalleryPages(collections) {
 const initNav = function initGalleryNav() {
 	for (let i = 0; i < pagesSize; i++) {
 		nav[i].addEventListener('click', () => {
-			goToPage(i);
+			jumpToPage(i);
 		});
 	}
-}
+};
 
 /**
- *	Builds gallery pages and nav
+ *	Chooses initial page
+ */
+const initPage = function initGalleryPage(index) {
+	prevIndex = (index + pagesSize - 1) % pagesSize;
+	nextIndex = (index + 1) % pagesSize;
+	currIndex = index;
+
+	pages[currIndex].classList.add('curr');
+	pages[prevIndex].classList.add('prev');
+	pages[nextIndex].classList.add('next');
+};
+
+/**
+ *	Builds gallery pages and nav with templates
  */
 const buildGallery = function buildGalleryHTML(collections) {
 	// Template for pages
@@ -84,7 +125,6 @@ const buildGallery = function buildGalleryHTML(collections) {
 	const navRoot = document.getElementById('gallery-nav');
 
 	nav = appendTemplate(navRoot, navTemplate, collections);
-	initNav();
 
 	// return promise that resolves when
 	return loadPages(collections);
@@ -95,7 +135,8 @@ const buildGallery = function buildGalleryHTML(collections) {
  */
 const initGallery = function initGalleryPage(collections) {
 	return buildGallery(collections)
-	.then(() => { return goToPage(pagesSize - 1); }) // start with last page
+	.then(() => { initNav(); })
+	.then(() => { initPage(1); }); // start with last page
 };
 
 export {
