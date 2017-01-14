@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import { collectionAPI } from './lib/flickrAPI';
-import { initGallery } from './lib/gallery';
+import { initGallery, loadPages } from './lib/gallery';
 
 /**
  *	Call Flickr API for collections and transform result
@@ -12,11 +12,14 @@ const getCollections = function getCollectionsCall() {
 		});
 };
 
+/**
+ *
+ */
 global.app = function () {
+	let data = null;
 	getCollections()
-		.then((collections) => { return initGallery(collections); })
-		.then((data) => { console.log('Gallery Done', data); })
-		.then(() => {
-		})
+		.then((collections) => { data = collections; })
+		.then(() => { return initGallery(data); })
+		.then(() => { return loadPages(data); })
 		.catch((e) => { console.log(e); });
 };

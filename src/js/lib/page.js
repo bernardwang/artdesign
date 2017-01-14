@@ -33,24 +33,21 @@ const buildItem = function buildPageItem(root, template, item) {
 
 /**
  *	Adds all items into a page
+ *
+ *	TODO: precompile and organize templates
  */
 const buildItems = function buildPageItems(page, items) {
-	// TODO: precompile and organize templates
+	// Check if items already loaded
+	const itemRoot = page.getElementsByClassName('page-items')[0];
+	if (itemRoot.children.length > 0) return;
+
 	const itemSource = document.getElementById('item-template').innerHTML;
 	const itemTemplate = Handlebars.compile(itemSource);
-	const itemRoot = page.getElementsByClassName('page-items')[0]; // Page item location
 	const itemPromises = items.map((item) => {
 		return buildItem(itemRoot, itemTemplate, item);
 	});
 	return Promise.all(itemPromises);
 };
-
-// /**
-//  *	init page
-//  */
-// const initPage = function initGalleryPage(page, items) {
-// 	return buildItems(page, items);
-// };
 
 export {
 	buildItems,
