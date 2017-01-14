@@ -32,11 +32,13 @@
       app();
     </script>
     	<script id="nav-template" type="text/x-handlebars-template">
-			{{#each this}}
- 			<a class="nav-elem">
-				<h3 class="page-title">{{title}}</h3>
-			</a>
-			{{/each}}
+    		<div id="nav">
+				{{#each this}}
+ 				<a class="nav-elem">
+					<h3 class="page-title">{{title}}</h3>
+				</a>
+				{{/each}}
+			</div>
 		</script>
 		<script id="page-template" type="text/x-handlebars-template">
 			{{#each this}}
