@@ -8,10 +8,15 @@ import Handlebars from 'handlebars';
 import { appendTemplate } from './helper';
 import { buildItems } from './page';
 
+// default css transition time
+const transitionTime = 1000;
+
+// gallery content and information
 let navs = [];
 let pages = [];
 let size = 0;
 
+// gallery state
 let currIndex = 0;
 let nextIndex = 0;
 let prevIndex = 0;
@@ -32,7 +37,6 @@ const jumpPage = function jumpGalleryPage(index, jump) {
 	const newNextIndex = (index + 1) % size;
 	const newCurrIndex = index;
 
-	// TODO: FIX THIS JANK DELAY
 	setTimeout(() => {
 		pages[currIndex].className = 'page';
 		pages[prevIndex].className = 'page';
@@ -45,7 +49,7 @@ const jumpPage = function jumpGalleryPage(index, jump) {
 		currIndex = newCurrIndex;
 		prevIndex = newPrevIndex;
 		nextIndex = newNextIndex;
-	}, 1000);
+	}, transitionTime);
 };
 
 /**
@@ -57,22 +61,33 @@ const jumpNav = function jumpGalleryNav(index, jump) {
 	const jumpClass = direction + distance;					// jump jump string
 	const nav = document.getElementById('nav');
 
+	// TODO: Fix jank ass timing shit below without jquery
+
+	// start jump transition
 	nav.classList.add(jumpClass);
 
+	// after transition
+	// hide and reorder nav elements
 	setTimeout(() => {
 		for (let i = 0; i < Math.abs(jump); i++) {
 			if (jump < 0) {
-				//navs[size - 1].style.opacity = 0;
+				navs[size - 1].classList.add('hide');
 				nav.insertBefore(navs[size - 1], navs[0]);
 			} else {
-				//navs[0].style.opacity = 0;
+				navs[0].classList.add('hide');
 				nav.appendChild(navs[0]);
 			}
 		}
-
 		nav.classList.remove(jumpClass);
-	}, 1000);
-}
+	}, transitionTime);
+
+	// immediately after reordering, fade elements back in
+	setTimeout(() => {
+		for (let i = 0; i < size; i++) {
+			navs[i].classList.remove('hide');
+		}
+	}, 1050); // TODO: fix this BS
+};
 
 /**
  *	Jumps nav to correct
@@ -88,8 +103,7 @@ const jumpTo = function jumpToGallery(index) {
 
 	jumpPage(index, jump);
 	jumpNav(index, jump);
-}
-
+};
 
 /**
  *	Loads items on single page
@@ -165,4 +179,5 @@ const initGallery = function initGalleryPage(collections) {
 
 export {
 	initGallery,
+	loadPages,
 };

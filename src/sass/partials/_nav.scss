@@ -2,6 +2,7 @@
 	height: 8rem;
 
 	#nav {
+		position: relative;
 		margin: 0;
 		margin-left: auto;
 		margin-right: auto;
@@ -12,23 +13,70 @@
 		justify-content: center;
 		align-items: center;
 
+		// up to 5 transitions, max of 10 gallery pages
 		@for $i from 1 through 5 {
 			$nav-width: 12;
 
 			&.left-#{$i} {
 				transition: transform $transition-time, opacity $transition-time;
-				transform: translateX(#{$i * 12}vw);
+				transform: translateX(#{$i * $nav-width}vw);
+				&::before {
+					transition: transform $transition-time, opacity $transition-time;
+					transform: translateX(#{$i * $nav-width * -1}vw);
+				}
+				&::after {
+					transition: transform $transition-time, opacity $transition-time;
+					transform: translateX(#{$i * $nav-width * -1}vw);
+				}
 			}
 			&.right-#{$i} {
 				transition: transform $transition-time, opacity $transition-time;
-				transform: translateX(#{$i * -12}vw);
+				transform: translateX(#{$i * $nav-width * -1}vw);
+				&::before {
+					transition: transform $transition-time, opacity $transition-time;
+					transform: translateX(#{$i * $nav-width}vw);
+				}
+				&::after {
+					transition: transform $transition-time, opacity $transition-time;
+					transform: translateX(#{$i * $nav-width}vw);
+				}
 			}
 		}
+	}
+
+	.fade-mask {
+		content: " ";
+		width: 60%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		pointer-events: none;
+	}
+
+	#nav::before {
+		@extend .fade-mask;
+		left: -50%;
+		background: linear-gradient(to right, rgba(238,238,238,1) 75%, rgba(238,238,238,0) 100%);
+	}
+
+	#nav::after {
+		@extend .fade-mask;
+		right: -50%;
+		background: linear-gradient(to left, rgba(238,238,238,1) 75%, rgba(238,238,238,0) 100%);
 	}
 
 	.nav-elem {
 		padding: 2vw;
 		width: 12vw;
 		text-align: center;
+		opacity: 1;
+		transition: opacity $transition-time;
+
+		&.hide {
+			//transition: opacity 0.75s;
+			opacity: 0;
+		}
+
+
 	}
 }
