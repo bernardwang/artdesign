@@ -8,45 +8,28 @@ import Handlebars from 'handlebars';
 import { appendTemplate } from './helper';
 import { buildItems } from './page';
 
+let navs = [];
 let pages = [];
-let pagesSize = 0;
+let size = 0;
+
 let currIndex = 0;
 let nextIndex = 0;
 let prevIndex = 0;
-let nav = [];
-
-/**
- *	Calculates the shortest direction and distance for page jump
- *  Returns css class for transition
- */
-const jumpTransition = function getJumpTransition(index) {
-	// calculating shortest jump
-	const linear = index - currIndex;
-	const wrap = (index < currIndex) ? linear + pagesSize : linear - pagesSize;
-	const shortest = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
-
-	// constructing transition class
-	const distance = (Math.abs(shortest) <= 2) ? Math.abs(shortest) : 'max';	// jump distance string
-	const direction = (shortest < 0) ? 'left-' : 'right-';						// jump direction string
-	const transition = direction + distance;									// jump transition string
-
-	return transition;
-};
 
 /**
  *	Jumps to given page
  */
-const jumpToPage = function showGalleryPage(index) {
-	if (index > pagesSize || index < 0) throw new Error('Invalid page');
-	if (index === currIndex) return;
+const jumpPage = function jumpGalleryPage(index, jump) {
+	const distance = (Math.abs(jump) <= 2) ? Math.abs(jump) : 'max';	// jump distance string
+	const direction = (jump < 0) ? 'left-' : 'right-';					// jump direction string
+	const jumpClass = direction + distance;								// jump jump string
 
-	const transition = jumpTransition(index);
-	pages[currIndex].classList.add(transition);
-	pages[prevIndex].classList.add(transition);
-	pages[nextIndex].classList.add(transition);
+	pages[currIndex].classList.add(jumpClass);
+	pages[prevIndex].classList.add(jumpClass);
+	pages[nextIndex].classList.add(jumpClass);
 
-	const newPrevIndex = (index + pagesSize - 1) % pagesSize;
-	const newNextIndex = (index + 1) % pagesSize;
+	const newPrevIndex = (index + size - 1) % size;
+	const newNextIndex = (index + 1) % size;
 	const newCurrIndex = index;
 
 	// TODO: FIX THIS JANK DELAY
@@ -64,6 +47,49 @@ const jumpToPage = function showGalleryPage(index) {
 		nextIndex = newNextIndex;
 	}, 1000);
 };
+
+/**
+ *	Jumps nav to correct element
+ */
+const jumpNav = function jumpGalleryNav(index, jump) {
+	const distance = Math.abs(jump);						// jump distance string
+	const direction = (jump < 0) ? 'left-' : 'right-';		// jump direction string
+	const jumpClass = direction + distance;					// jump jump string
+	const nav = document.getElementById('nav');
+
+	nav.classList.add(jumpClass);
+
+	setTimeout(() => {
+		for (let i = 0; i < Math.abs(jump); i++) {
+			if (jump < 0) {
+				//navs[size - 1].style.opacity = 0;
+				nav.insertBefore(navs[size - 1], navs[0]);
+			} else {
+				//navs[0].style.opacity = 0;
+				nav.appendChild(navs[0]);
+			}
+		}
+
+		nav.classList.remove(jumpClass);
+	}, 1000);
+}
+
+/**
+ *	Jumps nav to correct
+ */
+const jumpTo = function jumpToGallery(index) {
+	if (index > size || index < 0) throw new Error('Invalid page');
+	if (index === currIndex) return;
+
+	// calculating shortest jump
+	const linear = index - currIndex;
+	const wrap = (index < currIndex) ? linear + size : linear - size;
+	const jump = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
+
+	jumpPage(index, jump);
+	jumpNav(index, jump);
+}
+
 
 /**
  *	Loads items on single page
@@ -86,9 +112,9 @@ const loadPages = function loadGalleryPages(collections) {
  *	Attaches event listeners to nav
  */
 const initNav = function initGalleryNav() {
-	for (let i = 0; i < pagesSize; i++) {
-		nav[i].addEventListener('click', () => {
-			jumpToPage(i);
+	for (let i = 0; i < size; i++) {
+		navs[i].addEventListener('click', () => {
+			jumpTo(i);
 		});
 	}
 };
@@ -97,8 +123,9 @@ const initNav = function initGalleryNav() {
  *	Chooses initial page
  */
 const initPage = function initGalleryPage(index) {
-	prevIndex = (index + pagesSize - 1) % pagesSize;
-	nextIndex = (index + 1) % pagesSize;
+	size = pages.length;
+	prevIndex = (index + size - 1) % size;
+	nextIndex = (index + 1) % size;
 	currIndex = index;
 
 	pages[currIndex].classList.add('curr');
@@ -115,18 +142,15 @@ const buildGallery = function buildGalleryHTML(collections) {
 	const pagesTemplate = Handlebars.compile(pagesSource);
 	const pagesRoot = document.getElementById('gallery-pages');
 
-	// Add empty pages
-	pages = appendTemplate(pagesRoot, pagesTemplate, collections);
-	pagesSize = pages.length;
-
 	// Template for nav
 	const navSource = document.getElementById('nav-template').innerHTML;
 	const navTemplate = Handlebars.compile(navSource);
 	const navRoot = document.getElementById('gallery-nav');
 
-	nav = appendTemplate(navRoot, navTemplate, collections);
+	pages = appendTemplate(pagesRoot, pagesTemplate, collections);
+	navs = appendTemplate(navRoot, navTemplate, collections)[0].children;
+	size = pages.length;
 
-	// return promise that resolves when
 	return loadPages(collections);
 };
 
@@ -136,7 +160,7 @@ const buildGallery = function buildGalleryHTML(collections) {
 const initGallery = function initGalleryPage(collections) {
 	return buildGallery(collections)
 	.then(() => { initNav(); })
-	.then(() => { initPage(1); }); // start with last page
+	.then(() => { initPage(2); }); // start with last page
 };
 
 export {

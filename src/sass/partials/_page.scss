@@ -7,7 +7,7 @@
 		z-index: auto;
 		cursor: auto;
 		pointer-events: auto;
-		transition: opacity 1s;
+		transition: opacity $transition-time;
 	}
 
 	.hide {
@@ -49,32 +49,32 @@
 		}
 
 		&.left-1 {
-			transition: transform 1s;
+			transition: transform $transition-time;
 			transform: translateX(77.5vw);
 		}
 
 		&.right-1 {
-			transition: transform 1s;
+			transition: transform $transition-time;
 			transform: translateX(-77.5vw);
 		}
 
 		&.left-2 {	
-			transition: transform 1s;		
+			transition: transform $transition-time;		
 			transform: translateX(155vw);
 		}
 
 		&.right-2 {
-			transition: transform 1s;
+			transition: transform $transition-time;
 			transform: translateX(-155vw);
 		}
 
 		&.left-max {	
-			transition: transform 1s;		
+			transition: transform $transition-time;		
 			transform: translateX(200vw);
 		}
 
 		&.right-max {
-			transition: transform 1s;
+			transition: transform $transition-time;
 			transform: translateX(-200vw);
 		}
 	}

@@ -1,11 +1,34 @@
 #gallery-nav {
-	height: 100px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+	height: 8rem;
+
+	#nav {
+		margin: 0;
+		margin-left: auto;
+		margin-right: auto;
+		width: 60vw;
+		
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+
+		@for $i from 1 through 5 {
+			$nav-width: 12;
+
+			&.left-#{$i} {
+				transition: transform $transition-time, opacity $transition-time;
+				transform: translateX(#{$i * 12}vw);
+			}
+			&.right-#{$i} {
+				transition: transform $transition-time, opacity $transition-time;
+				transform: translateX(#{$i * -12}vw);
+			}
+		}
+	}
 
 	.nav-elem {
-		padding: 1rem;
+		padding: 2vw;
+		width: 12vw;
+		text-align: center;
 	}
 }
