@@ -20,22 +20,22 @@ $rem-fallback: false !default;
 // The font faces you specify in the $typefaces map can be used in the
 // typeface() mixin.
 $typefaces: (
-  body: (
-    font-family: (sans-serif),
-  ),
-  monospace: (
-    font-family: (monospace, monospace),
-  ),
+body: (
+	font-family: (sans-serif),
+),
+monospace: (
+	font-family: (monospace, monospace),
+),
 ) !default;
 
 // The font sizes for h1-h6 expressed as tee shirt sizes.
 $font-size: (
-  xxl: 32px,
-  xl:  24px,
-  l:   20px,
-  m:   $base-font-size,
-  s:   14px,
-  xs:  10px,
+	xxl:	32px,
+	xl:		24px,
+	l:		20px,
+	m:		$base-font-size,
+	s:		14px,
+	xs:		10px,
 ) !default;
 
 // The amount lists and blockquotes are indented.
@@ -49,3 +49,25 @@ $normalize-vertical-rhythm: false !default;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 $transition-time: 1s;
+
+@font-face {
+	font-family: MuliBlack;
+	src: url(../fonts/Muli-Black.ttf);
+}
+
+@font-face {
+	font-family: MuliBlack;
+	src: url(../fonts/Muli-BlackItalic.ttf);
+	font-style: italic;
+}
+
+@font-face {
+	font-family: MuliLight;
+	src: url(../fonts/Muli-Light.ttf);
+}
+
+@font-face {
+	font-family: MuliLight;
+	src: url(../fonts/Muli-Light.ttf);
+	font-style: italic;
+}

@@ -9,6 +9,7 @@ import { appendTemplate } from './helper';
 import { buildItems } from './page';
 
 // Default css transition time
+let transitioning = false;
 const transitionTime = 1000;
 
 // Gallery HTML elements
@@ -25,36 +26,39 @@ let prevIndex = 0;
  *	Jumps to page
  */
 const jumpPage = function jumpGalleryPage(index, jump) {
-	// Creating jump transition class
-	const jumpDistance = (Math.abs(jump) <= 2) ? Math.abs(jump) : 'max';
-	const jumpDirection = (jump < 0) ? 'left-' : 'right-';
-	const jumpClass = jumpDirection + jumpDistance;
+	return new Promise((resolve, reject) => {
+		// Creating jump transition class
+		const jumpDistance = (Math.abs(jump) <= 2) ? Math.abs(jump) : 'max';
+		const jumpDirection = (jump < 0) ? 'left-' : 'right-';
+		const jumpClass = jumpDirection + jumpDistance;
 
-	// New index variables
-	const newPrevIndex = (index + size - 1) % size;
-	const newNextIndex = (index + 1) % size;
-	const newCurrIndex = index;
+		// New index variables
+		const newPrevIndex = (index + size - 1) % size;
+		const newNextIndex = (index + 1) % size;
+		const newCurrIndex = index;
 
-	console.log(jump);
+		// Start transition
+		pages[currIndex].classList.add(jumpClass);
+		pages[prevIndex].classList.add(jumpClass);
+		pages[nextIndex].classList.add(jumpClass);
 
-	// Start transition
-	pages[currIndex].classList.add(jumpClass);
-	pages[prevIndex].classList.add(jumpClass);
-	pages[nextIndex].classList.add(jumpClass);
+		// After transition finishes, update pages
+		setTimeout(() => {
+			pages[currIndex].className = 'page';
+			pages[prevIndex].className = 'page';
+			pages[nextIndex].className = 'page';
 
-	// After transition finishes, update pages
-	setTimeout(() => {
-		pages[currIndex].className = 'page';
-		pages[prevIndex].className = 'page';
-		pages[nextIndex].className = 'page';
+			pages[newCurrIndex].classList.add('curr');
+			pages[newPrevIndex].classList.add('prev');
+			pages[newNextIndex].classList.add('next');
 
-		pages[newCurrIndex].classList.add('curr');
-		pages[newPrevIndex].classList.add('prev');
-		pages[newNextIndex].classList.add('next');
-		currIndex = newCurrIndex;
-		prevIndex = newPrevIndex;
-		nextIndex = newNextIndex;
-	}, transitionTime);
+			currIndex = newCurrIndex;
+			prevIndex = newPrevIndex;
+			nextIndex = newNextIndex;
+
+			resolve();
+		}, transitionTime);
+	});
 };
 
 /**
@@ -63,46 +67,57 @@ const jumpPage = function jumpGalleryPage(index, jump) {
  *	TODO: Fix jank ass timing shit below without jquery
  */
 const jumpNav = function jumpGalleryNav(index, jump) {
-	// Creating jump transition class
-	const jumpDistance = Math.abs(jump);
-	const jumpDirection = (jump < 0) ? 'left-' : 'right-';
-	const jumpClass = jumpDirection + jumpDistance;
+	return new Promise((resolve, reject) => {
+		// TODO: Check if column view, other wise dont have transition
 
-	// Start transition
-	const nav = document.getElementById('nav');
-	nav.classList.add(jumpClass);
-	
-	// After transition
-	// Hide and reorder nav elements
-	setTimeout(() => {
-		for (let i = 0; i < Math.abs(jump); i++) {
-			if (jump < 0) {
-				navs[size - 1].classList.add('hide');
-				nav.insertBefore(navs[size - 1], navs[0]);
-			} else {
-				navs[0].classList.add('hide');
-				nav.appendChild(navs[0]);
+		// Creating jump transition class
+		const jumpDistance = Math.abs(jump);
+		const jumpDirection = (jump < 0) ? 'left-' : 'right-';
+		const jumpClass = jumpDirection + jumpDistance;
+
+		// Start transition
+		const nav = document.getElementById('nav');
+		nav.classList.add(jumpClass);
+
+		// After transition
+		// Hide and reorder nav elements
+		setTimeout(() => {
+			for (let i = 0; i < Math.abs(jump); i++) {
+				if (jump < 0) {
+					navs[size - 1].classList.add('hide');
+					nav.insertBefore(navs[size - 1], navs[0]);
+				} else {
+					navs[0].classList.add('hide');
+					nav.appendChild(navs[0]);
+				}
 			}
-		}
-		nav.classList.remove(jumpClass);
-	}, transitionTime);
-	
-	// Immediately after reordering
-	// Fade nav elements back in
-	setTimeout(() => {
-		for (let i = 0; i < size; i++) {
-			navs[i].classList.remove('hide');
-		}
-	}, transitionTime + 50); // TODO: fix this BS
+			nav.classList.remove(jumpClass);
+
+			// TODO: fix this BS
+			// Immediately after reordering
+			// Fade nav elements back in
+			setTimeout(() => {
+				for (let i = 0; i < size; i++) {
+					navs[i].classList.remove('hide');
+				}
+
+				// navs[index].classList.add('selected');
+				resolve();
+			}, 50);
+		}, transitionTime);
+	});
 };
 
 /**
  *	Move and update gallery
  */
 const jumpTo = function jumpToGallery(index) {
-	// Valid jump
+	// Checks if alid jump
 	if (index > size || index < 0) throw new Error('Invalid page');
-	if (index === currIndex) return;
+	if (transitioning || index === currIndex) return;
+
+	// Prevent any more jumps
+	transitioning = true;
 
 	// Calculate shortest jump
 	const linear = index - currIndex;
@@ -110,8 +125,16 @@ const jumpTo = function jumpToGallery(index) {
 	const jump = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
 
 	// Update page and nav
-	jumpPage(index, jump);
-	jumpNav(index, jump);
+	const jumpPromises = [
+		jumpPage(index, jump),
+		jumpNav(index, jump),
+	];
+
+	// Reset after all transitions are finished
+	Promise.all(jumpPromises)
+	.then(() => {
+		transitioning = false;
+	});
 };
 
 /**
@@ -120,6 +143,7 @@ const jumpTo = function jumpToGallery(index) {
 const initNav = function initGalleryNav() {
 	// Attaches event listeners to nav
 	for (let i = 0; i < size; i++) {
+		navs[i].classList.remove('hide');
 		navs[i].addEventListener('click', () => {
 			jumpTo(i);
 		});
@@ -147,9 +171,9 @@ const loadPage = function loadGalleryPage(data, index) {
  *	Loads items on all pages
  */
 const loadPages = function loadGalleryPages(data) {
-	const pagePromises = (data.map((collection, index) => {
+	const pagePromises = data.map((collection, index) => {
 		return buildItems(pages[index], collection.set);
-	}));
+	});
 	return Promise.all(pagePromises);
 };
 
@@ -191,9 +215,8 @@ const buildGallery = function buildGalleryHTML(data) {
  */
 const initGallery = function initGalleryPage(data) {
 	return buildGallery(data)
-	.then(() => { initNav(); })
-	.then(() => { initPage(); })
-	.then(() => { return; });
+	.then(() => initNav())
+	.then(() => initPage());
 };
 
 export {

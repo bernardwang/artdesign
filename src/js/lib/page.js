@@ -17,13 +17,13 @@ const buildItem = function buildPageItem(root, template, item) {
 			return photoset.photoset.photo;
 		})
 		.then((photos) => {
-			const photo_urls = (photos).map((photo) => {
+			const photoURLs = (photos).map((photo) => {
 				return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`;
 			});
 			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
-				photos: photo_urls,
+				photos: photoURLs,
 			};
 
 			// Append item
@@ -39,7 +39,7 @@ const buildItem = function buildPageItem(root, template, item) {
 const buildItems = function buildPageItems(page, items) {
 	// Check if items already loaded
 	const itemRoot = page.getElementsByClassName('page-items')[0];
-	if (itemRoot.children.length > 0) return;
+	if (itemRoot.children.length > 0) return Promise.resolve();
 
 	const itemSource = document.getElementById('item-template').innerHTML;
 	const itemTemplate = Handlebars.compile(itemSource);

@@ -7,8 +7,12 @@
 	}
 
 	.about-desc {
-		width: 20rem;
+		max-width: 25rem;
 		margin-left: auto;
 		margin-right: auto;
+	}
+
+	@media screen and (max-width: $bp-medium) {
+		padding: 1rem;
 	}
 }

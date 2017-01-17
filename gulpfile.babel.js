@@ -42,7 +42,7 @@ const eslintOpts = {
 		"max-len": ["warn", { "code": 150 }],
 		"no-unused-vars": ["warn", { "vars": "all", "args": "after-used" }],
 		"prefer-template": "off",
-		"camelcase": "off",
+		"camelcase": "warn",
 		"no-tabs": "off",
 		"no-plusplus": "off",
 		"indent": ["error", "tab"],
@@ -77,16 +77,16 @@ const deployOpts = {
 /************ HELPER VARIABLES AND FUNCTIONS ************/
 
 // Location constants
-const SRC_HTML = './dist/**/*.html'; // to make more clear
-const SRC_ASSETS = './src/assets/**/*.*';
-const SRC_IMG = './src/assets/img/*.*';
+const SRC_HTML = './dist/**/*.html'; 	// make more clear
+const SRC_ASSETS = './src/**/*.*';
+const SRC_IMG = './src/img/*.*';
 const SRC_SASS = './src/sass/**/*.scss';
 const SRC_JS = './src/js/**/*.js';
 const SRC_VENDORJS = './src/js/vendor/*.js';		// not include in babel build
 const ENTRY_JS = './src/js/app.js';					// js entry point for babel
 
 const DEST_HTML = './dist/';
-const DEST_ASSETS = './dist/assets';
+const DEST_ASSETS = './dist/assets/';
 const DEST_JS = './dist/assets/js/';
 const DEST_VENDORJS = './dist/assets/js/vendor/';	// not include in babel build
 const DEST_CSS = './dist/assets/css/';
@@ -196,7 +196,7 @@ gulp.task('min-scripts', ['scripts'], () => {
  *	Move assets
  */
 gulp.task('assets', () => {
-	gulp.src(SRC_ASSETS)
+	gulp.src([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS])
 		.pipe(changed(DEST_ASSETS))
 		.pipe(gulp.dest(DEST_ASSETS))
 		.pipe(sync.reload(syncOpts));
@@ -228,7 +228,7 @@ gulp.task('watcher', () => {
 /**
  *	dev - auto builds and browsersync
  */
-gulp.task('dev', ['pages', 'styles','watch-scripts', 'assets', 'watcher', 'browsersync']);
+gulp.task('dev', ['pages', 'styles', 'watch-scripts', 'assets', 'watcher', 'browsersync']);
 
 /**
  *	dist - prod build

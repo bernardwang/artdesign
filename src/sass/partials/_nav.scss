@@ -1,44 +1,46 @@
 #gallery-nav {
-	height: 8rem;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
 
 	#nav {
 		position: relative;
 		margin: 0;
 		margin-left: auto;
 		margin-right: auto;
-		width: 60vw;
+		width: 60vw; // TODO: CHANGE TO BE DYNAMIC
 		
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
+		flex-wrap: nowrap;
 
 		// up to 5 transitions, max of 10 gallery pages
 		@for $i from 1 through 5 {
-			$nav-width: 12;
+			$nav-elem-width: 12vw;
 
 			&.left-#{$i} {
 				transition: transform $transition-time, opacity $transition-time;
-				transform: translateX(#{$i * $nav-width}vw);
+				transform: translateX(#{$i * $nav-elem-width});
 				&::before {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-width * -1}vw);
+					transform: translateX(#{$i * $nav-elem-width * -1});
 				}
 				&::after {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-width * -1}vw);
+					transform: translateX(#{$i * $nav-elem-width * -1});
 				}
 			}
 			&.right-#{$i} {
 				transition: transform $transition-time, opacity $transition-time;
-				transform: translateX(#{$i * $nav-width * -1}vw);
+				transform: translateX(#{$i * $nav-elem-width * -1});
 				&::before {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-width}vw);
+					transform: translateX(#{$i * $nav-elem-width});
 				}
 				&::after {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-width}vw);
+					transform: translateX(#{$i * $nav-elem-width});
 				}
 			}
 		}
@@ -51,6 +53,7 @@
 		position: absolute;
 		top: 0;
 		pointer-events: none;
+		z-index: 1;
 	}
 
 	#nav::before {
@@ -66,17 +69,60 @@
 	}
 
 	.nav-elem {
-		padding: 2vw;
 		width: 12vw;
+		margin: 1rem;
 		text-align: center;
+
 		opacity: 1;
 		transition: opacity $transition-time;
-
 		&.hide {
-			//transition: opacity 0.75s;
 			opacity: 0;
 		}
+	}
 
+	.page-title {
+		margin: 0;
+	}
+
+	@media screen and (max-width: $bp-medium) {
+		padding: 1rem;
+
+		#nav {
+			width: 60vw;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+
+			@for $i from 1 through 5 {
+				&.left-#{$i} {
+					transform: translateX(0);
+					&::before, &::after {
+						transform: translateX(0);
+					}
+				} 
+				&.right-#{$i} {
+					transform: translateX(0);
+					&::before, &::after {
+						transform: translateX(0);
+					}
+				}
+			}
+		}
+
+		#nav::before, #nav::after {
+			display: none;
+		}
+
+		.nav-elem {
+			width: 100%;
+			margin: 0.5rem;
+			&.hide {
+				opacity: 1;
+			}
+		}
+	}
+
+	@media screen and (max-width: $bp-small) {
 
 	}
 }

@@ -15,11 +15,11 @@ const getCollections = function getCollectionsCall() {
 /**
  *
  */
-global.app = function () {
+global.app = function app() {
 	let data = null;
 	getCollections()
 		.then((collections) => { data = collections; })
-		.then(() => { return initGallery(data); })
-		.then(() => { return loadPages(data); })
+		.then(() => initGallery(data))
+		.then(() => loadPages(data))
 		.catch((e) => { console.log(e); });
 };
