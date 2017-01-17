@@ -31,42 +31,42 @@
     <script>
       app();
     </script>
-    	<script id="nav-template" type="text/x-handlebars-template">
-    		<div id="nav">
-				{{#each this}}
- 				<a class="nav-elem">
-					<h3 class="page-title">{{title}}</h3>
-				</a>
+    <script id="nav-template" type="text/x-handlebars-template">
+    	<div id="nav">
+			{{#each this}}
+ 			<a class="nav-elem hide">
+				<h3 class="page-title">{{title}}</h3>
+			</a>
+			{{/each}}
+		</div>
+	</script>
+	<script id="page-template" type="text/x-handlebars-template">
+		{{#each this}}
+ 		<section class="page">
+			<header class="page-header">
+				<h2 class="page-desc">{{{description}}}</h2>
+			</header>
+			<section class="page-items">
+			</section>
+		</section>
+		{{/each}}
+	</script>
+	<script id="item-template" type="text/x-handlebars-template">
+		<article class="item">
+			<div class="item-photos">
+				{{#each photos}}
+				<figure class="photo">
+					<img class="photo-img" src="{{this}}"/>
+					<figcaption class="photo-title">
+					</figcaption>
+				</figure>
 				{{/each}}
 			</div>
-		</script>
-		<script id="page-template" type="text/x-handlebars-template">
-			{{#each this}}
- 			<section class="page">
-				<header class="page-header">
-					<h2 class="page-desc">{{{description}}}</h2>
-				</header>
-				<section class="page-items">
-				</section>
-			</section>
-			{{/each}}
-		</script>
-		<script id="item-template" type="text/x-handlebars-template">
-			<article class="item">
-				<div class="item-photos">
-					{{#each photos}}
-					<figure class="photo">
-						<img class="photo-img" src="{{this}}"/>
-						<figcaption class="photo-title">
-						</figcaption>
-					</figure>
-					{{/each}}
-				</div>
-				<div class="item-caption">
-					<h3 class="item-title">{{title}}</h3>
-					<p class="item-desc">{{{description}}}</p>
-				</div>
-			</article>
-		</script>
+			<div class="item-caption">
+				<h3 class="item-title">{{title}}</h3>
+				<p class="item-desc">{{{description}}}</p>
+			</div>
+		</article>
+	</script>
   </body>
 </html>
