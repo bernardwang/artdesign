@@ -55,7 +55,7 @@ const sassOpts = {
 	//includePaths: ["./node_modules/typey/stylesheets"] // include typey
 }
 const autoprefixerOpts = {
-	browsers: ['last 2 versions'],
+	browsers: ['> 5%'],
 	add: true
 }
 const cssnanoOpts = {

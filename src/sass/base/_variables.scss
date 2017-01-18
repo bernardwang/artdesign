@@ -62,6 +62,17 @@ $transition-time: 1s;
 }
 
 @font-face {
+	font-family: MuliExtraBold;
+	src: url(../fonts/Muli-ExtraBold.ttf);
+}
+
+@font-face {
+	font-family: MuliExtraBold;
+	src: url(../fonts/Muli-ExtraBoldItalic.ttf);
+	font-style: italic;
+}
+
+@font-face {
 	font-family: MuliLight;
 	src: url(../fonts/Muli-Light.ttf);
 }

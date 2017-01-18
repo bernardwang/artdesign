@@ -59,13 +59,13 @@
 	#nav::before {
 		@extend .fade-mask;
 		left: -50%;
-		background: linear-gradient(to right, rgba(238,238,238,1) 75%, rgba(238,238,238,0) 100%);
+		background: linear-gradient(to right, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
 	}
 
 	#nav::after {
 		@extend .fade-mask;
 		right: -50%;
-		background: linear-gradient(to left, rgba(238,238,238,1) 75%, rgba(238,238,238,0) 100%);
+		background: linear-gradient(to left, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
 	}
 
 	.nav-elem {
