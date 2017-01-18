@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 
-    <title>art & design</title>
+    <title>Art & Design</title>
 
     <link href="./assets/css/main.css" rel="stylesheet">
   </head>
   <body>
 		<header id="about">
-			<h1 class="about-title">art & design</h1>
+			<h1 class="about-title">Art & Design</h1>
 			<p class="about-desc">Over the years, I've taken a variety of studio classes through my Art & Design minor. This is an informal showcase of some of my work from university.</p>
 		</header>
 
@@ -53,18 +53,20 @@
 	</script>
 	<script id="item-template" type="text/x-handlebars-template">
 		<article class="item">
-			<div class="item-photos">
-				{{#each photos}}
-				<figure class="photo">
-					<img class="photo-img" src="{{this}}"/>
-					<figcaption class="photo-title">
-					</figcaption>
-				</figure>
-				{{/each}}
-			</div>
-			<div class="item-caption">
-				<h3 class="item-title">{{title}}</h3>
-				<p class="item-desc">{{{description}}}</p>
+			<div class="item-container">
+				<div class="item-photos">
+					{{#each photos}}
+					<figure class="photo">
+						<img class="photo-img" src="{{this}}"/>
+						<figcaption class="photo-title">
+						</figcaption>
+					</figure>
+					{{/each}}
+				</div>
+				<div class="item-caption">
+					<h3 class="item-title">{{title}}</h3>
+					<p class="item-desc">{{{description}}}</p>
+				</div>
 			</div>
 		</article>
 	</script>
