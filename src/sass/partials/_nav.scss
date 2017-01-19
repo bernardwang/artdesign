@@ -1,17 +1,7 @@
 #gallery-nav {
 	$nav-elem-width: 8rem;
 	$nav-elem-margin: 1rem;
-	background: linear-gradient(180deg, $primary-bg 50%, $secondary-bg 50%);
-
-	.fade-mask {
-		content: " ";
-		width: 200%;
-		height: 50%;
-		position: absolute;
-		top: 0;
-		pointer-events: none;
-		z-index: 1;
-	}
+	background: $secondary-bg 50%;
 
 	#nav {
 		position: relative;
@@ -58,15 +48,26 @@
 		}
 	}
 
+	.fade-mask {
+		content: " ";
+		width: 200%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: -50%;
+		margin: auto;
+		pointer-events: none;
+		z-index: 1;
+	}
+
 	#nav::before {
 		@extend .fade-mask;
-		background: linear-gradient(to right, rgba($primary-bg, 1) 23.5%, transparent 27.75%, transparent 72.25%, rgba($primary-bg, 1) 76.5%);
+		background: linear-gradient(to right, rgba($secondary-bg, 1) 23%, rgba($secondary-bg, 0) 27%);
 	}
 
 	#nav::after {
 		@extend .fade-mask;
-		top: 50%;
-		background: linear-gradient(to right, rgba($secondary-bg, 1) 23.5%, transparent 27.75%, transparent 72.25%, rgba($secondary-bg, 1) 76.5%);
+		background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 77%);
 	}
 
 	.nav-elem {
@@ -77,20 +78,17 @@
 		text-transform: uppercase;
 		background-color: transparent;
 
-		background-color: $primary-bg;
-		box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
-		border-radius: 999rem;
-
 		opacity: 1;
-		transition: all $primary-time, color $primary-time;
+		transition: opacity $primary-time, background-color $secondary-time, box-shadow $secondary-time, border-radius $secondary-time;
 		&.hide {
 			opacity: 0;
 		}
 
 		&.target{
-/*		background-color: $primary-bg;
-		box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
-		border-radius: 999rem;*/
+			background-color: $primary-bg;
+			box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
+			border-radius: 999rem;
+
 			.nav-title{
 				color: $primary-accent;
 			}
@@ -98,6 +96,8 @@
 	}
 
 	.nav-title {
+		transition: color $primary-time;
+		color: $secondary-text;
 		margin: 0;
 	}
 
