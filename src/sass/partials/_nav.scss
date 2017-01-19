@@ -1,16 +1,26 @@
 #gallery-nav {
 	$nav-elem-width: 8rem;
 	$nav-elem-margin: 1rem;
-	background: $secondary-bg 50%;
 
-	#nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: nowrap;
+	background: $secondary-bg;
+
+	#nav-bar {
+		display: inline-block;
 		position: relative;
+	}
+
+	#nav-container {
 		margin: 0;
 		margin-left: auto;
 		margin-right: auto;
 		padding-top: 2rem;
 		padding-bottom: 2rem;
-		
+		overflow: hidden;
+
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -60,14 +70,39 @@
 		z-index: 1;
 	}
 
-	#nav::before {
+	#nav-container::before {
 		@extend .fade-mask;
 		background: linear-gradient(to right, rgba($secondary-bg, 1) 23%, rgba($secondary-bg, 0) 27%);
 	}
 
-	#nav::after {
+	#nav-container::after {
 		@extend .fade-mask;
 		background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 77%);
+	}
+
+	.nav-arrow {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		z-index: 2;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		flex-wrap: nowrap;
+
+		img {
+			width: 3rem;
+			height: 3rem;
+		}
+	}
+	
+	#nav-left {
+		left: -7rem;
+	}
+
+	#nav-right {
+		right: -7rem;
 	}
 
 	.nav-elem {
@@ -104,10 +139,10 @@
 	@media screen and (max-width: $bp-medium) {
 		padding: 1rem;
 
-		#nav {
-			flex-direction: column;
+		#nav-container {
+			/*flex-direction: column;
 			justify-content: center;
-			align-items: center;
+			align-items: center;*/
 
 			@for $i from 1 through 5 {
 				&.left-#{$i} {
@@ -125,7 +160,7 @@
 			}
 		}
 
-		#nav::before, #nav::after {
+		#nav-container::before, #nav-container::after {
 			display: none;
 		}
 

@@ -67,7 +67,7 @@ const jumpNav = function jumpGalleryNav(jump) {
 		const jumpClass = jumpDirection + jumpDistance;
 
 		// Start transition
-		const nav = document.getElementById('nav');
+		const nav = document.getElementById('nav-container');
 		nav.classList.add(jumpClass);
 
 		// Change target
@@ -150,8 +150,8 @@ const jumpTo = function jumpToGallery(index) {
 const initNav = function initGalleryNav() {
 	// Set nav width dynamically	TODO: find better option
 	const navElemTransition = 10;	// nav elem width + 2 * margin
-	const nav = document.getElementById('nav');
-	nav.style.width = size * navElemTransition + 'rem';
+	const nav = document.getElementById('nav-container');
+	nav.style.maxWidth = size * navElemTransition + 'rem';
 
 	// Sets initial target
 	navs[currIndex].classList.add('target');
@@ -210,7 +210,9 @@ const buildGallery = function buildGalleryHTML(data) {
 
 	// Build HTML using template
 	pages = appendTemplate(pagesRoot, pagesTemplate, data);
-	navs = appendTemplate(navRoot, navTemplate, data)[0].children;
+	appendTemplate(navRoot, navTemplate, data);
+	const navContainer = document.getElementById('nav-container');
+	navs = navContainer.children;
 
 	// Initialize state variables
 	size = pages.length;
