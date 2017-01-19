@@ -1,13 +1,15 @@
 #gallery-nav {
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+	$nav-elem-width: 8rem;
+	$nav-elem-margin: 1rem;
+	background: linear-gradient(180deg, $primary-bg 50%, $secondary-bg 50%);
 
 	#nav {
 		position: relative;
 		margin: 0;
 		margin-left: auto;
 		margin-right: auto;
-		width: 60vw; // TODO: CHANGE TO BE DYNAMIC
+		padding-top: 2rem;
+		padding-bottom: 2rem;
 		
 		display: flex;
 		flex-direction: row;
@@ -17,30 +19,30 @@
 
 		// up to 5 transitions, max of 10 gallery pages
 		@for $i from 1 through 5 {
-			$nav-elem-width: 12vw;
-
+			$nav-elem-transition: $nav-elem-width + (2 * $nav-elem-margin);
+			
 			&.left-#{$i} {
 				transition: transform $transition-time, opacity $transition-time;
-				transform: translateX(#{$i * $nav-elem-width});
+				transform: translateX(#{$i * $nav-elem-transition});
 				&::before {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-elem-width * -1});
+					transform: translateX(#{$i * $nav-elem-transition * -1});
 				}
 				&::after {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-elem-width * -1});
+					transform: translateX(#{$i * $nav-elem-transition * -1});
 				}
 			}
 			&.right-#{$i} {
 				transition: transform $transition-time, opacity $transition-time;
-				transform: translateX(#{$i * $nav-elem-width * -1});
+				transform: translateX(#{$i * $nav-elem-transition * -1});
 				&::before {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-elem-width});
+					transform: translateX(#{$i * $nav-elem-transition});
 				}
 				&::after {
 					transition: transform $transition-time, opacity $transition-time;
-					transform: translateX(#{$i * $nav-elem-width});
+					transform: translateX(#{$i * $nav-elem-transition});
 				}
 			}
 		}
@@ -48,8 +50,8 @@
 
 	.fade-mask {
 		content: " ";
-		width: 60%;
-		height: 100%;
+		width: 200%;
+		height: 50%;
 		position: absolute;
 		top: 0;
 		pointer-events: none;
@@ -58,25 +60,45 @@
 
 	#nav::before {
 		@extend .fade-mask;
-		left: -50%;
-		background: linear-gradient(to right, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
+		background: linear-gradient(to right, rgba($primary-bg, 1) 23.5%, transparent 27.75%, transparent 72.25%, rgba($primary-bg, 1) 76.5%);
 	}
 
 	#nav::after {
 		@extend .fade-mask;
-		right: -50%;
-		background: linear-gradient(to left, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 100%);
+		top: 50%;
+		background: linear-gradient(to right, rgba($secondary-bg, 1) 23.5%, transparent 27.75%, transparent 72.25%, rgba($secondary-bg, 1) 76.5%);
 	}
 
+/*	#nav::before {
+		@extend .fade-mask;
+		background: linear-gradient(to right, rgba($primary-bg, 1) 24%, transparent 26%, transparent 74%, rgba($primary-bg, 1) 76%);
+	}
+
+	#nav::after {
+		@extend .fade-mask;
+		top: 50%;
+		background: linear-gradient(to right, rgba($secondary-bg, 1) 24%, transparent 26%, transparent 74%, rgba($secondary-bg, 1) 76%);
+	}*/
+
 	.nav-elem {
-		width: 12vw;
-		margin: 1rem;
+		min-width: $nav-elem-width;
+		margin: $nav-elem-margin;
+		padding: 0.75rem;
 		text-align: center;
+		box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
+		border-radius: 999rem;
+		text-transform: uppercase;
+		color: #999;
+		background-color: $primary-bg;
 
 		opacity: 1;
 		transition: opacity $transition-time;
 		&.hide {
 			opacity: 0;
+		}
+		
+		&::target{
+
 		}
 	}
 
@@ -88,7 +110,6 @@
 		padding: 1rem;
 
 		#nav {
-			width: 60vw;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
@@ -114,7 +135,7 @@
 		}
 
 		.nav-elem {
-			width: 100%;
+			width: 100vw;
 			margin: 0.5rem;
 			&.hide {
 				opacity: 1;

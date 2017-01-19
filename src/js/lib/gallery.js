@@ -141,6 +141,10 @@ const jumpTo = function jumpToGallery(index) {
  *	Initializes nav elements
  */
 const initNav = function initGalleryNav() {
+	let navElemTransition = 10;	// nav elem width + 2 * margin
+	let nav = document.getElementById('nav');
+	nav.style.width = size * navElemTransition + 'rem';	// set nav width dynamically
+
 	// Attaches event listeners to nav
 	for (let i = 0; i < size; i++) {
 		navs[i].classList.remove('hide');
@@ -183,6 +187,8 @@ const loadPages = function loadGalleryPages(data) {
  *	TODO: precompile and organize templates
  */
 const buildGallery = function buildGalleryHTML(data) {
+	if (data.length <= 0) throw new Error('Empty data');
+
 	// Template variables
 	const pagesRoot = document.getElementById('gallery-pages');
 	const pagesSource = document.getElementById('page-template').innerHTML;
