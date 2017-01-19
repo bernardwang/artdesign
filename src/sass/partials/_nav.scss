@@ -3,6 +3,16 @@
 	$nav-elem-margin: 1rem;
 	background: linear-gradient(180deg, $primary-bg 50%, $secondary-bg 50%);
 
+	.fade-mask {
+		content: " ";
+		width: 200%;
+		height: 50%;
+		position: absolute;
+		top: 0;
+		pointer-events: none;
+		z-index: 1;
+	}
+
 	#nav {
 		position: relative;
 		margin: 0;
@@ -22,40 +32,30 @@
 			$nav-elem-transition: $nav-elem-width + (2 * $nav-elem-margin);
 			
 			&.left-#{$i} {
-				transition: transform $transition-time, opacity $transition-time;
+				transition: transform $primary-time, opacity $primary-time;
 				transform: translateX(#{$i * $nav-elem-transition});
 				&::before {
-					transition: transform $transition-time, opacity $transition-time;
+					transition: transform $primary-time, opacity $primary-time;
 					transform: translateX(#{$i * $nav-elem-transition * -1});
 				}
 				&::after {
-					transition: transform $transition-time, opacity $transition-time;
+					transition: transform $primary-time, opacity $primary-time;
 					transform: translateX(#{$i * $nav-elem-transition * -1});
 				}
 			}
 			&.right-#{$i} {
-				transition: transform $transition-time, opacity $transition-time;
+				transition: transform $primary-time, opacity $primary-time;
 				transform: translateX(#{$i * $nav-elem-transition * -1});
 				&::before {
-					transition: transform $transition-time, opacity $transition-time;
+					transition: transform $primary-time, opacity $primary-time;
 					transform: translateX(#{$i * $nav-elem-transition});
 				}
 				&::after {
-					transition: transform $transition-time, opacity $transition-time;
+					transition: transform $primary-time, opacity $primary-time;
 					transform: translateX(#{$i * $nav-elem-transition});
 				}
 			}
 		}
-	}
-
-	.fade-mask {
-		content: " ";
-		width: 200%;
-		height: 50%;
-		position: absolute;
-		top: 0;
-		pointer-events: none;
-		z-index: 1;
 	}
 
 	#nav::before {
@@ -69,40 +69,35 @@
 		background: linear-gradient(to right, rgba($secondary-bg, 1) 23.5%, transparent 27.75%, transparent 72.25%, rgba($secondary-bg, 1) 76.5%);
 	}
 
-/*	#nav::before {
-		@extend .fade-mask;
-		background: linear-gradient(to right, rgba($primary-bg, 1) 24%, transparent 26%, transparent 74%, rgba($primary-bg, 1) 76%);
-	}
-
-	#nav::after {
-		@extend .fade-mask;
-		top: 50%;
-		background: linear-gradient(to right, rgba($secondary-bg, 1) 24%, transparent 26%, transparent 74%, rgba($secondary-bg, 1) 76%);
-	}*/
-
 	.nav-elem {
 		min-width: $nav-elem-width;
 		margin: $nav-elem-margin;
-		padding: 0.75rem;
+		padding: 1rem;
 		text-align: center;
+		text-transform: uppercase;
+		background-color: transparent;
+
+		background-color: $primary-bg;
 		box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
 		border-radius: 999rem;
-		text-transform: uppercase;
-		color: #999;
-		background-color: $primary-bg;
 
 		opacity: 1;
-		transition: opacity $transition-time;
+		transition: all $primary-time, color $primary-time;
 		&.hide {
 			opacity: 0;
 		}
-		
-		&::target{
 
+		&.target{
+/*		background-color: $primary-bg;
+		box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
+		border-radius: 999rem;*/
+			.nav-title{
+				color: $primary-accent;
+			}
 		}
 	}
 
-	.page-title {
+	.nav-title {
 		margin: 0;
 	}
 

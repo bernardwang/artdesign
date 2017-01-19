@@ -48,7 +48,8 @@ $normalize-vertical-rhythm: false !default;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-$transition-time: 1s;
+$primary-time: 1s;
+$secondary-time: 0.5s;
 
 @font-face {
 	font-family: MuliBlack;

@@ -25,17 +25,12 @@ let prevIndex = 0;
 /**
  *	Jumps to page
  */
-const jumpPage = function jumpGalleryPage(index, jump) {
+const jumpPage = function jumpGalleryPage(jump, newIndices) {
 	return new Promise((resolve, reject) => {
 		// Creating jump transition class
 		const jumpDistance = (Math.abs(jump) <= 2) ? Math.abs(jump) : 'max';
 		const jumpDirection = (jump < 0) ? 'left-' : 'right-';
 		const jumpClass = jumpDirection + jumpDistance;
-
-		// New index variables
-		const newPrevIndex = (index + size - 1) % size;
-		const newNextIndex = (index + 1) % size;
-		const newCurrIndex = index;
 
 		// Start transition
 		pages[currIndex].classList.add(jumpClass);
@@ -48,13 +43,9 @@ const jumpPage = function jumpGalleryPage(index, jump) {
 			pages[prevIndex].className = 'page';
 			pages[nextIndex].className = 'page';
 
-			pages[newCurrIndex].classList.add('curr');
-			pages[newPrevIndex].classList.add('prev');
-			pages[newNextIndex].classList.add('next');
-
-			currIndex = newCurrIndex;
-			prevIndex = newPrevIndex;
-			nextIndex = newNextIndex;
+			pages[newIndices.curr].classList.add('curr');
+			pages[newIndices.prev].classList.add('prev');
+			pages[newIndices.next].classList.add('next');
 
 			resolve();
 		}, transitionTime);
@@ -66,7 +57,7 @@ const jumpPage = function jumpGalleryPage(index, jump) {
  *
  *	TODO: Fix jank ass timing shit below without jquery
  */
-const jumpNav = function jumpGalleryNav(index, jump) {
+const jumpNav = function jumpGalleryNav(jump) {
 	return new Promise((resolve, reject) => {
 		// TODO: Check if column view, other wise dont have transition
 
@@ -78,6 +69,10 @@ const jumpNav = function jumpGalleryNav(index, jump) {
 		// Start transition
 		const nav = document.getElementById('nav');
 		nav.classList.add(jumpClass);
+
+		// Change target
+		const targetIndex = Math.floor(size / 2);
+		navs[targetIndex].classList.remove('target');
 
 		// After transition
 		// Hide and reorder nav elements
@@ -100,8 +95,7 @@ const jumpNav = function jumpGalleryNav(index, jump) {
 				for (let i = 0; i < size; i++) {
 					navs[i].classList.remove('hide');
 				}
-
-				// navs[index].classList.add('selected');
+				navs[targetIndex].classList.add('target');
 				resolve();
 			}, 50);
 		}, transitionTime);
@@ -116,7 +110,7 @@ const jumpTo = function jumpToGallery(index) {
 	if (index > size || index < 0) throw new Error('Invalid page');
 	if (transitioning || index === currIndex) return;
 
-	// Prevent any more jumps
+	// Block more jumps
 	transitioning = true;
 
 	// Calculate shortest jump
@@ -124,15 +118,28 @@ const jumpTo = function jumpToGallery(index) {
 	const wrap = (index < currIndex) ? linear + size : linear - size;
 	const jump = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
 
+	// New index variables
+	const newIndices = {
+		curr:	index,
+		next:	(index + 1) % size,
+		prev:	(index + size - 1) % size,
+	};
+
 	// Update page and nav
 	const jumpPromises = [
-		jumpPage(index, jump),
-		jumpNav(index, jump),
+		jumpPage(jump, newIndices),
+		jumpNav(jump),
 	];
 
 	// Reset after all transitions are finished
 	Promise.all(jumpPromises)
 	.then(() => {
+		// Update indices
+		currIndex = newIndices.curr;
+		prevIndex = newIndices.prev;
+		nextIndex = newIndices.next;
+
+		// Unblock jumps
 		transitioning = false;
 	});
 };
@@ -141,9 +148,13 @@ const jumpTo = function jumpToGallery(index) {
  *	Initializes nav elements
  */
 const initNav = function initGalleryNav() {
-	let navElemTransition = 10;	// nav elem width + 2 * margin
-	let nav = document.getElementById('nav');
-	nav.style.width = size * navElemTransition + 'rem';	// set nav width dynamically
+	// Set nav width dynamically	TODO: find better option
+	const navElemTransition = 10;	// nav elem width + 2 * margin
+	const nav = document.getElementById('nav');
+	nav.style.width = size * navElemTransition + 'rem';
+
+	// Sets initial target
+	navs[currIndex].classList.add('target');
 
 	// Attaches event listeners to nav
 	for (let i = 0; i < size; i++) {

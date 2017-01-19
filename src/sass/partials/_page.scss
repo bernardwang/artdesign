@@ -1,14 +1,12 @@
-
 #gallery-pages {
 	position: relative;
-	background-color: $secondary-bg;
 
 	.show {
 		opacity: 1;
 		z-index: auto;
 		cursor: auto;
 		pointer-events: auto;
-		transition: opacity $transition-time;
+		transition: opacity $primary-time;
 	}
 
 	.hide {
@@ -56,22 +54,22 @@
 			$translate-width: 77vw;
 
 			&.left-#{$i} {
-				transition: transform $transition-time;
+				transition: transform $primary-time;
 				transform: translateX(#{$i * $translate-width}); // .page width + 
 			}
 			&.right-#{$i} {
-				transition: transform $transition-time;
+				transition: transform $primary-time;
 				transform: translateX(#{$i * $translate-width * -1});
 			}
 		}
 
 		&.left-max {	
-			transition: transform $transition-time;		
+			transition: transform $primary-time;		
 			transform: translateX(200vw);
 		}
 
 		&.right-max {
-			transition: transform $transition-time;
+			transition: transform $primary-time;
 			transform: translateX(-200vw);
 		}
 	}
@@ -89,47 +87,6 @@
 		margin-top: 4rem;
 		columns: 3;
 		column-gap: 3rem;
-	}
-	
-	.item {
-		margin-bottom: 3rem;
-		background-color: white;
-		break-inside: avoid;
-	}	
-
-	.item-container {
-		margin-bottom: 2rem;
-		box-shadow: 0 6px 6px 0 rgba(black, 0.12), 0 10px 20px 0 rgba(black, 0.1);
-		border-radius: 0 0 5px 5px;
-	}
-	
-	.item-caption {
-		break-inside: avoid;
-		padding: 2rem;
-		text-align: center;
-	}
-
-	.item-title {
-		margin: 0;
-		margin-bottom: 1rem;
-		text-transform: uppercase;
-	}
-	
-	.photo {
-		margin: 0;
-		padding: 0;
-	
-		width: 100%;
-		height: auto;
-	
-		display: none;
-		&:first-child {
-			display: block;
-		}
-	}
-	
-	.photo-img {
-		width: 100%;
 	}
 
 	@media screen and (max-width: $bp-xlarge) {
@@ -165,11 +122,11 @@
 				$translate-width: 100vw;
 	
 				&.left-#{$i} {
-					transition: transform $transition-time;
+					transition: transform $primary-time;
 					transform: translateX(#{$i * $translate-width}); // .page width + 
 				}
 				&.right-#{$i} {
-					transition: transform $transition-time;
+					transition: transform $primary-time;
 					transform: translateX(#{$i * $translate-width * -1});
 				}
 			}

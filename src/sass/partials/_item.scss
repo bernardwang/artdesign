@@ -1,0 +1,47 @@
+#gallery-pages {
+	.item {
+		margin-bottom: 3rem;
+		background-color: white;
+		break-inside: avoid;
+	}	
+
+	.item-container {
+		margin-bottom: 2rem;
+		box-shadow: 0 6px 6px 0 rgba(black, 0.12), 0 10px 20px 0 rgba(black, 0.1);
+		border-radius: 0 0 5px 5px;
+	}
+	
+	.item-caption {
+		break-inside: avoid;
+		padding: 2rem;
+		text-align: center;
+	}
+
+	.item-title {
+		margin: 0;
+		margin-bottom: 1rem;
+		text-transform: uppercase;
+	}
+
+	.item-photos::before {
+		z-index: 2;
+		background: linear-gradient(180deg, transparent 95%, rgba(black, 1) 100%);
+	}
+	
+	.photo {
+		margin: 0;
+		padding: 0;
+	
+		width: 100%;
+		height: auto;
+	
+		display: none;
+		&:first-child {
+			display: block;
+		}
+	}
+	
+	.photo-img {
+		width: 100%;
+	}
+}
