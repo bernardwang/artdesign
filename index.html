@@ -1,20 +1,22 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="mobile-web-app-capable" content="yes">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="mobile-web-app-capable" content="yes">
 
-    <title>Art & Design</title>
+	<title>Art & Design</title>
 
-    <link href="./assets/css/main.css" rel="stylesheet">
+	<link href="./assets/css/main.css" rel="stylesheet">
   </head>
   <body>
 		<header id="about">
 			<h1 class="about-title">Art & Design</h1>
-			<p class="about-desc">Over the years, I've taken a variety of studio classes through my Art & Design minor. This is an informal showcase of some of my work from university.</p>
+			<p class="about-desc">
+				An informal showcase of the classes and work done through my Art & Design minor.
+			</p>
 		</header>
 
 		<main id="gallery">
@@ -27,22 +29,30 @@
 		<footer>
 		</footer>
 
-    <script src="./assets/js/app.js"></script>
-    <script>
-      app();
-    </script>
-    <script id="nav-template" type="text/x-handlebars-template">
-    	<div id="nav">
-			{{#each this}}
- 			<a class="nav-elem hide">
-				<h4 class="nav-title">{{title}}</h4>
+	<script src="./assets/js/app.js"></script>
+	<script>
+	  app();
+	</script>
+	<script id="nav-template" type="text/x-handlebars-template">
+		<div id="nav-bar">
+			<a id="nav-left" class="nav-arrow" href="">
+				<img src="./assets/img/left.svg" alt="Left Arrow">
 			</a>
-			{{/each}}
+			<div id="nav-container">
+				{{#each this}}
+				<a class="nav-elem hide">
+					<h4 class="nav-title">{{title}}</h4>
+				</a>
+				{{/each}}
+			</div>
+			<a id="nav-right" class="nav-arrow "href="">
+				<img src="./assets/img/right.svg" alt="Left Arrow">
+			</a>
 		</div>
 	</script>
 	<script id="page-template" type="text/x-handlebars-template">
 		{{#each this}}
- 		<section class="page">
+		<section class="page">
 			<header class="page-header">
 				<h2 class="page-desc">{{{description}}}</h2>
 			</header>
