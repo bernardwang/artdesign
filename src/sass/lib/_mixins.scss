@@ -1,0 +1,45 @@
+/**
+ *
+ */
+@mixin color-opacity($color, $opacity: 0.3) {
+	background: $primary-bg; /* The Fallback */
+	background: rgba($color, $opacity);
+}
+
+/**
+ *
+ */
+@mixin multiline-ellipse($font-size, $line-height, $lines) {
+	display: block;	 /* Fallback for non-webkit */
+	display: -webkit-box;
+	max-width: 400px;
+	height: $font-size * $line-height * $lines; /* Fallback for non-webkit */
+	margin: 0 auto;
+	font-size: $font-size;
+	line-height: $line-height;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/**
+ *
+ */
+@mixin nav-slide($distance, $direction, $index) {
+	transition: transform $primary-time, opacity $primary-time;
+	transform: translateX(#{$index * $distance * $direction});
+	&::before {
+		transition: transform $primary-time, opacity $primary-time;
+		transform: translateX(#{$index * $distance * $direction * -1});
+	}
+	&::after {
+		transition: transform $primary-time, opacity $primary-time;
+		transform: translateX(#{$index * $distance * $direction * -1});
+	}
+}
+
+@mixin page-slide($distance, $direction, $index) {
+	transition: transform $primary-time, opacity $primary-time;
+	transform: translateX(#{$index * $distance * $direction});
+}

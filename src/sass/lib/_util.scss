@@ -1,4 +1,18 @@
-@mixin color-opacity($color, $opacity: 0.3) {
-    background: $primary-bg; /* The Fallback */
-    background: rgba($color, $opacity);
+.desc {
+	color: $secondary-text;
+}
+
+.hide {
+	opacity: 0;
+	z-index: -1;
+	cursor: default;
+	pointer-events: none;
+}
+
+.show {
+	opacity: 1;
+	z-index: auto;
+	cursor: auto;
+	pointer-events: auto;
+	transition: opacity $primary-time;
 }

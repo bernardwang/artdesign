@@ -57,10 +57,8 @@ const jumpPage = function jumpGalleryPage(jump, newIndices) {
  *
  *	TODO: Fix jank ass timing shit below without jquery
  */
-const jumpNav = function jumpGalleryNav(jump) {
+const jumpNav = function jumpGalleryNav(jump, navElem) {
 	return new Promise((resolve, reject) => {
-		// TODO: Check if column view, other wise dont have transition
-
 		// Creating jump transition class
 		const jumpDistance = Math.abs(jump);
 		const jumpDirection = (jump < 0) ? 'left-' : 'right-';
@@ -70,9 +68,10 @@ const jumpNav = function jumpGalleryNav(jump) {
 		const nav = document.getElementById('nav-container');
 		nav.classList.add(jumpClass);
 
-		// Change target
+		// Reset targets
 		const targetIndex = Math.floor(size / 2);
 		navs[targetIndex].classList.remove('target');
+		navElem.classList.add('target');
 
 		// After transition
 		// Hide and reorder nav elements
@@ -95,7 +94,6 @@ const jumpNav = function jumpGalleryNav(jump) {
 				for (let i = 0; i < size; i++) {
 					navs[i].classList.remove('hide');
 				}
-				navs[targetIndex].classList.add('target');
 				resolve();
 			}, 50);
 		}, transitionTime);
@@ -105,7 +103,7 @@ const jumpNav = function jumpGalleryNav(jump) {
 /**
  *	Move and update gallery
  */
-const jumpTo = function jumpToGallery(index) {
+const jumpTo = function jumpToGallery(index, navTarget) {
 	// Checks if alid jump
 	if (index > size || index < 0) throw new Error('Invalid page');
 	if (transitioning || index === currIndex) return;
@@ -128,7 +126,7 @@ const jumpTo = function jumpToGallery(index) {
 	// Update page and nav
 	const jumpPromises = [
 		jumpPage(jump, newIndices),
-		jumpNav(jump),
+		jumpNav(jump, navTarget),
 	];
 
 	// Reset after all transitions are finished
@@ -149,20 +147,23 @@ const jumpTo = function jumpToGallery(index) {
  */
 const initNav = function initGalleryNav() {
 	// Set nav width dynamically	TODO: find better option
-	const navElemTransition = 10;	// nav elem width + 2 * margin
-	const nav = document.getElementById('nav-container');
-	nav.style.maxWidth = size * navElemTransition + 'rem';
+	const navElemTransition = 10;	// nav elem width + 2 * margin, currently manual
+	const navContainer = document.getElementById('nav-container');
+	navContainer.style.maxWidth = size * navElemTransition + 'rem';
 
-	// Sets initial target
-	navs[currIndex].classList.add('target');
-
-	// Attaches event listeners to nav
+	// Attaches event listeners to nav elems
 	for (let i = 0; i < size; i++) {
-		navs[i].classList.remove('hide');
-		navs[i].addEventListener('click', () => {
-			jumpTo(i);
+		navs[i].addEventListener('click', (e) => {
+			jumpTo(i, e.target);
 		});
 	}
+
+	// Sets initial target elem
+	navs[currIndex].classList.add('target');
+
+	// Shows nav
+	const navBar = document.getElementById('nav-bar');
+	navBar.classList.remove('hide');
 };
 
 /**

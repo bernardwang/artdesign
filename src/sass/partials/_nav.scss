@@ -1,6 +1,7 @@
 #gallery-nav {
+	// Nav variables
 	$nav-elem-width: 8rem;
-	$nav-elem-margin: 1rem;
+	$nav-elem-margin: 0.6rem;
 
 	display: flex;
 	flex-direction: row;
@@ -11,73 +12,10 @@
 	#nav-bar {
 		display: inline-block;
 		position: relative;
-	}
 
-	#nav-container {
-		margin: 0;
-		margin-left: auto;
-		margin-right: auto;
-		padding-top: 2rem;
-		padding-bottom: 2rem;
-		overflow: hidden;
-
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		flex-wrap: nowrap;
-
-		// up to 5 transitions, max of 10 gallery pages
-		@for $i from 1 through 5 {
-			$nav-elem-transition: $nav-elem-width + (2 * $nav-elem-margin);
-			
-			&.left-#{$i} {
-				transition: transform $primary-time, opacity $primary-time;
-				transform: translateX(#{$i * $nav-elem-transition});
-				&::before {
-					transition: transform $primary-time, opacity $primary-time;
-					transform: translateX(#{$i * $nav-elem-transition * -1});
-				}
-				&::after {
-					transition: transform $primary-time, opacity $primary-time;
-					transform: translateX(#{$i * $nav-elem-transition * -1});
-				}
-			}
-			&.right-#{$i} {
-				transition: transform $primary-time, opacity $primary-time;
-				transform: translateX(#{$i * $nav-elem-transition * -1});
-				&::before {
-					transition: transform $primary-time, opacity $primary-time;
-					transform: translateX(#{$i * $nav-elem-transition});
-				}
-				&::after {
-					transition: transform $primary-time, opacity $primary-time;
-					transform: translateX(#{$i * $nav-elem-transition});
-				}
-			}
+		.hide {
+			@extend .hide;
 		}
-	}
-
-	.fade-mask {
-		content: " ";
-		width: 200%;
-		height: 100%;
-		position: absolute;
-		top: 0;
-		left: -50%;
-		margin: auto;
-		pointer-events: none;
-		z-index: 1;
-	}
-
-	#nav-container::before {
-		@extend .fade-mask;
-		background: linear-gradient(to right, rgba($secondary-bg, 1) 23%, rgba($secondary-bg, 0) 27%);
-	}
-
-	#nav-container::after {
-		@extend .fade-mask;
-		background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 77%);
 	}
 
 	.nav-arrow {
@@ -94,6 +32,10 @@
 		img {
 			width: 3rem;
 			height: 3rem;
+			padding: 0.5rem;
+			background-color: $primary-bg;
+			box-shadow: 0 4px 4px 0 rgba(black, 0.02), 0 5px 10px 0 rgba(black, 0.02);
+			border-radius: 999rem;
 		}
 	}
 	
@@ -105,6 +47,56 @@
 		right: -7rem;
 	}
 
+	#nav-container {
+		margin: 0;
+		margin-left: auto;
+		margin-right: auto;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		overflow: hidden;
+	
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: nowrap;
+	
+		// up to 5 transitions, max of 10 gallery pages
+		@for $i from 1 through 5 {
+			$distance: $nav-elem-width + (2 * $nav-elem-margin);
+			$direction-left: 1;
+			$direction-right: -1;
+			
+			&.left-#{$i} {
+				@include nav-slide($distance, $direction-left, $i);
+			}
+			&.right-#{$i} {
+				@include nav-slide($distance, $direction-right, $i);
+			}
+		}
+
+		&::before, 
+		&::after {
+			content: " ";
+			width: 200%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: -50%;
+			margin: auto;
+			pointer-events: none;
+			z-index: 1;
+		}
+
+		&::before {
+			background: linear-gradient(to right, rgba($secondary-bg, 1) 23%, rgba($secondary-bg, 0) 27%);
+		}
+
+		&::after {
+			background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 77%);
+		}
+	}
+
 	.nav-elem {
 		min-width: $nav-elem-width;
 		margin: $nav-elem-margin;
@@ -112,21 +104,24 @@
 		text-align: center;
 		text-transform: uppercase;
 		background-color: transparent;
+		font-size: 0.8rem;
+		border-radius: 999rem;
 
 		opacity: 1;
 		transition: opacity $primary-time, background-color $secondary-time, box-shadow $secondary-time, border-radius $secondary-time;
-		&.hide {
-			opacity: 0;
-		}
 
-		&.target{
+		&.target {
 			background-color: $primary-bg;
-			box-shadow: 0 4px 4px 0 rgba(black, 0.1), 0 5px 10px 0 rgba(black, 0.08);
-			border-radius: 999rem;
+			box-shadow: 0 4px 4px 0 rgba(black, 0.03), 0 5px 10px 0 rgba(black, 0.03);
 
-			.nav-title{
+			.nav-title {
 				color: $primary-accent;
 			}
+		}
+
+		&:hover { 
+			background-color: $primary-bg;
+			box-shadow: 0 4px 4px 0 rgba(black, 0.03), 0 5px 10px 0 rgba(black, 0.03);
 		}
 	}
 
@@ -134,31 +129,11 @@
 		transition: color $primary-time;
 		color: $secondary-text;
 		margin: 0;
+		pointer-events: none;	// To make sure click event target is correct
 	}
 
 	@media screen and (max-width: $bp-medium) {
 		padding: 1rem;
-
-		#nav-container {
-			/*flex-direction: column;
-			justify-content: center;
-			align-items: center;*/
-
-			@for $i from 1 through 5 {
-				&.left-#{$i} {
-					transform: translateX(0);
-					&::before, &::after {
-						transform: translateX(0);
-					}
-				} 
-				&.right-#{$i} {
-					transform: translateX(0);
-					&::before, &::after {
-						transform: translateX(0);
-					}
-				}
-			}
-		}
 
 		#nav-container::before, #nav-container::after {
 			display: none;

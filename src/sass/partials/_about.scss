@@ -8,6 +8,7 @@
 	}
 
 	.about-desc {
+		@extend .desc;
 		max-width: 25rem;
 		margin: 1rem;
 		margin-left: auto;
