@@ -3,6 +3,7 @@
 	$nav-elem-width: 8rem;
 	$nav-elem-margin: 0.6rem;
 
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -33,18 +34,24 @@
 			width: 3rem;
 			height: 3rem;
 			padding: 0.5rem;
-			background-color: $primary-bg;
-			box-shadow: 0 4px 4px 0 rgba(black, 0.02), 0 5px 10px 0 rgba(black, 0.02);
 			border-radius: 999rem;
+			transition: background-color $secondary-time, box-shadow $secondary-time;
+		}
+
+		&:hover {
+			img {
+				background-color: $primary-bg;
+				box-shadow: 0 4px 4px 0 rgba(black, 0.02), 0 5px 10px 0 rgba(black, 0.02);
+			}
 		}
 	}
 	
 	#nav-left {
-		left: -7rem;
+		left: -5rem;
 	}
 
 	#nav-right {
-		right: -7rem;
+		right: -5rem;
 	}
 
 	#nav-container {
@@ -89,11 +96,11 @@
 		}
 
 		&::before {
-			background: linear-gradient(to right, rgba($secondary-bg, 1) 23%, rgba($secondary-bg, 0) 27%);
+			background: linear-gradient(to right, rgba($secondary-bg, 1) 24%, rgba($secondary-bg, 0) 27%);
 		}
 
 		&::after {
-			background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 77%);
+			background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 76%);
 		}
 	}
 
@@ -104,11 +111,10 @@
 		text-align: center;
 		text-transform: uppercase;
 		background-color: transparent;
-		font-size: 0.8rem;
 		border-radius: 999rem;
 
 		opacity: 1;
-		transition: opacity $primary-time, background-color $secondary-time, box-shadow $secondary-time, border-radius $secondary-time;
+		transition: opacity $primary-time, background-color $secondary-time, box-shadow $secondary-time;
 
 		&.target {
 			background-color: $primary-bg;
@@ -126,25 +132,71 @@
 	}
 
 	.nav-title {
+		margin: 0;
+		font-size: 0.8rem;
 		transition: color $primary-time;
 		color: $secondary-text;
-		margin: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		pointer-events: none;	// To make sure click event target is correct
 	}
 
+	@media screen and (max-width: $bp-xxlarge) {
+		#nav-bar {
+			position: static;
+		}
+
+		.nav-arrow {
+			img {
+				width: 3rem;
+				height: 3rem;
+				padding: 0.5rem;
+				border-radius: 999rem;
+				transition: background-color $secondary-time, box-shadow $secondary-time;
+			}
+		}
+		
+		#nav-left {
+			left: 1vw;
+		}
+
+		#nav-right {
+			right: 1vw;
+		}
+	}
+
 	@media screen and (max-width: $bp-medium) {
+		// Nav variables
+		$nav-elem-width: 6rem;
+		$nav-elem-margin: 0.4rem;
 		padding: 1rem;
 
-		#nav-container::before, #nav-container::after {
-			display: none;
+		#nav-container {
+			// up to 5 transitions, max of 10 gallery pages
+			@for $i from 1 through 5 {
+				$distance: $nav-elem-width + (2 * $nav-elem-margin);
+				$direction-left: 1;
+				$direction-right: -1;
+				
+				&.left-#{$i} {
+					@include nav-slide($distance, $direction-left, $i);
+				}
+				&.right-#{$i} {
+					@include nav-slide($distance, $direction-right, $i);
+				}
+			}
+
+			&::before,
+			&::after {
+				display: none;
+			}
 		}
 
 		.nav-elem {
-			width: 100vw;
-			margin: 0.5rem;
-			&.hide {
-				opacity: 1;
-			}
+			min-width: $nav-elem-width;
+			margin: $nav-elem-margin;
+			padding: 1rem;
 		}
 	}
 

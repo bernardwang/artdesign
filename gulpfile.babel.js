@@ -80,8 +80,8 @@ const deployOpts = {
 const SRC_HTML = './dist/**/*.html'; 	// make more clear
 const SRC_ASSETS = './src/**/*.*';
 const SRC_IMG = './src/img/*.*';
-const SRC_SASS = './src/sass/**/*.scss';
-const SRC_JS = './src/js/**/*.js';
+const SRC_SASS = './src/sass/**/*.*';
+const SRC_JS = './src/js/**/*.*';
 const SRC_VENDORJS = './src/js/vendor/*.js';		// not include in babel build
 const ENTRY_JS = './src/js/app.js';					// js entry point for babel
 
@@ -219,7 +219,7 @@ gulp.task('browsersync', () => {
 gulp.task('watcher', () => {
 	gulp.watch(SRC_HTML, ['pages']);
 	gulp.watch(SRC_SASS, ['styles']);
-	gulp.watch(SRC_ASSETS, ['assets']);
+	//gulp.watch(SRC_ASSETS, ['assets']);
 	getBundler().on('update', () => gulp.start('watch-scripts'));
 });
 

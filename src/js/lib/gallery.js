@@ -103,7 +103,7 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 /**
  *	Move and update gallery
  */
-const jumpTo = function jumpToGallery(index, navTarget) {
+const jumpTo = function jumpToNav(index, navTarget) {
 	// Checks if alid jump
 	if (index > size || index < 0) throw new Error('Invalid page');
 	if (transitioning || index === currIndex) return;
@@ -143,6 +143,26 @@ const jumpTo = function jumpToGallery(index, navTarget) {
 };
 
 /**
+ *	Move to next page
+ */
+const jumpToNext = function jumpToNextNav() {
+	const next = (currIndex + 1) % size;
+	const nextNavIndex = Math.floor(size / 2) + 1;
+	const nextNavTarget = navs[nextNavIndex];
+	jumpTo(next, nextNavTarget);
+};
+
+/**
+ *	Move to prev page
+ */
+const jumpToPrev = function jumpToPrevNav() {
+	const prev = (currIndex + size - 1) % size;
+	const prevNavIndex = Math.floor(size / 2) - 1;
+	const prevNavTarget = navs[prevNavIndex];
+	jumpTo(prev, prevNavTarget);
+};
+
+/**
  *	Initializes nav elements
  */
 const initNav = function initGalleryNav() {
@@ -151,12 +171,22 @@ const initNav = function initGalleryNav() {
 	const navContainer = document.getElementById('nav-container');
 	navContainer.style.maxWidth = size * navElemTransition + 'rem';
 
-	// Attaches event listeners to nav elems
+	// Attach event listeners to nav elems
 	for (let i = 0; i < size; i++) {
 		navs[i].addEventListener('click', (e) => {
 			jumpTo(i, e.target);
 		});
 	}
+
+	// Attach event listeners to nav arrows
+	const navLeft = document.getElementById('nav-left');
+	const navRight = document.getElementById('nav-right');
+	navLeft.addEventListener('click', () => {
+		jumpToPrev();
+	});
+	navRight.addEventListener('click', () => {
+		jumpToNext();
+	});
 
 	// Sets initial target elem
 	navs[currIndex].classList.add('target');

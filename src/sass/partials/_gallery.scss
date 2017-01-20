@@ -1,3 +1,10 @@
+body {
+	font-size: 100%;
+	@media screen and (max-width: $bp-medium) {
+		font-size: 90%;
+	}
+}
+
 #gallery {
 
 }
