@@ -34,19 +34,19 @@
 	  app();
 	</script>
 	<script id="nav-template" type="text/x-handlebars-template">
-		<div id="nav-bar">
-			<a id="nav-left" class="nav-arrow" href="">
+		<div id="nav-bar" class="hide">
+			<a id="nav-left" class="nav-arrow">
 				<img src="./assets/img/left.svg" alt="Left Arrow">
 			</a>
 			<div id="nav-container">
 				{{#each this}}
-				<a class="nav-elem hide">
+				<a class="nav-elem">
 					<h4 class="nav-title">{{title}}</h4>
 				</a>
 				{{/each}}
 			</div>
-			<a id="nav-right" class="nav-arrow "href="">
-				<img src="./assets/img/right.svg" alt="Left Arrow">
+			<a id="nav-right" class="nav-arrow">
+				<img src="./assets/img/right.svg" alt="Right Arrow">
 			</a>
 		</div>
 	</script>
@@ -54,7 +54,7 @@
 		{{#each this}}
 		<section class="page">
 			<header class="page-header">
-				<h2 class="page-desc">{{{description}}}</h2>
+				<h2 class="page-title">{{{description}}}</h2>
 			</header>
 			<section class="page-items">
 			</section>
