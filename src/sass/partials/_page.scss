@@ -75,7 +75,7 @@
 	}
 	
 	.page-items {
-		margin-top: 4rem;
+		margin-top: 3rem;
 		columns: 3;
 		column-gap: 3rem;
 	}
@@ -88,7 +88,8 @@
 	}
 
 	@media screen and (max-width: $bp-medium) {
-		padding: 1rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
 
 		.page-items {
 			columns: 1;
@@ -97,7 +98,8 @@
 
 		.page {
 			width: 100%;
-			padding: 1rem;
+			padding-left: 1rem;
+			padding-right: 1rem;
 			// overflow-y: auto;
 
 			&.next {

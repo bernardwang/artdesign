@@ -41,7 +41,7 @@
 		&:hover {
 			img {
 				background-color: $primary-bg;
-				box-shadow: 0 4px 4px 0 rgba(black, 0.02), 0 5px 10px 0 rgba(black, 0.02);
+				box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
 			}
 		}
 	}
@@ -118,7 +118,7 @@
 
 		&.target {
 			background-color: $primary-bg;
-			box-shadow: 0 4px 4px 0 rgba(black, 0.03), 0 5px 10px 0 rgba(black, 0.03);
+			box-shadow: 1px 4px 4px 0 rgba(black, 0.03), 1px 5px 10px 0 rgba(black, 0.03);
 
 			.nav-title {
 				color: $primary-accent;
@@ -127,7 +127,7 @@
 
 		&:hover { 
 			background-color: $primary-bg;
-			box-shadow: 0 4px 4px 0 rgba(black, 0.03), 0 5px 10px 0 rgba(black, 0.03);
+			box-shadow: 1px 4px 4px 0 rgba(black, 0.03), 1px 5px 10px 0 rgba(black, 0.03);
 		}
 	}
 
@@ -170,7 +170,8 @@
 		// Nav variables
 		$nav-elem-width: 6rem;
 		$nav-elem-margin: 0.4rem;
-		padding: 1rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
 
 		#nav-container {
 			// up to 5 transitions, max of 10 gallery pages

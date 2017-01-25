@@ -4,13 +4,13 @@
 		background-color: white;
 		break-inside: avoid;
 
-/*		transition: transform $secondary-time, box-shadow $secondary-time;
 		&:hover {
-			//transform: translate3d(-3px, -6px, 0);
-			transform: translateY(-0.25rem);
 			cursor: pointer;
-			//box-shadow: 3px 12px 6px 0 rgba(black, 0.06), 3px 16px 20px 0 rgba(black, 0.06);
-		}*/
+
+			.photo-img {
+				transform: scale(1.05);
+			}
+		}
 	}	
 
 	.item-container {
@@ -22,8 +22,6 @@
 	.item-caption {
 		break-inside: avoid;
 		padding: 2rem;
-		padding-left: 3rem;
-		padding-right: 3rem;
 		text-align: center;
 	}
 
@@ -54,13 +52,19 @@
 		width: 100%;
 		height: auto;
 	
-		display: none;
+/*		display: none;
 		&:first-child {
 			display: block;
-		}
+		}*/
 	}
 	
+	.photo-wrapper {
+		overflow: hidden;
+	}
+
 	.photo-img {
 		width: 100%;
+		transition: transform $secondary-time;
 	}
 }
+
