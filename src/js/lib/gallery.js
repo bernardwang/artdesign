@@ -6,7 +6,7 @@
 
 import Handlebars from 'handlebars';
 import { appendTemplate } from './helper';
-import { buildItems } from './page';
+import { buildPage } from './page';
 
 // Default css transition time
 let transitioning = false;
@@ -210,7 +210,7 @@ const initPage = function initGalleryPage() {
  *	Loads items on a single page
  */
 const loadPage = function loadGalleryPage(data, index) {
-	return buildItems(pages[index], data[index].set);
+	return buildPage(pages[index], data[index].set);
 };
 
 /**
@@ -218,7 +218,7 @@ const loadPage = function loadGalleryPage(data, index) {
  */
 const loadPages = function loadGalleryPages(data) {
 	const pagePromises = data.map((collection, index) => {
-		return buildItems(pages[index], collection.set);
+		return buildPage(pages[index], collection.set);
 	});
 	return Promise.all(pagePromises);
 };
