@@ -20,10 +20,14 @@ const buildAllPhotos = function buildAllItemPhoto(root, template, item) {
 			const photoURLs = (photos).map((photo) => {
 				return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`;
 			});
+			const moreCount = photos.length - 1;
+			const isMore = (moreCount > 0);
 			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
 				photos: photoURLs,
+				count: moreCount,
+				more: isMore,
 			};
 
 			// Append item
@@ -41,10 +45,14 @@ const buildPhoto = function buildItemPhoto(root, template, item) {
 		})
 		.then((photos) => {
 			const photoURLs = [`https://farm${photos.farm}.staticflickr.com/${photos.server}/${photos.id}_${photos.secret}_z.jpg`];
+			const moreCount = photos.length - 1;
+			const isMore = (moreCount > 0);
 			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
 				photos: photoURLs,
+				count: moreCount,
+				more: isMore,
 			};
 
 			// Append item

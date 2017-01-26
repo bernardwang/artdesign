@@ -1,12 +1,39 @@
 #gallery-pages {
 	.item {
-		padding-bottom: 3.5rem;
+		position: relative;
+		padding: 1.2rem;
+		padding-bottom: 2.6rem;
 		background-color: $secondary-bg;
-		break-inside: avoid;
+		break-inside: avoid-column;
+		transition: transform $secondary-time;
 
 		&:hover {
 			cursor: pointer;
+			transform: translate3D(-0.1rem, -0.2rem, 0);
+
+			.item-count {
+				opacity: 1;
+			}
+
 		}
+	}
+
+	.item-count {
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 2.5rem;
+		height: 2.5rem;
+		line-height: 2.5rem;
+		border-radius: 999rem;
+		transition: opacity $secondary-time;
+		background-color: $primary-bg;
+		box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
+		text-align: center;
+		font-size: 0.75rem;
+		color: $primary-accent;
+		z-index: 1;
 	}
 
 	.item-container {
@@ -15,9 +42,10 @@
 	}
 	
 	.item-caption {
-		break-inside: avoid;
 		padding: 2rem;
 		text-align: center;
+		background-color: $primary-bg;
+		border-radius: 0 0 5px 5px;
 	}
 
 	.item-title {
@@ -34,10 +62,9 @@
 		@extend .desc;
 		@include multiline-ellipse($font-size, $line-height, $lines);
 	}
-
-	.item-photos::before {
-		z-index: 2;
-		background: linear-gradient(180deg, transparent 95%, rgba(black, 1) 100%);
+	
+	.item-photos {
+		position: relative;
 	}
 	
 	.photo {
@@ -59,7 +86,7 @@
 
 	@media screen and (max-width: $bp-medium) {
 		.item {
-			padding-bottom: 2.5rem;
+			padding-bottom: 2rem;
 		}
 	}
 }

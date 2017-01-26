@@ -14,12 +14,9 @@ body {
 		position: absolute;
 		right: 2rem;
 		bottom: 2rem;
-
-/*		img {
-			background-color: $primary-bg;
-			box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
-		}*/
-
+		&:hover {
+			transform: translateY(-0.2rem);
+		}
 	}
 
 	@media screen and (max-width: $bp-xlarge) {
