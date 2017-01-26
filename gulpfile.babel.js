@@ -196,7 +196,7 @@ gulp.task('min-scripts', ['scripts'], () => {
  *	Move assets
  */
 gulp.task('assets', () => {
-	gulp.src([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS])
+	gulp.src([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS]) // fix this string shit
 		.pipe(changed(DEST_ASSETS))
 		.pipe(gulp.dest(DEST_ASSETS))
 		.pipe(sync.reload(syncOpts));
@@ -219,7 +219,7 @@ gulp.task('browsersync', () => {
 gulp.task('watcher', () => {
 	gulp.watch(SRC_HTML, ['pages']);
 	gulp.watch(SRC_SASS, ['styles']);
-	//gulp.watch(SRC_ASSETS, ['assets']);
+	gulp.watch([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS], ['assets']);
 	getBundler().on('update', () => gulp.start('watch-scripts'));
 });
 

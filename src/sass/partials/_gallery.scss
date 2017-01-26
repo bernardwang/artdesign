@@ -6,7 +6,27 @@ body {
 }
 
 #gallery {
+	position: relative;
 
+	#gallery-up {
+		@extend .arrow;
+		display: none;
+		position: absolute;
+		right: 2rem;
+		bottom: 2rem;
+
+/*		img {
+			background-color: $primary-bg;
+			box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
+		}*/
+
+	}
+
+	@media screen and (max-width: $bp-xlarge) {
+		#gallery-up {
+			display: inline;
+		}
+	}
 }
 
 /*#gallery::before {

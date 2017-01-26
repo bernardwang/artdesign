@@ -12,9 +12,8 @@
 		top: 0;
 		left: 0;
 		right: 0;
+		overflow: hidden;
 		@extend .hide;
-
-		//transform: translateY(1rem);
 
 		&.curr {
 			@extend .show;
@@ -83,7 +82,7 @@
 	@media screen and (max-width: $bp-xlarge) {
 		.page-items {
 			columns: 2;
-			column-gap: 3rem;
+			column-gap: 3.5rem;
 		}
 	}
 
@@ -107,7 +106,7 @@
 				right: -100vw;
 			}
 		
-			&.prev {			
+			&.prev {
 				opacity: 0;
 				left: -100vw;
 			}

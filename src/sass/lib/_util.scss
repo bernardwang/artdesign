@@ -16,3 +16,41 @@
 	pointer-events: auto;
 	transition: opacity $primary-time;
 }
+
+.hide-pseudo {
+	content: " ";
+	position: absolute;
+	margin: auto;
+	pointer-events: none;
+	z-index: 1;
+}
+
+.arrow {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: nowrap;
+	transition: transform $secondary-time;
+
+	svg {
+		width: 3rem;
+		height: 3rem;
+		padding: 0.5rem;
+		border-radius: 999rem;
+		transition: background-color $secondary-time, box-shadow $secondary-time, transform $secondary-time;
+		background-color: $primary-bg;
+		box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
+		z-index: 2;
+
+		.cls-1 {
+			transition: fill $secondary-time;
+		}
+	}
+
+	&:hover {
+		svg .cls-1 {
+			fill: $primary-accent;
+		}
+	}
+
+}

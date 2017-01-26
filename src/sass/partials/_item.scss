@@ -1,20 +1,15 @@
 #gallery-pages {
 	.item {
-		margin-bottom: 3rem;
-		background-color: white;
+		padding-bottom: 3.5rem;
+		background-color: $secondary-bg;
 		break-inside: avoid;
 
 		&:hover {
 			cursor: pointer;
-
-			.photo-img {
-				transform: scale(1.05);
-			}
 		}
-	}	
+	}
 
 	.item-container {
-		margin-bottom: 2rem;
 		box-shadow: 0 6px 6px 0 rgba(black, 0.06), 0 10px 20px 0 rgba(black, 0.06);
 		border-radius: 0 0 5px 5px;
 	}
@@ -52,19 +47,20 @@
 		width: 100%;
 		height: auto;
 	
-/*		display: none;
+		display: none;
 		&:first-child {
 			display: block;
-		}*/
+		}
 	}
 	
-	.photo-wrapper {
-		overflow: hidden;
-	}
-
 	.photo-img {
 		width: 100%;
-		transition: transform $secondary-time;
+	}
+
+	@media screen and (max-width: $bp-medium) {
+		.item {
+			padding-bottom: 2.5rem;
+		}
 	}
 }
 

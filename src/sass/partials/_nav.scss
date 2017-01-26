@@ -20,38 +20,39 @@
 	}
 
 	.nav-arrow {
+		@extend .arrow;
 		position: absolute;
 		top: 0;
 		height: 100%;
 		z-index: 2;
-
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		flex-wrap: nowrap;
-
-		img {
-			width: 3rem;
-			height: 3rem;
-			padding: 0.5rem;
-			border-radius: 999rem;
-			transition: background-color $secondary-time, box-shadow $secondary-time;
-		}
-
-		&:hover {
-			img {
-				background-color: $primary-bg;
-				box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
-			}
-		}
 	}
-	
+
 	#nav-left {
 		left: -5rem;
+		&:hover {
+			transform: translateX(-0.2rem);
+		}
+		&::before {
+			@extend .hide-pseudo;
+			width: 600%;
+			height: 100%;
+			left: -50%;
+			background: linear-gradient(to right, rgba($secondary-bg, 1) 22%, rgba($secondary-bg, 0) 27%);
+		}
 	}
 
 	#nav-right {
 		right: -5rem;
+		&:hover {
+			transform: translateX(0.2rem);
+		}
+		&::before {
+			@extend .hide-pseudo;
+			width: 600%;
+			height: 100%;
+			right: -50%;
+			background: linear-gradient(to right, rgba($secondary-bg, 0) 73%, rgba($secondary-bg, 1) 78%);
+		}
 	}
 
 	#nav-container {
@@ -84,15 +85,11 @@
 
 		&::before, 
 		&::after {
-			content: " ";
+			@extend .hide-pseudo;
 			width: 200%;
 			height: 100%;
-			position: absolute;
 			top: 0;
 			left: -50%;
-			margin: auto;
-			pointer-events: none;
-			z-index: 1;
 		}
 
 		&::before {
@@ -142,27 +139,17 @@
 		pointer-events: none;	// To make sure click event target is correct
 	}
 
-	@media screen and (max-width: $bp-xxlarge) {
+	@media screen and (max-width: $bp-xlarge) {
 		#nav-bar {
 			position: static;
 		}
-
-		.nav-arrow {
-			img {
-				width: 3rem;
-				height: 3rem;
-				padding: 0.5rem;
-				border-radius: 999rem;
-				transition: background-color $secondary-time, box-shadow $secondary-time;
-			}
-		}
 		
 		#nav-left {
-			left: 1vw;
+			left: 3vw;
 		}
 
 		#nav-right {
-			right: 1vw;
+			right: 3vw;
 		}
 	}
 

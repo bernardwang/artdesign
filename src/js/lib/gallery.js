@@ -181,12 +181,16 @@ const initNav = function initGalleryNav() {
 	// Attach event listeners to nav arrows
 	const navLeft = document.getElementById('nav-left');
 	const navRight = document.getElementById('nav-right');
+	const galleryUp = document.getElementById('gallery-up');
 	navLeft.addEventListener('click', () => {
 		jumpToPrev();
 	});
 	navRight.addEventListener('click', () => {
 		jumpToNext();
 	});
+	galleryUp.addEventListener('click', () => {
+	});
+
 
 	// Sets initial target elem
 	navs[currIndex].classList.add('target');

@@ -37,10 +37,10 @@ const buildAllPhotos = function buildAllItemPhoto(root, template, item) {
 const buildPhoto = function buildItemPhoto(root, template, item) {
 	return photosetAPI(item.id)
 		.then((photoset) => {	// Transform result
-			return photoset.photoset.photo;
+			return photoset.photoset.photo[0];
 		})
 		.then((photos) => {
-			const photoURLs = [`https://farm${photos[0].farm}.staticflickr.com/${photos[0].server}/${photos[0].id}_${photos[0].secret}_z.jpg`];
+			const photoURLs = [`https://farm${photos.farm}.staticflickr.com/${photos.server}/${photos.id}_${photos.secret}_z.jpg`];
 			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
@@ -66,7 +66,7 @@ const buildPage = function buildPageItems(page, items) {
 	const itemSource = document.getElementById('item-template').innerHTML;
 	const itemTemplate = Handlebars.compile(itemSource);
 	const itemPromises = items.map((item) => {
-		return buildPhoto(itemRoot, itemTemplate, item);
+		return buildAllPhotos(itemRoot, itemTemplate, item);
 	});
 	return Promise.all(itemPromises);
 };
