@@ -2,19 +2,22 @@
 	.item {
 		position: relative;
 		padding: 1.2rem;
-		padding-bottom: 2.6rem;
+		margin-bottom: 1.4rem;
 		background-color: $secondary-bg;
 		break-inside: avoid-column;
 		transition: transform $secondary-time;
 
 		&:hover {
-			cursor: pointer;
 			transform: translate3D(-0.1rem, -0.2rem, 0);
 
-			.item-count {
-				opacity: 1;
+			.item-container {
+				cursor: pointer;
 			}
 
+			.item-count {
+				cursor: pointer;
+				opacity: 1;
+			}
 		}
 	}
 

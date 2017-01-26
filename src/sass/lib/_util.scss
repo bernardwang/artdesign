@@ -23,6 +23,7 @@
 	margin: auto;
 	pointer-events: none;
 	z-index: 1;
+	transition: background $secondary-time;
 }
 
 .arrow {

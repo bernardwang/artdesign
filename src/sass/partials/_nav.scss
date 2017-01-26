@@ -3,6 +3,7 @@
 	$nav-elem-width: 8rem;
 	$nav-elem-margin: 0.6rem;
 
+	width: 100%;
 	position: relative;
 	padding-top: 2rem;	
 	padding-bottom: 2rem;
@@ -10,7 +11,8 @@
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: nowrap;
-	background: $secondary-bg;
+	background-color: $secondary-bg;
+	transition: box-shadow $secondary-time;
 
 	#nav-bar {
 		display: inline-block;
@@ -35,6 +37,7 @@
 			transform: translateX(-0.2rem);
 		}
 		&::before {
+			display: none;
 			@extend .hide-pseudo;
 			width: 600%;
 			height: 100%;
@@ -49,6 +52,7 @@
 			transform: translateX(0.2rem);
 		}
 		&::before {
+				display: none;
 			@extend .hide-pseudo;
 			width: 600%;
 			height: 100%;

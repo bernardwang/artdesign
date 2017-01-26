@@ -22,6 +22,9 @@ let currIndex = 0;
 let nextIndex = 0;
 let prevIndex = 0;
 
+let sticky = false;
+let stickyHeight = 0;
+
 /**
  *	Jumps to page
  */
@@ -111,6 +114,8 @@ const jumpTo = function jumpToNav(index, navTarget) {
 	// Block more jumps
 	transitioning = true;
 
+	if (sticky) window.scroll(0, stickyHeight);
+
 	// Calculate shortest jump
 	const linear = index - currIndex;
 	const wrap = (index < currIndex) ? linear + size : linear - size;
@@ -189,8 +194,13 @@ const initNav = function initGalleryNav() {
 		jumpToNext();
 	});
 	galleryUp.addEventListener('click', () => {
+		window.scroll(0, stickyHeight);
+		// window.scroll({
+		// 	top: stickyHeight,
+		// 	left: 0,
+		// 	behavior: 'smooth'
+		// });
 	});
-
 
 	// Sets initial target elem
 	navs[currIndex].classList.add('target');
@@ -254,6 +264,27 @@ const buildGallery = function buildGalleryHTML(data) {
 	currIndex = Math.floor(size / 2);
 	nextIndex = (currIndex + 1) % size;
 	prevIndex = (currIndex + size - 1) % size;
+
+	sticky = false;
+	stickyHeight = document.getElementById('about').clientHeight;
+
+	// Add gallery scroll listener
+	window.addEventListener('scroll', (e) => {
+		const scroll = document.body.scrollTop || document.documentElement.scrollTop;
+		if ((scroll >= stickyHeight && sticky) ||
+			(scroll < stickyHeight && !sticky)) {
+			return;
+		}
+
+		const gallery = document.getElementById('gallery');
+		if (scroll >= stickyHeight) {
+			gallery.classList.add('sticky');
+			sticky = true;
+		} else {
+			gallery.classList.remove('sticky');
+			sticky = false;
+		}
+	});
 
 	// Load first 3 pages
 	const pagePromises = [
