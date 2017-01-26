@@ -24,6 +24,9 @@
 			</nav>
 			<div id="gallery-pages">
 			</div>
+			<a id="gallery-up">
+				<svg viewBox="0 0 32 32"><defs><style>.cls-1{fill:#999;}</style></defs><title>up</title><path data-name="Up Arrow" class="cls-1" d="M15.8,10.8l-9,9a1,1,0,0,0,1.4,1.4l8.3-8.3,8.3,8.3a1,1,0,0,0,1.4-1.4l-9-9A1,1,0,0,0,15.8,10.8Z"/></svg>
+			</a>
 		</main>
 
 		<footer>
@@ -36,7 +39,7 @@
 	<script id="nav-template" type="text/x-handlebars-template">
 		<div id="nav-bar" class="hide">
 			<a id="nav-left" class="nav-arrow">
-				<img src="./assets/img/left.svg" alt="Left Arrow">
+				<svg viewBox="0 0 32 32"><defs><style>.cls-1{fill:#999;}</style></defs><title>left</title><path data-name="Left Arrow" class="cls-1" d="M11.3,16.7l9,9a1,1,0,0,0,1.4-1.4L13.4,16l8.3-8.3a1,1,0,1,0-1.4-1.4l-9,9A1,1,0,0,0,11.3,16.7Z"/></svg>
 			</a>
 			<div id="nav-container">
 				{{#each this}}
@@ -46,7 +49,7 @@
 				{{/each}}
 			</div>
 			<a id="nav-right" class="nav-arrow">
-				<img src="./assets/img/right.svg" alt="Right Arrow">
+				<svg viewBox="0 0 32 32"><defs><style>.cls-1{fill:#999;}</style></defs><title>right</title><path data-name="Left Arrow" class="cls-1" d="M21.7,15.3l-9-9a1,1,0,0,0-1.4,1.4L19.6,16l-8.3,8.3a1,1,0,0,0,1.4,1.4l9-9A1,1,0,0,0,21.7,15.3Z"/></svg>
 			</a>
 		</div>
 	</script>
@@ -63,13 +66,14 @@
 	</script>
 	<script id="item-template" type="text/x-handlebars-template">
 		<article class="item">
+			{{#if more}}
+				<div class="item-count">+{{count}}</div>
+			{{/if}}
 			<div class="item-container">
 				<div class="item-photos">
 					{{#each photos}}
 					<figure class="photo">
-						<div class="photo-wrapper">
-							<img class="photo-img" src="{{this}}"/>
-						</div>
+						<img class="photo-img" src="{{this}}"/>
 						<figcaption class="photo-title">
 						</figcaption>
 					</figure>
