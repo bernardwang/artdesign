@@ -218,6 +218,21 @@ const initPage = function initGalleryPage() {
 	pages[currIndex].classList.add('curr');
 	pages[prevIndex].classList.add('prev');
 	pages[nextIndex].classList.add('next');
+
+	const addPageListener = (page) => {
+		page.addEventListener('click', () => {
+			if (page.classList.contains('prev')) {
+				jumpToPrev();
+			} else if (page.classList.contains('next')) {
+				jumpToNext();
+			}
+		});
+	};
+
+	// Add next and prev page event listeners
+	for (let i = 0; i < size; i++) {
+		addPageListener(pages[i]);
+	}
 };
 
 /**

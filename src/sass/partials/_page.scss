@@ -25,12 +25,24 @@
 			@extend .show;
 			left: auto;
 			right: -65vw;
+			cursor: e-resize;
+
+			.item {
+				pointer-events: none;
+				cursor: default;
+			}
 		}
 	
 		&.prev {
 			@extend .show;
 			left: -65vw;
 			right: auto;
+			cursor: w-resize;
+			
+			.item {
+				pointer-events: none;
+				cursor: default;
+			}
 		}
 
 		// Three transition speeds, 1, 2, and max

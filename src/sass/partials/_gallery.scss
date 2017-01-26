@@ -1,7 +1,7 @@
 #gallery {
 	position: relative;
 
-	&::before {
+/*	&::before {
 		@extend .hide-pseudo;
 		width: 5%;
 		height: 100%;
@@ -17,7 +17,7 @@
 		top: 0;
 		right: 0;
 		background: linear-gradient(to left, rgba(238,238,238,0.3) 0%, rgba(238,238,238,0) 100%);
-	}
+	}*/
 
 	&.sticky {
 		#gallery-nav {
