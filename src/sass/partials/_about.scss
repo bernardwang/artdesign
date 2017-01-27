@@ -15,6 +15,7 @@
 		margin: 2rem;
 		margin-left: auto;
 		margin-right: auto;
+		padding-left: 2rem;
 	}
 
 	.about-title {
@@ -29,7 +30,7 @@
 	.about-desc {
 		@extend .desc;
 		font-size: 2rem;
-		padding-right: 10vw;
+		padding-right: 20vw;
 		line-height: 1.3;
 	}
 
@@ -44,20 +45,25 @@
 	}
 
 	@media screen and (max-width: $bp-medium) {
-		padding-left: 2rem;
-		padding-right: 2rem;
+		align-items: flex-start;
+
+		.about-title,
+		.about-desc {
+			margin-left: 0;
+			margin-right: 0;
+			padding-left: 2.5rem;
+			padding-right: 2.5rem;
+			width: 100vw;
+		}
 
 		.about-title {
 			font-size: 2rem;
 			span {
 				display: inline;
-			}
+			}	
 		}
-
 		.about-desc {
 			font-size: 1.5rem;
-			margin-left: 0;
-			margin-right: 0;
 		}
 	}
 }

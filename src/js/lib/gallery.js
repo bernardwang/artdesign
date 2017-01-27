@@ -5,8 +5,12 @@
  */
 
 import Handlebars from 'handlebars';
+import { polyfill } from '../vendor/smoothscroll';
 import { appendTemplate } from './helper';
-import { buildPage } from './page';
+import { initPage, buildPage } from './page';
+import { initNav } from './nav';
+
+polyfill();
 
 // Default css transition time
 let transitioning = false;
@@ -17,13 +21,14 @@ let navs = [];
 let pages = [];
 
 // Gallery state
-let size = 0;
-let currIndex = 0;
-let nextIndex = 0;
-let prevIndex = 0;
-
-let sticky = false;
-let stickyHeight = 0;
+const state = {
+	size: 0,
+	currIndex: 0,
+	nextIndex: 0,
+	prevIndex: 0,
+	sticky: false,
+	stickyHeight: 0,
+};
 
 /**
  *	Jumps to page
@@ -36,15 +41,15 @@ const jumpPage = function jumpGalleryPage(jump, newIndices) {
 		const jumpClass = jumpDirection + jumpDistance;
 
 		// Start transition
-		pages[currIndex].classList.add(jumpClass);
-		pages[prevIndex].classList.add(jumpClass);
-		pages[nextIndex].classList.add(jumpClass);
+		pages[state.currIndex].classList.add(jumpClass);
+		pages[state.prevIndex].classList.add(jumpClass);
+		pages[state.nextIndex].classList.add(jumpClass);
 
 		// After transition finishes, update pages
 		setTimeout(() => {
-			pages[currIndex].className = 'page';
-			pages[prevIndex].className = 'page';
-			pages[nextIndex].className = 'page';
+			pages[state.currIndex].className = 'page';
+			pages[state.prevIndex].className = 'page';
+			pages[state.nextIndex].className = 'page';
 
 			pages[newIndices.curr].classList.add('curr');
 			pages[newIndices.prev].classList.add('prev');
@@ -72,7 +77,7 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 		nav.classList.add(jumpClass);
 
 		// Reset targets
-		const targetIndex = Math.floor(size / 2);
+		const targetIndex = Math.floor(state.size / 2);
 		navs[targetIndex].classList.remove('target');
 		navElem.classList.add('target');
 
@@ -81,8 +86,8 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 		setTimeout(() => {
 			for (let i = 0; i < Math.abs(jump); i++) {
 				if (jump < 0) {
-					navs[size - 1].classList.add('hide');
-					nav.insertBefore(navs[size - 1], navs[0]);
+					navs[state.size - 1].classList.add('hide');
+					nav.insertBefore(navs[state.size - 1], navs[0]);
 				} else {
 					navs[0].classList.add('hide');
 					nav.appendChild(navs[0]);
@@ -94,7 +99,7 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 			// Immediately after reordering
 			// Fade nav elements back in
 			setTimeout(() => {
-				for (let i = 0; i < size; i++) {
+				for (let i = 0; i < state.size; i++) {
 					navs[i].classList.remove('hide');
 				}
 				resolve();
@@ -108,24 +113,25 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
  */
 const jumpTo = function jumpToNav(index, navTarget) {
 	// Checks if alid jump
-	if (index > size || index < 0) throw new Error('Invalid page');
-	if (transitioning || index === currIndex) return;
+	if (index > state.size || index < 0) throw new Error('Invalid page');
+	if (transitioning || index === state.currIndex) return;
 
 	// Block more jumps
 	transitioning = true;
 
-	if (sticky) window.scroll(0, stickyHeight);
+	// Scroll to top of nav first
+	if (state.sticky) window.scroll(0, state.stickyHeight);
 
 	// Calculate shortest jump
-	const linear = index - currIndex;
-	const wrap = (index < currIndex) ? linear + size : linear - size;
+	const linear = index - state.currIndex;
+	const wrap = (index < state.currIndex) ? linear + state.size : linear - state.size;
 	const jump = (Math.abs(linear) < Math.abs(wrap)) ? linear : wrap;
 
 	// New index variables
 	const newIndices = {
 		curr:	index,
-		next:	(index + 1) % size,
-		prev:	(index + size - 1) % size,
+		next:	(index + 1) % state.size,
+		prev:	(index + state.size - 1) % state.size,
 	};
 
 	// Update page and nav
@@ -138,9 +144,9 @@ const jumpTo = function jumpToNav(index, navTarget) {
 	Promise.all(jumpPromises)
 	.then(() => {
 		// Update indices
-		currIndex = newIndices.curr;
-		prevIndex = newIndices.prev;
-		nextIndex = newIndices.next;
+		state.currIndex = newIndices.curr;
+		state.prevIndex = newIndices.prev;
+		state.nextIndex = newIndices.next;
 
 		// Unblock jumps
 		transitioning = false;
@@ -151,8 +157,8 @@ const jumpTo = function jumpToNav(index, navTarget) {
  *	Move to next page
  */
 const jumpToNext = function jumpToNextNav() {
-	const next = (currIndex + 1) % size;
-	const nextNavIndex = Math.floor(size / 2) + 1;
+	const next = (state.currIndex + 1) % state.size;
+	const nextNavIndex = Math.floor(state.size / 2) + 1;
 	const nextNavTarget = navs[nextNavIndex];
 	jumpTo(next, nextNavTarget);
 };
@@ -161,78 +167,10 @@ const jumpToNext = function jumpToNextNav() {
  *	Move to prev page
  */
 const jumpToPrev = function jumpToPrevNav() {
-	const prev = (currIndex + size - 1) % size;
-	const prevNavIndex = Math.floor(size / 2) - 1;
+	const prev = (state.currIndex + state.size - 1) % state.size;
+	const prevNavIndex = Math.floor(state.size / 2) - 1;
 	const prevNavTarget = navs[prevNavIndex];
 	jumpTo(prev, prevNavTarget);
-};
-
-/**
- *	Initializes nav elements
- */
-const initNav = function initGalleryNav() {
-	// Set nav width dynamically	TODO: find better option
-	const navElemTransition = 10;	// nav elem width + 2 * margin, currently manual
-	const navContainer = document.getElementById('nav-container');
-	navContainer.style.maxWidth = size * navElemTransition + 'rem';
-
-	// Attach event listeners to nav elems
-	for (let i = 0; i < size; i++) {
-		navs[i].addEventListener('click', (e) => {
-			jumpTo(i, e.target);
-		});
-	}
-
-	// Attach event listeners to nav arrows
-	const navLeft = document.getElementById('nav-left');
-	const navRight = document.getElementById('nav-right');
-	const galleryUp = document.getElementById('gallery-up');
-	navLeft.addEventListener('click', () => {
-		jumpToPrev();
-	});
-	navRight.addEventListener('click', () => {
-		jumpToNext();
-	});
-	galleryUp.addEventListener('click', () => {
-		window.scroll(0, stickyHeight);
-		// window.scroll({
-		// 	top: stickyHeight,
-		// 	left: 0,
-		// 	behavior: 'smooth'
-		// });
-	});
-
-	// Sets initial target elem
-	navs[currIndex].classList.add('target');
-
-	// Shows nav
-	const navBar = document.getElementById('nav-bar');
-	navBar.classList.remove('hide');
-};
-
-/**
- *	Initializes pages
- */
-const initPage = function initGalleryPage() {
-	// Sets initial page
-	pages[currIndex].classList.add('curr');
-	pages[prevIndex].classList.add('prev');
-	pages[nextIndex].classList.add('next');
-
-	const addPageListener = (page) => {
-		page.addEventListener('click', () => {
-			if (page.classList.contains('prev')) {
-				jumpToPrev();
-			} else if (page.classList.contains('next')) {
-				jumpToNext();
-			}
-		});
-	};
-
-	// Add next and prev page event listeners
-	for (let i = 0; i < size; i++) {
-		addPageListener(pages[i]);
-	}
 };
 
 /**
@@ -275,37 +213,36 @@ const buildGallery = function buildGalleryHTML(data) {
 	navs = navContainer.children;
 
 	// Initialize state variables
-	size = pages.length;
-	currIndex = Math.floor(size / 2);
-	nextIndex = (currIndex + 1) % size;
-	prevIndex = (currIndex + size - 1) % size;
-
-	sticky = false;
-	stickyHeight = document.getElementById('about').clientHeight;
+	state.size = pages.length;
+	state.currIndex = Math.floor(state.size / 2);
+	state.nextIndex = (state.currIndex + 1) % state.size;
+	state.prevIndex = (state.currIndex + state.size - 1) % state.size;
+	state.sticky = false;
+	state.stickyHeight = document.getElementById('about').clientHeight;
 
 	// Add gallery scroll listener
-	window.addEventListener('scroll', (e) => {
+	document.body.addEventListener('scroll', (e) => {
 		const scroll = document.body.scrollTop || document.documentElement.scrollTop;
-		if ((scroll >= stickyHeight && sticky) ||
-			(scroll < stickyHeight && !sticky)) {
+		if ((scroll >= state.stickyHeight && state.sticky) ||
+			(scroll < state.stickyHeight && !state.sticky)) {
 			return;
 		}
 
 		const gallery = document.getElementById('gallery');
-		if (scroll >= stickyHeight) {
+		if (scroll >= state.stickyHeight) {
 			gallery.classList.add('sticky');
-			sticky = true;
+			state.sticky = true;
 		} else {
 			gallery.classList.remove('sticky');
-			sticky = false;
+			state.sticky = false;
 		}
 	});
 
 	// Load first 3 pages
 	const pagePromises = [
-		loadPage(data, currIndex),
-		loadPage(data, nextIndex),
-		loadPage(data, prevIndex),
+		loadPage(data, state.currIndex),
+		loadPage(data, state.nextIndex),
+		loadPage(data, state.prevIndex),
 	];
 	return Promise.all(pagePromises);
 };
@@ -315,11 +252,14 @@ const buildGallery = function buildGalleryHTML(data) {
  */
 const initGallery = function initGalleryPage(data) {
 	return buildGallery(data)
-	.then(() => initNav())
-	.then(() => initPage());
+	.then(() => initNav(navs, state))
+	.then(() => initPage(pages, state));
 };
 
 export {
 	initGallery,
 	loadPages,
+	jumpTo,
+	jumpToPrev,
+	jumpToNext,
 };

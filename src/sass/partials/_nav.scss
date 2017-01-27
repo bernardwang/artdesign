@@ -13,6 +13,7 @@
 	flex-wrap: nowrap;
 	background-color: $secondary-bg;
 	transition: box-shadow $secondary-time;
+	overflow-x: hidden;
 
 	#nav-bar {
 		display: inline-block;
@@ -37,7 +38,6 @@
 			transform: translateX(-0.2rem);
 		}
 		&::before {
-			display: none;
 			@extend .hide-pseudo;
 			width: 600%;
 			height: 100%;
@@ -52,7 +52,6 @@
 			transform: translateX(0.2rem);
 		}
 		&::before {
-				display: none;
 			@extend .hide-pseudo;
 			width: 600%;
 			height: 100%;
@@ -159,8 +158,8 @@
 
 	@media screen and (max-width: $bp-medium) {
 		// Nav variables
-		$nav-elem-width: 6rem;
-		$nav-elem-margin: 0.4rem;
+		$nav-elem-width: 5rem;
+		$nav-elem-margin: 0.2rem;
 		padding-left: 1rem;
 		padding-right: 1rem;
 
@@ -188,7 +187,13 @@
 		.nav-elem {
 			min-width: $nav-elem-width;
 			margin: $nav-elem-margin;
-			padding: 1rem;
+			padding-left: 0.5rem;
+			padding-right: 0.5rem;
+		}
+		
+		.nav-title {
+			font-size: 0.6rem;
+			line-height: 0.8rem;
 		}
 	}
 

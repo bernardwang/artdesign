@@ -6,11 +6,13 @@
 		height: 100%;
 		margin: auto;
 		padding: 3rem;
+		padding-bottom: 4rem;
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
-		overflow-y: hidden;
+		overflow: hidden;
+
 		@extend .hide;
 
 		&.curr {
@@ -107,8 +109,8 @@
 
 		.page {
 			width: 100%;
-			padding-left: 1rem;
-			padding-right: 1rem;
+			padding-left: 0.5rem;
+			padding-right: 0.5rem;
 
 			&.next {
 				opacity: 0;
@@ -119,6 +121,20 @@
 				opacity: 0;
 				left: -100vw;
 			}
-		}
+
+			// Three transition speeds, 1, 2, and max
+			@for $i from 1 through 2 {
+				$distance: 100vw;	// TODO: fix hardcoded;
+				$direction-left: 1;
+				$direction-right: -1;
+	
+				&.left-#{$i} {
+					@include page-slide($distance, $direction-left, $i);
+				}
+				&.right-#{$i} {
+					@include page-slide($distance, $direction-right, $i);
+				}
+			}
+			}
 	}
 }

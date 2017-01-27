@@ -30,12 +30,17 @@
 		#gallery-pages {
 			margin-top: 8rem;
 		}
+		#gallery-up {
+			@extend .show;
+			transition: transform $secondary-time, opacity $secondary-time;
+		}
 	}
 
 	#gallery-up {
 		@extend .arrow;
-		display: none;
-		position: absolute;
+		@extend .hide;
+		transition: opacity $secondary-time;
+		position: fixed;
 		right: 2rem;
 		bottom: 2rem;
 		&:hover {
@@ -43,9 +48,10 @@
 		}
 	}
 
-	@media screen and (max-width: $bp-xlarge) {
+	@media screen and (max-width: $bp-medium) {
 		#gallery-up {
-			display: inline;
+			right: 1rem;
+			bottom: 1rem;
 		}
 	}
 }

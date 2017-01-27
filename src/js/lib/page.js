@@ -7,11 +7,13 @@
 import Handlebars from 'handlebars';
 import { photosetAPI } from './flickrAPI';
 import { appendTemplate } from './helper';
+import { jumpToPrev, jumpToNext } from './gallery';
+import { initItems } from './item';
 
 /**
  *	Adds a single item into a page with all photos
  */
-const buildAllPhotos = function buildAllItemPhoto(root, template, item) {
+const buildAllItems = function buildAllItemsPhoto(root, template, item) {
 	return photosetAPI(item.id)
 		.then((photoset) => {	// Transform result
 			return photoset.photoset.photo;
@@ -35,32 +37,6 @@ const buildAllPhotos = function buildAllItemPhoto(root, template, item) {
 		});
 };
 
-/*
- *	Adds a single item into a page with only one photo
- */
-const buildPhoto = function buildItemPhoto(root, template, item) {
-	return photosetAPI(item.id)
-		.then((photoset) => {	// Transform result
-			return photoset.photoset.photo[0];
-		})
-		.then((photos) => {
-			const photoURLs = [`https://farm${photos.farm}.staticflickr.com/${photos.server}/${photos.id}_${photos.secret}_z.jpg`];
-			const moreCount = photos.length - 1;
-			const isMore = (moreCount > 0);
-			const context = {	// Create context with image source
-				title: item.title,
-				description: item.description,
-				photos: photoURLs,
-				count: moreCount,
-				more: isMore,
-			};
-
-			// Append item
-			appendTemplate(root, template, context);
-		});
-};
-
-
 /**
  *	Adds all items into a page
  *
@@ -74,11 +50,39 @@ const buildPage = function buildPageItems(page, items) {
 	const itemSource = document.getElementById('item-template').innerHTML;
 	const itemTemplate = Handlebars.compile(itemSource);
 	const itemPromises = items.map((item) => {
-		return buildAllPhotos(itemRoot, itemTemplate, item);
+		return buildAllItems(itemRoot, itemTemplate, item);
 	});
-	return Promise.all(itemPromises);
+
+	return Promise.all(itemPromises)
+	.then(initItems(itemRoot.children));
+};
+
+/**
+ *	Initializes pages
+ */
+const initPage = function initGalleryPage(pages, state) {
+	// Sets initial page
+	pages[state.currIndex].classList.add('curr');
+	pages[state.prevIndex].classList.add('prev');
+	pages[state.nextIndex].classList.add('next');
+
+	const addPageListener = (page) => {
+		page.addEventListener('click', () => {
+			if (page.classList.contains('prev')) {
+				jumpToPrev();
+			} else if (page.classList.contains('next')) {
+				jumpToNext();
+			}
+		});
+	};
+
+	// Add next and prev page event listeners
+	for (let i = 0; i < state.size; i++) {
+		addPageListener(pages[i]);
+	}
 };
 
 export {
+	initPage,
 	buildPage,
 };
