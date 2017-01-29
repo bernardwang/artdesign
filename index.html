@@ -25,9 +25,15 @@
 			<div id="gallery-pages">
 			</div>
 			<a id="gallery-up">
-				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><defs><style>.cls-1{fill:#999;}</style></defs><title>up</title><path data-name="Up Arrow" class="cls-1" d="M15.8,10.8l-9,9a1,1,0,0,0,1.4,1.4l8.3-8.3,8.3,8.3a1,1,0,0,0,1.4-1.4l-9-9A1,1,0,0,0,15.8,10.8Z"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><defs><style>.i{fill:#999;}</style></defs><title>up</title><path class="i" d="M15.8,10.8l-9,9a1,1,0,0,0,1.4,1.4l8.3-8.3,8.3,8.3a1,1,0,0,0,1.4-1.4l-9-9A1,1,0,0,0,15.8,10.8Z"/></svg>
 			</a>
 		</main>
+
+		<div id="overlay">
+			<a id="overlay-x">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 263.89 263.91"><title>x-button</title><path class="i" d="M423.23,438a14.69,14.69,0,0,1-10.41-4.31L178.37,199.18a14.72,14.72,0,1,1,20.82-20.82L433.64,412.82A14.73,14.73,0,0,1,423.23,438Z" transform="translate(-174.06 -174.05)"/><path class="i" d="M188.78,438a14.72,14.72,0,0,1-10.41-25.13L412.82,178.36a14.72,14.72,0,1,1,20.82,20.82L199.18,433.64A14.66,14.66,0,0,1,188.78,438Z" transform="translate(-174.06 -174.05)"/></svg>
+			</a>
+		</div>
 
 		<footer>
 		</footer>
@@ -40,7 +46,7 @@
 	<script id="nav-template" type="text/x-handlebars-template">
 		<div id="nav-bar" class="hide">
 			<a id="nav-left" class="nav-arrow">
-				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><defs><style>.cls-1{fill:#999;}</style></defs><title>left</title><path data-name="Left Arrow" class="cls-1" d="M11.3,16.7l9,9a1,1,0,0,0,1.4-1.4L13.4,16l8.3-8.3a1,1,0,1,0-1.4-1.4l-9,9A1,1,0,0,0,11.3,16.7Z"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><defs><style>.i{fill:#999;}</style></defs><title>left</title><path class="i" d="M11.3,16.7l9,9a1,1,0,0,0,1.4-1.4L13.4,16l8.3-8.3a1,1,0,1,0-1.4-1.4l-9,9A1,1,0,0,0,11.3,16.7Z"/></svg>
 			</a>
 			<div id="nav-container">
 				{{#each this}}
@@ -50,7 +56,7 @@
 				{{/each}}
 			</div>
 			<a id="nav-right" class="nav-arrow">
-				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><defs><style>.cls-1{fill:#999;}</style></defs><title>right</title><path data-name="Left Arrow" class="cls-1" d="M21.7,15.3l-9-9a1,1,0,0,0-1.4,1.4L19.6,16l-8.3,8.3a1,1,0,0,0,1.4,1.4l9-9A1,1,0,0,0,21.7,15.3Z"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><defs><style>.i{fill:#999;}</style></defs><title>right</title><path class="i" d="M21.7,15.3l-9-9a1,1,0,0,0-1.4,1.4L19.6,16l-8.3,8.3a1,1,0,0,0,1.4,1.4l9-9A1,1,0,0,0,21.7,15.3Z"/></svg>
 			</a>
 		</div>
 	</script>
@@ -72,11 +78,10 @@
 			{{/if}}
 			<div class="item-container">
 				<div class="item-photos">
-					{{#each photos}}
+					{{#each photo}}
 					<figure class="photo">
-						<img class="photo-img" src="{{this}}"/>
-						<figcaption class="photo-title">
-						</figcaption>
+						<img class="photo-img" src="{{this.src}}"/>
+						<figcaption class="photo-title"> {{{this.title}}} </figcaption>
 					</figure>
 					{{/each}}
 				</div>
