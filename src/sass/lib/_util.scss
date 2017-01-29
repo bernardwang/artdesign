@@ -40,16 +40,16 @@
 		border-radius: 999rem;
 		transition: background-color $secondary-time, box-shadow $secondary-time, transform $secondary-time;
 		background-color: $primary-bg;
-		box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
+		box-shadow: 1px 4px 4px 0 rgba(black, 0.03), 1px 5px 10px 0 rgba(black, 0.04);
 		z-index: 2;
 
-		.cls-1 {
+		.i {
 			transition: fill $secondary-time;
 		}
 	}
 
 	&:hover {
-		svg .cls-1 {
+		svg .i {
 			fill: $primary-accent;
 		}
 	}

@@ -19,15 +19,19 @@ const buildAllItems = function buildAllItemsPhoto(root, template, item) {
 			return photoset.photoset.photo;
 		})
 		.then((photos) => {
-			const photoURLs = (photos).map((photo) => {
-				return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`;
+			const photoList = (photos).map((photo) => {
+				return {
+					src: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
+					title: photo.title,
+				};
 			});
+
 			const moreCount = photos.length - 1;
 			const isMore = (moreCount > 0);
 			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
-				photos: photoURLs,
+				photo: photoList,
 				count: moreCount,
 				more: isMore,
 			};
@@ -54,7 +58,9 @@ const buildPage = function buildPageItems(page, items) {
 	});
 
 	return Promise.all(itemPromises)
-	.then(initItems(itemRoot.children));
+	.then(() => {
+		initItems(itemRoot.children);
+	});
 };
 
 /**

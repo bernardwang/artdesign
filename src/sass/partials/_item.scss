@@ -19,6 +19,10 @@
 				opacity: 1;
 			}
 		}
+
+		&.expand {
+
+		};
 	}
 
 	.item-count {
@@ -85,6 +89,10 @@
 	
 	.photo-img {
 		width: 100%;
+	}
+
+	.photo-title {
+		display: none;
 	}
 
 	@media screen and (max-width: $bp-medium) {

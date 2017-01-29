@@ -9,12 +9,10 @@ import { polyfill } from '../vendor/smoothscroll';
 import { appendTemplate } from './helper';
 import { initPage, buildPage } from './page';
 import { initNav } from './nav';
+import { GLOBAL } from './global';
 
 polyfill();
 
-// Default css transition time
-let transitioning = false;
-const transitionTime = 1000;
 
 // Gallery HTML elements
 let navs = [];
@@ -56,7 +54,7 @@ const jumpPage = function jumpGalleryPage(jump, newIndices) {
 			pages[newIndices.next].classList.add('next');
 
 			resolve();
-		}, transitionTime);
+		}, GLOBAL.transitionTime);
 	});
 };
 
@@ -104,7 +102,7 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 				}
 				resolve();
 			}, 50);
-		}, transitionTime);
+		}, GLOBAL.transitionTime);
 	});
 };
 
@@ -114,10 +112,10 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 const jumpTo = function jumpToNav(index, navTarget) {
 	// Checks if alid jump
 	if (index > state.size || index < 0) throw new Error('Invalid page');
-	if (transitioning || index === state.currIndex) return;
+	if (GLOBAL.transitioning || index === state.currIndex) return;
 
 	// Block more jumps
-	transitioning = true;
+	GLOBAL.transitioning = true;
 
 	// Scroll to top of nav first
 	if (state.sticky) window.scroll(0, state.stickyHeight);
@@ -149,7 +147,7 @@ const jumpTo = function jumpToNav(index, navTarget) {
 		state.nextIndex = newIndices.next;
 
 		// Unblock jumps
-		transitioning = false;
+		GLOBAL.transitioning = false;
 	});
 };
 
