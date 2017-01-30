@@ -31,7 +31,7 @@ const buildAllItems = function buildAllItemsPhoto(root, template, item) {
 			const context = {	// Create context with image source
 				title: item.title,
 				description: item.description,
-				photo: photoList,
+				photos: photoList,
 				count: moreCount,
 				more: isMore,
 			};
