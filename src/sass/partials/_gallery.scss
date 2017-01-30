@@ -8,10 +8,30 @@
 			top: 0;
 			left: 0;
 			z-index: 2;
-			box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
+			box-shadow: 0px 4px 4px 0 rgba(black, 0.02), 0px 5px 10px 0 rgba(black, 0.02);
+			background-color: $primary-bg;
+
+			#nav-container {
+				&::before {
+					background: linear-gradient(to right, rgba($primary-bg, 1) 23%, rgba($primary-bg, 0) 27%);
+				}
+				&::after {
+					background: linear-gradient(to right, rgba($primary-bg, 0) 73%, rgba($primary-bg, 1) 77%);
+				}
+			}
+			@media screen and (max-width: $bp-xlarge) {
+				#nav-container {
+					&::before {
+						background: linear-gradient(to right, rgba($primary-bg, 1) 27%, rgba($primary-bg, 0) 32%);
+					}
+					&::after {
+						background: linear-gradient(to right, rgba($primary-bg, 0) 68%, rgba($primary-bg, 1) 73%);
+					}
+				}
+			}
 		}
 		#gallery-pages {
-			margin-top: 6rem;
+			margin-top: 7rem;
 		}
 		#gallery-up {
 			@extend .show;
@@ -31,17 +51,7 @@
 			transform: translateY(-0.2rem);
 		}
 	}
-
-/*	@media screen and (max-width: $bp-xlarge) {
-		#gallery-up {
-			opacity: 1;
-			z-index: auto;
-			cursor: auto;
-			pointer-events: auto;
-			transition: transform $secondary-time, opacity $secondary-time;
-		}		
-	}*/
-
+	
 	@media screen and (max-width: $bp-medium) {
 		#gallery-up {
 			right: 1rem;

@@ -26,7 +26,7 @@ const buildAllItems = function buildAllItemsPhoto(root, template, item) {
 				};
 			});
 
-			const moreCount = photos.length - 1;
+			const moreCount = photos.length;
 			const isMore = (moreCount > 0);
 			const context = {	// Create context with image source
 				title: item.title,

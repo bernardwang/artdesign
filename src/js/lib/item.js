@@ -30,7 +30,7 @@ const destroyOverlay = function destroyItemOverlay() {
 	setTimeout(() => {
 		overlay.removeChild(content);
 		GLOBAL.transitioning = false;
-	}, GLOBAL.transitionTime);
+	}, 0);	// temporary no transition
 };
 
 /**
@@ -73,6 +73,7 @@ const initOverlay = function initItemOverlay(item) {
 	// Move item content to overlay, show overlay
 	overlay.appendChild(content);
 	overlay.classList.add('show');
+	scrollTo(0, false);
 	GLOBAL.transitioning = false;
 };
 

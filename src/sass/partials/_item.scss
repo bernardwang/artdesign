@@ -40,7 +40,7 @@
 		border-radius: 999rem;
 		transition: opacity $secondary-time;
 		background-color: $primary-bg;
-		box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
+		box-shadow: 0px 4px 4px 0 rgba(black, 0.03), 0px 5px 10px 0 rgba(black, 0.03);
 		text-align: center;
 		font-size: 0.75rem;
 		color: $primary-accent;
@@ -48,7 +48,7 @@
 	}
 
 	.item-container {
-		box-shadow: 0 6px 6px 0 rgba(black, 0.06), 0 10px 20px 0 rgba(black, 0.06);
+		box-shadow: 0 6px 6px 0 rgba(black, 0.07), 0 10px 20px 0 rgba(black, 0.07);
 		border-radius: 0 0 5px 5px;
 	}
 	

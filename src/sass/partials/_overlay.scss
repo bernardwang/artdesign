@@ -7,13 +7,14 @@
 	width: 100%;
 	height: 100%;
 	z-index: 999;
-	background-color: $secondary-bg;
+	background-color: $primary-bg;
 	overflow: auto;
 	
 	@extend .hide;
-	transition: opacity $primary-time;
+	transition: opacity 0s;
 	&.show {
 		@extend .show;
+		transition: opacity 0s;
 		z-index: 3;
 	}
 
@@ -52,7 +53,7 @@
 	.item-desc {
 		$font-size: 1rem;
 		$line-height: 1.5;
-
+		color: $primary-text;
 		@extend .desc;
 	}
 
@@ -69,12 +70,14 @@
 
 	.photo-img {
 		width: 50%;
+		box-shadow: 1px 4px 4px 0 rgba(black, 0.05), 1px 5px 15px 0 rgba(black, 0.04);
 	}
 
 	.photo-title {
 		display: inline;
 		margin-left: 2rem;
 		@extend .desc;
+		color: $primary-text;
 	}
 
 	@media screen and (max-width: $bp-large) {
