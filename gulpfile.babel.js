@@ -77,7 +77,7 @@ const deployOpts = {
 /************ HELPER VARIABLES AND FUNCTIONS ************/
 
 // Location constants
-const SRC_HTML = './dist/**/*.html'; 	// make more clear
+const SRC_HTML = './src/**/*.html'; 	// make more clear
 const SRC_ASSETS = './src/**/*.*';
 const SRC_IMG = './src/img/*.*';
 const SRC_SASS = './src/sass/**/*.*';
@@ -219,7 +219,7 @@ gulp.task('browsersync', () => {
 gulp.task('watcher', () => {
 	gulp.watch(SRC_HTML, ['pages']);
 	gulp.watch(SRC_SASS, ['styles']);
-	gulp.watch([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS], ['assets']);
+	gulp.watch([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS, '!'+SRC_HTML], ['assets']);
 	getBundler().on('update', () => gulp.start('watch-scripts'));
 });
 
