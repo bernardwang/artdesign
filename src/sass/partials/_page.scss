@@ -48,7 +48,7 @@
 
 		// Three transition speeds, 1, 2, and max
 		@for $i from 1 through 2 {
-			$distance: 76.9vw;	// TODO: fix hardcoded;
+			$distance: 76.5vw;	// TODO: fix hardcoded;
 			$direction-left: 1;
 			$direction-right: -1;
 

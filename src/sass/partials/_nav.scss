@@ -5,15 +5,15 @@
 
 	width: 100%;
 	position: relative;
-	padding-top: 2rem;	
-	padding-bottom: 2rem;
+	padding-top: 1.5rem;	
+	padding-bottom: 1.5rem;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: nowrap;
 	background-color: $secondary-bg;
 	transition: box-shadow $secondary-time;
-	overflow-x: hidden;
+	overflow: hidden;
 
 	#nav-bar {
 		display: inline-block;
@@ -33,7 +33,7 @@
 	}
 
 	#nav-left {
-		left: -5rem;
+		left: -5.5rem;
 		&:hover {
 			transform: translateX(-0.2rem);
 		}
@@ -47,7 +47,7 @@
 	}
 
 	#nav-right {
-		right: -5rem;
+		right: -5.5rem;
 		&:hover {
 			transform: translateX(0.2rem);
 		}

@@ -5,6 +5,7 @@
  */
 
 import { jumpTo, jumpToPrev, jumpToNext } from './gallery';
+import { scrollTo } from './helper';
 
 /**
  *	Initializes nav elements
@@ -34,11 +35,7 @@ const initNav = function initGalleryNav(navs, state) {
 		jumpToNext();
 	});
 	galleryUp.addEventListener('click', () => {
-		window.scroll({
-			top: state.stickyHeight,
-			left: 0,
-			behavior: 'smooth',
-		});
+		scrollTo(state.stickyHeight, true);
 	});
 
 	// Sets initial target elem

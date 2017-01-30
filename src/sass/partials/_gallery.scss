@@ -1,23 +1,6 @@
 #gallery {
 	position: relative;
-
-/*	&::before {
-		@extend .hide-pseudo;
-		width: 5%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		background: linear-gradient(to right, rgba(238,238,238,0.3) 0%, rgba(238,238,238,0) 100%);
-	}
-	
-	&::after {
-		@extend .hide-pseudo;
-		width: 5%;
-		height: 100%;
-		top: 0;
-		right: 0;
-		background: linear-gradient(to left, rgba(238,238,238,0.3) 0%, rgba(238,238,238,0) 100%);
-	}*/
+	overflow: hidden;
 
 	&.sticky {
 		#gallery-nav {
@@ -28,7 +11,7 @@
 			box-shadow: 1px 4px 4px 0 rgba(black, 0.02), 1px 5px 10px 0 rgba(black, 0.02);
 		}
 		#gallery-pages {
-			margin-top: 8rem;
+			margin-top: 6rem;
 		}
 		#gallery-up {
 			@extend .show;
@@ -43,10 +26,21 @@
 		position: fixed;
 		right: 2rem;
 		bottom: 2rem;
+		z-index: 1;
 		&:hover {
 			transform: translateY(-0.2rem);
 		}
 	}
+
+/*	@media screen and (max-width: $bp-xlarge) {
+		#gallery-up {
+			opacity: 1;
+			z-index: auto;
+			cursor: auto;
+			pointer-events: auto;
+			transition: transform $secondary-time, opacity $secondary-time;
+		}		
+	}*/
 
 	@media screen and (max-width: $bp-medium) {
 		#gallery-up {

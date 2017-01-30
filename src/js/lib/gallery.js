@@ -5,13 +5,10 @@
  */
 
 import Handlebars from 'handlebars';
-import { polyfill } from '../vendor/smoothscroll';
-import { appendTemplate } from './helper';
+import { appendTemplate, scrollTo } from './helper';
 import { initPage, buildPage } from './page';
 import { initNav } from './nav';
 import { GLOBAL } from './global';
-
-polyfill();
 
 
 // Gallery HTML elements
@@ -118,7 +115,7 @@ const jumpTo = function jumpToNav(index, navTarget) {
 	GLOBAL.transitioning = true;
 
 	// Scroll to top of nav first
-	if (state.sticky) window.scroll(0, state.stickyHeight);
+	if (state.sticky) scrollTo(state.stickyHeight, false);
 
 	// Calculate shortest jump
 	const linear = index - state.currIndex;
@@ -219,7 +216,7 @@ const buildGallery = function buildGalleryHTML(data) {
 	state.stickyHeight = document.getElementById('about').clientHeight;
 
 	// Add gallery scroll listener
-	document.body.addEventListener('scroll', (e) => {
+	window.addEventListener('scroll', (e) => {
 		const scroll = document.body.scrollTop || document.documentElement.scrollTop;
 		if ((scroll >= state.stickyHeight && state.sticky) ||
 			(scroll < state.stickyHeight && !state.sticky)) {
