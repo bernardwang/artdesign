@@ -1,8 +1,10 @@
 #gallery-pages {
+	$page-width: 76vw;
+
 	position: relative;
 
 	.page {
-		width: 76vw;
+		width: $page-width;
 		height: 100%;
 		margin: auto;
 		padding: 3rem;
@@ -49,7 +51,7 @@
 
 		// Three transition speeds, 1, 2, and max
 		@for $i from 1 through 2 {
-			$distance: 76.5vw;	// TODO: fix hardcoded;
+			$distance: $page-width + 0.5;
 			$direction-left: 1;
 			$direction-right: -1;
 
@@ -124,7 +126,7 @@
 
 			// Three transition speeds, 1, 2, and max
 			@for $i from 1 through 2 {
-				$distance: 100vw;	// TODO: fix hardcoded;
+				$distance: 100vw;
 				$direction-left: 1;
 				$direction-right: -1;
 	

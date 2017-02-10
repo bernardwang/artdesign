@@ -16,6 +16,13 @@
 		@extend .show;
 		transition: opacity $secondary-time;
 		z-index: 3;
+
+		// avoid jumping from scrollbar changes
+		#overlay-x {
+			@extend .show;
+			transition: opacity $secondary-time;
+			transition-delay: $secondary-time;
+		}
 	}
 
 	#overlay-x {
@@ -23,6 +30,10 @@
 		position: fixed;
 		top: 2rem;
 		right: 2rem;
+
+		// avoid jumping from scrollbar changes
+		@extend .hide;
+		transition: opacity 0;
 
 		&:hover {
 			transform: scale(1.1);
@@ -99,11 +110,11 @@
 		.photo {
 			flex-direction: column;
 			justify-content: center;
-			align-items: center;
 		}
 		.photo-title {
 			margin: 0;
 			padding: 1rem;
+			padding-left: 0;
 		}
 		.photo-img {
 			width: 100%;

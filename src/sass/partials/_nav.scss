@@ -19,7 +19,8 @@
 		display: inline-block;
 		position: relative;
 
-		.hide {
+		@extend .show;
+		&.hide {
 			@extend .hide;
 		}
 	}

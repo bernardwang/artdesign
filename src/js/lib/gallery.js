@@ -58,7 +58,6 @@ const jumpPage = function jumpGalleryPage(jump, newIndices) {
 /**
  *	Jumps nav elements
  *
- *	TODO: Fix jank ass timing shit below without jquery
  */
 const jumpNav = function jumpGalleryNav(jump, navElem) {
 	return new Promise((resolve, reject) => {
@@ -90,7 +89,7 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
 			}
 			nav.classList.remove(jumpClass);
 
-			// TODO: fix this BS
+			// TODO: fix this timing BS
 			// Immediately after reordering
 			// Fade nav elements back in
 			setTimeout(() => {

@@ -23,3 +23,5 @@ global.app = function app() {
 		.then(() => loadPages(data))
 		.catch((e) => { console.log(e); });
 };
+
+global.app();

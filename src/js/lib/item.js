@@ -1,11 +1,10 @@
 /**
  *
- *	page.js
+ *	item.js
  *
  */
 
 import { GLOBAL } from './global';
-import { scrollTo } from './helper';
 
 /**
  *	Destroys item overlay (on close)
@@ -20,6 +19,9 @@ const destroyOverlay = function destroyItemOverlay() {
 	// Clean up event listeners
 	overlay.removeEventListener('click', () => {});
 	window.removeEventListener('keydown', () => {});
+
+	// Allow gallery scrolling
+	document.documentElement.style.overflowY = 'auto';
 
 	// Hide overlay and clear overlay
 	overlay.classList.remove('show');
@@ -69,7 +71,10 @@ const initOverlay = function initItemOverlay(item) {
 	// Move item content to overlay, show overlay
 	overlay.appendChild(content);
 	overlay.classList.add('show');
-	GLOBAL.transitioning = false;
+	setTimeout(() => {
+		document.documentElement.style.overflowY = 'hidden'; // Disable gallery scrolling, using timeout avoids jumping
+		GLOBAL.transitioning = false;
+	}, GLOBAL.transitionTimeHalf);
 };
 
 /**
