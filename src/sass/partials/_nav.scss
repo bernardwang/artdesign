@@ -161,11 +161,11 @@
 		padding-right: 1rem;
 
 		#nav-left {
-			left: -13vw;
+			left: 5vw;
 		}
 
 		#nav-right {
-			right: -13vw;
+			right: 5vw;
 		}
 
 		#nav-container {
@@ -183,9 +183,12 @@
 				}
 			}
 
-			&::before,
+			&::before {
+				background: linear-gradient(to right, rgba($secondary-bg, 1) 27%, rgba($secondary-bg, 0) 31%);
+			}
+
 			&::after {
-				
+				background: linear-gradient(to right, rgba($secondary-bg, 0) 69%, rgba($secondary-bg, 1) 73%);
 			}
 		}
 

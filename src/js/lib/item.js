@@ -21,16 +21,12 @@ const destroyOverlay = function destroyItemOverlay() {
 	overlay.removeEventListener('click', () => {});
 	window.removeEventListener('keydown', () => {});
 
-	// Scroll to top of gallery
-	const stickyHeight = document.getElementById('about').clientHeight;
-	scrollTo(stickyHeight, false);
-
 	// Hide overlay and clear overlay
 	overlay.classList.remove('show');
 	setTimeout(() => {
 		overlay.removeChild(content);
 		GLOBAL.transitioning = false;
-	}, 0);	// temporary no transition
+	}, GLOBAL.transitionTimeHalf);
 };
 
 /**
@@ -73,7 +69,6 @@ const initOverlay = function initItemOverlay(item) {
 	// Move item content to overlay, show overlay
 	overlay.appendChild(content);
 	overlay.classList.add('show');
-	scrollTo(0, false);
 	GLOBAL.transitioning = false;
 };
 
