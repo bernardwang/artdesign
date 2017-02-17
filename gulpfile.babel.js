@@ -4,6 +4,10 @@ import gulp from 'gulp';
 import changed from 'gulp-changed';
 import del from 'del';
 import source from 'vinyl-source-stream';
+import handlebars from 'gulp-handlebars';
+import wrap from 'gulp-wrap';
+import declare from 'gulp-declare';
+import concat from 'gulp-concat';
 import browserify from 'browserify';
 import watchify from 'watchify';
 import babelify from 'babelify';
@@ -20,6 +24,10 @@ import _ from 'lodash';
 
 /************ Options ************/
 
+const declareOpts = {
+	namespace: 'app.templates',
+	noRedeclare: true, // Avoid duplicate declarations
+}
 const browserifyOpts = {
 	debug: true
 };
@@ -77,7 +85,8 @@ const deployOpts = {
 /************ HELPER VARIABLES AND FUNCTIONS ************/
 
 // Location constants
-const SRC_HTML = './src/**/*.html'; 	// make more clear
+const SRC_HTML = './src/**/*.html';
+const SRC_TEMPLATES = './src/templates/*.*'
 const SRC_ASSETS = './src/**/*.*';
 const SRC_IMG = './src/img/*.*';
 const SRC_SASS = './src/sass/**/*.*';
@@ -88,7 +97,7 @@ const ENTRY_JS = './src/js/app.js';					// js entry point for babel
 const DEST_HTML = './dist/';
 const DEST_ASSETS = './dist/assets/';
 const DEST_JS = './dist/assets/js/';
-const DEST_VENDORJS = './dist/assets/js/vendor/';	// not include in babel build
+const DEST_VENDORJS = './dist/assets/js/vendor/';
 const DEST_CSS = './dist/assets/css/';
 const DEST_IMG = './dist/assets/img/';
 
@@ -111,12 +120,24 @@ function getBundler(watch) {
 /************ TASKS ************/
 
 /**
- *	Moves HTML (eventually add templates)
+ *	Moves HTML
  */
-gulp.task('pages', () => {
+gulp.task('pages', ['templates'], () => {
 	gulp.src(SRC_HTML)
 		.pipe(gulp.dest(DEST_HTML))
   		.pipe(sync.reload(syncOpts));
+});
+
+/**
+ *	Compiles templates
+ */
+gulp.task('templates', () => {
+	gulp.src(SRC_TEMPLATES)
+		.pipe(handlebars())
+		.pipe(wrap('Handlebars.template(<%= contents %>)'))
+		.pipe(declare(declareOpts))
+		.pipe(concat('templates.js'))
+  		.pipe(gulp.dest(DEST_JS));
 });
 
 /**
@@ -196,7 +217,7 @@ gulp.task('min-scripts', ['scripts'], () => {
  *	Move assets
  */
 gulp.task('assets', () => {
-	gulp.src([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS]) // fix this string shit
+	gulp.src([SRC_ASSETS, '!'+SRC_HTML, '!'+SRC_TEMPLATES', !'+SRC_SASS, '!'+SRC_JS]) // fix this string shit
 		.pipe(changed(DEST_ASSETS))
 		.pipe(gulp.dest(DEST_ASSETS))
 		.pipe(sync.reload(syncOpts));
@@ -217,7 +238,7 @@ gulp.task('browsersync', () => {
  *	Reloads on HTML, CSS, ASSET & JS changes
  */
 gulp.task('watcher', () => {
-	gulp.watch(SRC_HTML, ['pages']);
+	gulp.watch([SRC_HTML, SRC_TEMPLATES], ['pages']);
 	gulp.watch(SRC_SASS, ['styles']);
 	gulp.watch([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS, '!'+SRC_HTML], ['assets']);
 	getBundler().on('update', () => gulp.start('watch-scripts'));

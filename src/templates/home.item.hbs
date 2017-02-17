@@ -1,0 +1,19 @@
+<article class="item">
+	{{#if more}}
+		<div class="item-count">+{{count}}</div>
+	{{/if}}
+	<div class="item-container">
+		<div class="item-photos">
+			{{#each photos}}
+			<figure class="photo">
+				<img class="photo-img" src="{{this.src}}"/>
+				<figcaption class="photo-title"> {{{this.title}}} </figcaption>
+			</figure>
+			{{/each}}
+		</div>
+		<div class="item-caption">
+			<h3 class="item-title">{{title}}</h3>
+			<p class="item-desc">{{{description}}}</p>
+		</div>
+	</div>
+</article>
