@@ -5,6 +5,7 @@ import changed from 'gulp-changed';
 import del from 'del';
 import source from 'vinyl-source-stream';
 import handlebars from 'gulp-handlebars';
+import definemodule from 'gulp-define-module';
 import wrap from 'gulp-wrap';
 import declare from 'gulp-declare';
 import concat from 'gulp-concat';
@@ -95,6 +96,7 @@ const SRC_VENDORJS = './src/js/vendor/*.js';		// not include in babel build
 const ENTRY_JS = './src/js/app.js';					// js entry point for babel
 
 const DEST_HTML = './dist/';
+const DEST_TEMPLATES = './src/js/templates/';
 const DEST_ASSETS = './dist/assets/';
 const DEST_JS = './dist/assets/js/';
 const DEST_VENDORJS = './dist/assets/js/vendor/';
@@ -122,7 +124,7 @@ function getBundler(watch) {
 /**
  *	Moves HTML
  */
-gulp.task('pages', ['templates'], () => {
+gulp.task('pages', () => {
 	gulp.src(SRC_HTML)
 		.pipe(gulp.dest(DEST_HTML))
   		.pipe(sync.reload(syncOpts));
@@ -134,10 +136,11 @@ gulp.task('pages', ['templates'], () => {
 gulp.task('templates', () => {
 	gulp.src(SRC_TEMPLATES)
 		.pipe(handlebars())
+		//.pipe(definemodule('es6'))
 		.pipe(wrap('Handlebars.template(<%= contents %>)'))
 		.pipe(declare(declareOpts))
 		.pipe(concat('templates.js'))
-  		.pipe(gulp.dest(DEST_JS));
+  		.pipe(gulp.dest(DEST_TEMPLATES));
 });
 
 /**
@@ -174,7 +177,7 @@ gulp.task('scripts-vendor', () => {
 /**
  *	Builds JS once
  */
-gulp.task('scripts', ['scripts-vendor'], () => {
+gulp.task('scripts', () => {
 	return getBundler( false ) // Not watchifying
 		.transform(babelify) // Babelify options in package.json
 			.bundle().on('error', (err) => console.log('Error: ' + err.message))
@@ -185,7 +188,7 @@ gulp.task('scripts', ['scripts-vendor'], () => {
 /**
  *	Builds JS persistently when needed
  */
-gulp.task('watch-scripts', ['scripts-vendor'], () => {
+gulp.task('watch-scripts', () => {
 	return getBundler( true ) // Watchify
 		.transform(babelify) // Babelify options in package.json
 			.bundle().on('error', (err) => console.log('Error: ' + err.message))
@@ -238,7 +241,7 @@ gulp.task('browsersync', () => {
  *	Reloads on HTML, CSS, ASSET & JS changes
  */
 gulp.task('watcher', () => {
-	gulp.watch([SRC_HTML, SRC_TEMPLATES], ['pages']);
+	gulp.watch([SRC_HTML], ['pages']);
 	gulp.watch(SRC_SASS, ['styles']);
 	gulp.watch([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS, '!'+SRC_HTML], ['assets']);
 	getBundler().on('update', () => gulp.start('watch-scripts'));
