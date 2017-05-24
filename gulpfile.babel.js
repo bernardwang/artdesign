@@ -119,7 +119,7 @@ function getBundler(watch) {
 /**
  *	Moves HTML
  */
-gulp.task('pages', () => {
+gulp.task('pages', ['templates'], () => {
 	gulp.src(SRC_HTML)
 		.pipe(gulp.dest(DEST_HTML))
   		.pipe(sync.reload(syncOpts));
@@ -235,7 +235,7 @@ gulp.task('browsersync', () => {
  *	Reloads on HTML, CSS, ASSET & JS changes
  */
 gulp.task('watcher', () => {
-	gulp.watch([SRC_HTML], ['pages']);
+	gulp.watch([SRC_HTML, SRC_TEMPLATES], ['pages']);
 	gulp.watch(SRC_SASS, ['styles']);
 	gulp.watch([SRC_ASSETS, '!'+SRC_SASS, '!'+SRC_JS, '!'+SRC_HTML], ['assets']);
 	getBundler().on('update', () => gulp.start('watch-scripts'));
