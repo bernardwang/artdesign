@@ -1,14 +1,14 @@
 {
-  "name": "madeby",
+  "name": "explorations",
   "version": "0.0.0",
   "description": "",
   "author": "Bernard Wang",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bernardwang/madeby"
+    "url": "git://github.com/bernardwang/explorations"
   },
   "bugs": {
-    "url": "https://github.com/bernard/madeby/issues"
+    "url": "https://github.com/bernard/explorations/issues"
   },
   "license": "MIT",
   "dependencies": {
