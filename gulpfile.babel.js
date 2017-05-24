@@ -6,8 +6,6 @@ import del from 'del';
 import source from 'vinyl-source-stream';
 import handlebars from 'gulp-handlebars';
 import definemodule from 'gulp-define-module';
-import wrap from 'gulp-wrap';
-import declare from 'gulp-declare';
 import concat from 'gulp-concat';
 import browserify from 'browserify';
 import watchify from 'watchify';
@@ -25,10 +23,6 @@ import _ from 'lodash';
 
 /************ Options ************/
 
-const declareOpts = {
-	namespace: 'app.templates',
-	noRedeclare: true, // Avoid duplicate declarations
-}
 const browserifyOpts = {
 	debug: true
 };
@@ -135,11 +129,10 @@ gulp.task('pages', () => {
  */
 gulp.task('templates', () => {
 	gulp.src(SRC_TEMPLATES)
-		.pipe(handlebars())
-		//.pipe(definemodule('es6'))
-		.pipe(wrap('Handlebars.template(<%= contents %>)'))
-		.pipe(declare(declareOpts))
-		.pipe(concat('templates.js'))
+		.pipe(handlebars({
+			handlebars: require('handlebars')
+		}))
+		.pipe(definemodule('es6'))
   		.pipe(gulp.dest(DEST_TEMPLATES));
 });
 
