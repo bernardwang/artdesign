@@ -4,11 +4,11 @@
  *
  */
 
-import Handlebars from 'handlebars';
 import { photosetAPI } from './flickrAPI';
 import { appendTemplate } from './helper';
 import { jumpToPrev, jumpToNext } from './gallery';
 import { initItems } from './item';
+import { default as itemTemplate } from '../templates/item';
 
 /**
  *	Adds a single item into a page with all photos
@@ -51,8 +51,6 @@ const buildPage = function buildPageItems(page, items) {
 	const itemRoot = page.getElementsByClassName('page-items')[0];
 	if (itemRoot.children.length > 0) return Promise.resolve();
 
-	const itemSource = document.getElementById('item-template').innerHTML;
-	const itemTemplate = Handlebars.compile(itemSource);
 	const itemPromises = items.map((item) => {
 		return buildAllItems(itemRoot, itemTemplate, item);
 	});

@@ -4,12 +4,12 @@
  *
  */
 
-import Handlebars from 'handlebars';
 import { appendTemplate, scrollTo } from './helper';
 import { initPage, buildPage } from './page';
 import { initNav } from './nav';
 import { GLOBAL } from './global';
-
+import { default as pagesTemplate } from '../templates/page';
+import { default as navTemplate } from '../templates/nav';
 
 // Gallery HTML elements
 let navs = [];
@@ -194,11 +194,7 @@ const buildGallery = function buildGalleryHTML(data) {
 
 	// Template variables
 	const pagesRoot = document.getElementById('gallery-pages');
-	const pagesSource = document.getElementById('page-template').innerHTML;
-	const pagesTemplate = Handlebars.compile(pagesSource);
 	const navRoot = document.getElementById('gallery-nav');
-	const navSource = document.getElementById('nav-template').innerHTML;
-	const navTemplate = Handlebars.compile(navSource);
 
 	// Build HTML using template
 	pages = appendTemplate(pagesRoot, pagesTemplate, data);

@@ -7,9 +7,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="mobile-web-app-capable" content="yes">
 
-	<title>Art & Design</title>
+	<title>Explorations</title>
 
 	<link href="./assets/css/main.css" rel="stylesheet">
+	<script src="./assets/js/vendor/handlebars.js"></script>
   </head>
   <body>
 		<header id="about">
@@ -40,54 +41,5 @@
 
 
 	<script src="./assets/js/app.js"></script>
-	<script id="nav-template" type="text/x-handlebars-template">
-		<div id="nav-bar" class="hide">
-			<a id="nav-left" class="nav-arrow">
-				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><title>left</title><path class="i" d="M11.3,16.7l9,9a1,1,0,0,0,1.4-1.4L13.4,16l8.3-8.3a1,1,0,1,0-1.4-1.4l-9,9A1,1,0,0,0,11.3,16.7Z"/></svg>
-			</a>
-			<div id="nav-container">
-				{{#each this}}
-				<a class="nav-elem">
-					<h4 class="nav-title">{{title}}</h4>
-				</a>
-				{{/each}}
-			</div>
-			<a id="nav-right" class="nav-arrow">
-				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><title>right</title><path class="i" d="M21.7,15.3l-9-9a1,1,0,0,0-1.4,1.4L19.6,16l-8.3,8.3a1,1,0,0,0,1.4,1.4l9-9A1,1,0,0,0,21.7,15.3Z"/></svg>
-			</a>
-		</div>
-	</script>
-	<script id="page-template" type="text/x-handlebars-template">
-		{{#each this}}
-		<section class="page">
-			<header class="page-header">
-				<h2 class="page-title">{{{description}}}</h2>
-			</header>
-			<section class="page-items">
-			</section>
-		</section>
-		{{/each}}
-	</script>
-	<script id="item-template" type="text/x-handlebars-template">
-		<article class="item">
-			{{#if more}}
-				<div class="item-count">+{{count}}</div>
-			{{/if}}
-			<div class="item-container">
-				<div class="item-photos">
-					{{#each photos}}
-					<figure class="photo">
-						<img class="photo-img" src="{{this.src}}"/>
-						<figcaption class="photo-title"> {{{this.title}}} </figcaption>
-					</figure>
-					{{/each}}
-				</div>
-				<div class="item-caption">
-					<h3 class="item-title">{{title}}</h3>
-					<p class="item-desc">{{{description}}}</p>
-				</div>
-			</div>
-		</article>
-	</script>
   </body>
 </html>
