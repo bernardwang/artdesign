@@ -211,7 +211,7 @@ const buildGallery = function buildGalleryHTML(data) {
 	state.stickyHeight = document.getElementById('about').clientHeight;
 
 	// Add gallery scroll listener
-	window.addEventListener('scroll', (e) => {
+	window.addEventListener('scroll', () => {
 		const scroll = document.body.scrollTop || document.documentElement.scrollTop;
 		if ((scroll >= state.stickyHeight && state.sticky) ||
 			(scroll < state.stickyHeight && !state.sticky)) {

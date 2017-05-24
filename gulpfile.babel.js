@@ -51,6 +51,7 @@ const eslintOpts = {
 		"indent": ["error", "tab"],
 		"arrow-body-style": ["warn"],
 		"import/prefer-default-export": "off",
+		"import/no-named-default": "off",
 		"no-mixed-operators": "off",
 	}
 }
@@ -194,7 +195,7 @@ gulp.task('watch-scripts', () => {
  *	Lint JS
  */
 gulp.task('lint-scripts', () => {
-	gulp.src([SRC_JS, '!'+SRC_VENDORJS, '!'+'./src/js/lib/http.js'])
+	gulp.src([SRC_JS, '!'+SRC_VENDORJS, '!'+DEST_TEMPLATES+'*', '!'+'./src/js/lib/http.js'])
 		.pipe(eslint(eslintOpts))
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
