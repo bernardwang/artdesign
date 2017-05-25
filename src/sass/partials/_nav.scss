@@ -117,6 +117,11 @@
 			background-color: $primary-bg;
 			box-shadow: 0px 4px 4px 0 rgba(black, 0.04), 0px 5px 10px 0 rgba(black, 0.04);
 		}
+
+		&.hide {
+			@extend .hide;
+			transition: opacity $primary-time;
+		};
 	}
 
 	.nav-title {

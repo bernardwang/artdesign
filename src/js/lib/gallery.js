@@ -106,7 +106,7 @@ const jumpNav = function jumpGalleryNav(jump, navElem) {
  *	Move and update gallery
  */
 const jumpTo = function jumpToNav(index, navTarget) {
-	// Checks if alid jump
+	// Checks if valid jump
 	if (index > state.size || index < 0) throw new Error('Invalid page');
 	if (GLOBAL.transitioning || index === state.currIndex) return;
 
