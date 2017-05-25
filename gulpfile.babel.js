@@ -246,12 +246,12 @@ gulp.task('watcher', () => {
 /**
  *	dev - auto builds and browsersync
  */
-gulp.task('dev', ['pages', 'styles', 'watch-scripts', 'assets', 'scripts-vendor', 'watcher', 'browsersync']);
+gulp.task('dev', ['pages', 'styles', 'watch-scripts', 'assets', 'watcher', 'browsersync']);
 
 /**
  *	dist - prod build
  */
-gulp.task('prod', ['pages', 'min-styles', 'lint-scripts', 'min-scripts', 'scripts-vendor', 'assets']);
+gulp.task('prod', ['pages', 'min-styles', 'lint-scripts', 'min-scripts', 'assets']);
 
 /**
  *	clean - deletes dist folder
